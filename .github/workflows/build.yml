@@ -1,0 +1,27 @@
+# Rebuilds index.html from content/site.json after every edit made in /admin,
+# so Google always sees the latest words. Uses only GitHub's own tools.
+name: Build home page
+on:
+  push:
+    branches: [main]
+    paths: ["content/**", "assets/site.js", "tools/**"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node tools/build.js
+      - name: Save the rebuilt page
+        run: |
+          if git diff --quiet index.html; then echo "No change"; exit 0; fi
+          git config user.name "ikjon-website-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git commit -m "Rebuild home page from content"
+          git push

@@ -1,0 +1,720 @@
+# IKJON website editor settings.
+# Only GitHub accounts with write access to ikjon27/ikjon-gearbox can sign in and save.
+backend:
+  name: github
+  repo: ikjon27/ikjon-gearbox
+  branch: main
+  commit_messages:
+    update: 'Website edit: {{slug}}'
+    uploadMedia: Upload {{path}}
+site_url: https://www.ikjon-gearbox.com
+display_url: https://www.ikjon-gearbox.com
+logo:
+  src: /brand/mark-navy.png
+media_folder: brand/uploads
+public_folder: /brand/uploads
+collections:
+- name: website
+  label: Website
+  files:
+  - name: home
+    label: Home page
+    file: content/site.json
+    format: json
+    fields:
+    - name: brand
+      label: Brand and logos
+      widget: object
+      fields:
+      - name: name
+        label: Brand name
+        widget: string
+      - name: tagline
+        label: Tagline
+        widget: string
+      - name: logo_header
+        label: Logo in the top bar (white)
+        widget: image
+      - name: logo_main
+        label: Main logo (hero)
+        widget: image
+      - name: logo_footer
+        label: Footer logo (white)
+        widget: image
+      - name: logo_mark
+        label: Logo mark in 'Our logo' section
+        widget: image
+    - name: sections
+      label: Sections to show on the website
+      hint: Switch a section on when its content is ready. Hidden sections keep their content saved.
+      widget: object
+      fields:
+      - name: facts
+        label: Numbers strip
+        widget: boolean
+        default: false
+      - name: areas
+        label: What we do (areas and services)
+        widget: boolean
+        default: false
+      - name: logo
+        label: Our logo, explained
+        widget: boolean
+        default: false
+      - name: apps
+        label: Apps
+        widget: boolean
+        default: false
+      - name: principles
+        label: How we work
+        widget: boolean
+        default: false
+    - name: hero
+      label: Top section
+      widget: object
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title_start
+        label: Headline
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title_accent
+        label: Headline accent word (teal)
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Button text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Button text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link (e.g. rehab/ or https://...)
+          widget: string
+          required: false
+        name: button_main
+        label: Main button
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Button text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Button text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link (e.g. rehab/ or https://...)
+          widget: string
+          required: false
+        name: button_second
+        label: Second button
+    - name: facts
+      label: Numbers strip
+      widget: list
+      fields:
+      - name: number
+        label: Number
+        widget: string
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Text under the number
+    - widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+      name: areas_intro
+      label: '''What we do'' heading'
+    - name: areas
+      label: Areas and services
+      widget: list
+      summary: '{{fields.name.en}}'
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: name
+        label: Area name
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Description
+      - name: items
+        label: Services
+        widget: list
+        summary: '{{fields.name.en}} ({{fields.status}})'
+        fields:
+        - widget: object
+          collapsed: false
+          fields:
+          - name: en
+            label: English
+            widget: string
+            required: false
+          - name: uz
+            label: O'zbekcha
+            widget: string
+            required: false
+          name: name
+          label: Service name
+        - name: status
+          label: Status
+          widget: select
+          options:
+          - label: Open
+            value: open
+          - label: Active
+            value: active
+          - label: Live
+            value: live
+          - label: Coming soon
+            value: soon
+          - label: In development
+            value: dev
+        - name: link
+          label: Link (leave empty if none)
+          widget: string
+          required: false
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Button text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Button text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link (e.g. rehab/ or https://...)
+          widget: string
+          required: false
+        name: button
+        label: Card button (optional)
+    - name: logo_section
+      label: '''Our logo'' section'
+      widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+      - name: parts
+        label: Logo parts (in order 1–4)
+        widget: list
+        fields:
+        - widget: object
+          collapsed: false
+          fields:
+          - name: en
+            label: English
+            widget: string
+            required: false
+          - name: uz
+            label: O'zbekcha
+            widget: string
+            required: false
+          name: title
+          label: Title
+        - widget: object
+          collapsed: false
+          fields:
+          - name: en
+            label: English
+            widget: string
+            required: false
+          - name: uz
+            label: O'zbekcha
+            widget: string
+            required: false
+          name: text
+          label: Text
+    - widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+      name: apps_intro
+      label: '''Apps'' heading'
+    - name: featured_app
+      label: Featured app
+      widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - name: name
+        label: App name
+        widget: string
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Description
+      - name: points
+        label: Key points
+        widget: list
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Button text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Button text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link (e.g. rehab/ or https://...)
+          widget: string
+          required: false
+        name: button
+        label: Button
+      - name: image
+        label: Screenshot
+        widget: image
+    - widget: object
+      collapsed: false
+      fields:
+      - name: en
+        label: English
+        widget: string
+        required: false
+      - name: uz
+        label: O'zbekcha
+        widget: string
+        required: false
+      name: coming_label
+      label: '''Coming next'' label'
+    - name: coming
+      label: Coming next list
+      widget: list
+      summary: '{{fields.name.en}} ({{fields.status}})'
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: name
+        label: Name
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: text
+        label: Short description
+      - name: status
+        label: Status
+        widget: select
+        options:
+        - label: Open
+          value: open
+        - label: Active
+          value: active
+        - label: Live
+          value: live
+        - label: Coming soon
+          value: soon
+        - label: In development
+          value: dev
+      - name: link
+        label: Link (leave empty if none)
+        widget: string
+        required: false
+    - widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+      name: principles_intro
+      label: '''How we work'' heading'
+    - name: principles
+      label: How we work
+      widget: list
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Title
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Text
+    - name: contact
+      label: Contact
+      widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Text
+      - name: links
+        label: Contact links
+        widget: list
+        fields:
+        - name: name
+          label: Name (e.g. Telegram)
+          widget: string
+        - name: handle
+          label: Handle shown (e.g. @ikjon_education)
+          widget: string
+        - name: url
+          label: Link (must start with https://)
+          widget: string
+          pattern:
+          - ^https://
+          - The link must start with https://
+    - name: footer
+      label: Footer
+      widget: object
+      collapsed: true
+      fields:
+      - name: links
+        label: Footer links
+        widget: list
+        fields:
+        - name: en
+          label: Text (English)
+          widget: string
+        - name: uz
+          label: Text (O'zbekcha)
+          widget: string
+        - name: link
+          label: Link
+          widget: string
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: fine
+        label: Small print

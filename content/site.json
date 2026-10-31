@@ -1,0 +1,509 @@
+{
+  "brand": {
+    "name": "IKJON",
+    "tagline": "BUILD • IMPROVE • GROW",
+    "logo_header": "brand/mark-white.png",
+    "logo_main": "brand/lockup-navy.png",
+    "logo_footer": "brand/lockup-white.png",
+    "logo_mark": "brand/mark-navy.png"
+  },
+  "sections": {
+    "facts": false,
+    "areas": false,
+    "logo": false,
+    "apps": false,
+    "principles": false
+  },
+  "hero": {
+    "label": {
+      "en": "IKJON · From Uzbekistan to the world",
+      "uz": "IKJON · O'zbekistondan dunyoga"
+    },
+    "title_start": {
+      "en": "Build. Improve.",
+      "uz": "Build. Improve."
+    },
+    "title_accent": {
+      "en": "Grow.",
+      "uz": "Grow."
+    },
+    "text": {
+      "en": "IKJON is a growing family of education, sport and health projects. We help people learn, train and recover, one step at a time.",
+      "uz": "IKJON — ta'lim, sport va sog'liq yo'nalishidagi loyihalar oilasi. Biz odamlarga o'rganish, mashq qilish va tiklanishga yordam beramiz — bosqichma-bosqich, har kuni."
+    },
+    "button_main": {
+      "en": "Contact us",
+      "uz": "Biz bilan bog'laning",
+      "link": "#contact"
+    },
+    "button_second": {
+      "en": "",
+      "uz": "",
+      "link": ""
+    }
+  },
+  "facts": [
+    {
+      "number": "4",
+      "label": {
+        "en": "areas of work",
+        "uz": "faoliyat yo'nalishi"
+      }
+    },
+    {
+      "number": "6",
+      "label": {
+        "en": "education programmes",
+        "uz": "ta'lim dasturi"
+      }
+    },
+    {
+      "number": "24",
+      "label": {
+        "en": "injury recovery plans in Joint Rehab",
+        "uz": "jarohat uchun tiklanish rejasi"
+      }
+    },
+    {
+      "number": "113",
+      "label": {
+        "en": "guided exercises, free to use",
+        "uz": "ko'rsatmali mashq"
+      }
+    }
+  ],
+  "areas_intro": {
+    "label": {
+      "en": "What we do",
+      "uz": "Faoliyatimiz"
+    },
+    "title": {
+      "en": "One brand, four connected areas",
+      "uz": "Bitta brend, bir-biriga ulangan to'rt yo'nalish"
+    },
+    "text": {
+      "en": "Each area works like one gear in our logo: they turn together. New services are added here step by step as they are ready.",
+      "uz": "Har bir yo'nalish bitta tishli g'ildirakdek: ular birgalikda aylanadi. Yangi xizmatlar shu yerga bosqichma-bosqich qo'shiladi."
+    }
+  },
+  "areas": [
+    {
+      "name": {
+        "en": "Education",
+        "uz": "Ta'lim"
+      },
+      "text": {
+        "en": "IKJON Education & Consulting Centre prepares students for university and work with the knowledge and certificates they need.",
+        "uz": "IKJON Education & Consulting Centre talabalarni universitet va ishga kerakli bilim va sertifikatlar bilan tayyorlaydi."
+      },
+      "items": [
+        {
+          "name": {
+            "en": "General English (A1–B2)",
+            "uz": "Umumiy ingliz tili (A1–B2)"
+          },
+          "status": "open",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "IELTS & CEFR preparation (B1–C1)",
+            "uz": "IELTS va CEFR tayyorlov (B1–C1)"
+          },
+          "status": "open",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "Kids English",
+            "uz": "Bolalar uchun ingliz tili"
+          },
+          "status": "open",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "Speaking Club and Digital Literacy",
+            "uz": "Speaking Club va raqamli savodxonlik"
+          },
+          "status": "open",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "Study & career guidance",
+            "uz": "O'qish va karyera bo'yicha maslahat"
+          },
+          "status": "open",
+          "link": ""
+        }
+      ],
+      "button": {
+        "en": "",
+        "uz": "",
+        "link": ""
+      }
+    },
+    {
+      "name": {
+        "en": "Sport & community",
+        "uz": "Sport va hamjamiyat"
+      },
+      "text": {
+        "en": "We bring young people together through football tournaments and competitions. Our GearBox_23 channel shares football training.",
+        "uz": "Futbol turnirlari va tanlovlar orqali yoshlarni birlashtiramiz. GearBox_23 kanali futbol mashg'ulotlarini ulashadi."
+      },
+      "items": [
+        {
+          "name": {
+            "en": "Football tournaments",
+            "uz": "Futbol turnirlari"
+          },
+          "status": "active",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "Speech, debate and spelling contests",
+            "uz": "Nutq, munozara va imlo tanlovlari"
+          },
+          "status": "active",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "IKJON Football Training app",
+            "uz": "IKJON Football Training ilovasi"
+          },
+          "status": "soon",
+          "link": ""
+        }
+      ],
+      "button": {
+        "en": "",
+        "uz": "",
+        "link": ""
+      }
+    },
+    {
+      "name": {
+        "en": "Health",
+        "uz": "Sog'liq"
+      },
+      "text": {
+        "en": "Free, research-based apps for injury recovery, joint health and everyday fitness. Private by design: no account and no tracking.",
+        "uz": "Tadqiqotlarga asoslangan bepul ilovalar: jarohatdan tiklanish, bo'g'imlar salomatligi va kundalik mashqlar."
+      },
+      "items": [
+        {
+          "name": {
+            "en": "IKJON Joint Rehab",
+            "uz": "IKJON Joint Rehab"
+          },
+          "status": "live",
+          "link": "rehab/"
+        },
+        {
+          "name": {
+            "en": "IKJON Fitness app",
+            "uz": "IKJON Fitness ilovasi"
+          },
+          "status": "soon",
+          "link": ""
+        }
+      ],
+      "button": {
+        "en": "Open Joint Rehab →",
+        "uz": "Joint Rehab ilovasini ochish →",
+        "link": "rehab/"
+      }
+    },
+    {
+      "name": {
+        "en": "Digital tools",
+        "uz": "Raqamli vositalar"
+      },
+      "text": {
+        "en": "We build the tools we use ourselves, then make them ready for other learning centres and teams.",
+        "uz": "O'zimiz ishlatadigan vositalarni boshqa o'quv markazlari va jamoalar uchun ham tayyorlaymiz."
+      },
+      "items": [
+        {
+          "name": {
+            "en": "IKJON learning app (grammar, IELTS, vocabulary)",
+            "uz": "IKJON o'quv ilovasi (grammatika, IELTS, lug'at)"
+          },
+          "status": "soon",
+          "link": ""
+        },
+        {
+          "name": {
+            "en": "IKJON CRM for learning centres",
+            "uz": "O'quv markazlari uchun IKJON CRM"
+          },
+          "status": "dev",
+          "link": ""
+        }
+      ],
+      "button": {
+        "en": "",
+        "uz": "",
+        "link": ""
+      }
+    }
+  ],
+  "logo_section": {
+    "label": {
+      "en": "Our logo, explained",
+      "uz": "Logotipimiz"
+    },
+    "title": {
+      "en": "Every part has a job",
+      "uz": "Har bir detal o'z ma'nosiga ega"
+    },
+    "text": {
+      "en": "Gears only turn together. That is how IKJON is built: education, sport and health as one working system, pushing in one direction.",
+      "uz": "Tishli g'ildiraklar bir-birisiz aylanmaydi. Shuning uchun IKJON ta'lim, sport va sog'liqni bitta tizim sifatida quradi."
+    },
+    "parts": [
+      {
+        "title": {
+          "en": "Small gear — action",
+          "uz": "Kichik g'ildirak — harakat"
+        },
+        "text": {
+          "en": "Daily progress: one lesson, one training session, one exercise.",
+          "uz": "Har kungi qadamlar: dars, mashg'ulot, bitta mashq."
+        }
+      },
+      {
+        "title": {
+          "en": "Main gear — impact",
+          "uz": "Asosiy g'ildirak — natija"
+        },
+        "text": {
+          "en": "Real results: a certificate, a new skill, a recovered knee.",
+          "uz": "Haqiqiy natija: sertifikat, yangi ko'nikma, tiklangan sog'liq."
+        }
+      },
+      {
+        "title": {
+          "en": "Medium gear — strategy",
+          "uz": "O'rta g'ildirak — strategiya"
+        },
+        "text": {
+          "en": "Balance and planning: the right programme and the right tool at the right time.",
+          "uz": "Muvozanat va reja: to'g'ri dastur, to'g'ri vosita, to'g'ri vaqtda."
+        }
+      },
+      {
+        "title": {
+          "en": "Growth arrow — progress",
+          "uz": "O'sish strelkasi — rivojlanish"
+        },
+        "text": {
+          "en": "Never a straight line, but always upward, for our people and for the brand.",
+          "uz": "Tekis chiziq emas, lekin doim yuqoriga: odamlar uchun ham, brend uchun ham."
+        }
+      }
+    ]
+  },
+  "apps_intro": {
+    "label": {
+      "en": "Apps",
+      "uz": "Ilovalar"
+    },
+    "title": {
+      "en": "Free apps that work anywhere",
+      "uz": "Hamma joyda ishlaydigan bepul ilovalar"
+    },
+    "text": {
+      "en": "Our apps open in any phone or computer browser, install like a normal app and keep working offline.",
+      "uz": "Ilovalarimiz telefon yoki kompyuter brauzerida ochiladi, o'rnatiladi va internetsiz ham ishlaydi."
+    }
+  },
+  "featured_app": {
+    "label": {
+      "en": "Available now",
+      "uz": "Hozir mavjud"
+    },
+    "name": "IKJON Joint Rehab",
+    "text": {
+      "en": "Day-by-day plans to recover from sports injuries and keep every joint healthy.",
+      "uz": "Sport jarohatlaridan tiklanish va bo'g'imlar salomatligi uchun kunma-kun rejalar."
+    },
+    "points": [
+      {
+        "en": "24 injuries, 30 to 270-day plans by severity",
+        "uz": "24 ta jarohat uchun 30–270 kunlik rejalar"
+      },
+      {
+        "en": "113 exercises with photo and animated demos",
+        "uz": "113 ta mashq, foto va animatsiya bilan"
+      },
+      {
+        "en": "No account, no ads, no tracking",
+        "uz": "Hisob yo'q, reklama yo'q, kuzatuv yo'q"
+      }
+    ],
+    "button": {
+      "en": "Open the app",
+      "uz": "Ilovani ochish",
+      "link": "rehab/"
+    },
+    "image": "brand/rehab-screen.png"
+  },
+  "coming_label": {
+    "en": "Coming next",
+    "uz": "Keyingi bosqichlar"
+  },
+  "coming": [
+    {
+      "name": {
+        "en": "IKJON learning app",
+        "uz": "IKJON o'quv ilovasi"
+      },
+      "text": {
+        "en": "Grammar, IELTS preparation, vocabulary and Kids English",
+        "uz": "Grammatika, IELTS tayyorlov, lug'at va bolalar ingliz tili"
+      },
+      "status": "soon",
+      "link": ""
+    },
+    {
+      "name": {
+        "en": "IKJON Football Training",
+        "uz": "IKJON Football Training"
+      },
+      "text": {
+        "en": "Daily skill sessions and a 30-day plan",
+        "uz": "Kunlik mashg'ulotlar va 30 kunlik reja"
+      },
+      "status": "soon",
+      "link": ""
+    },
+    {
+      "name": {
+        "en": "IKJON Fitness",
+        "uz": "IKJON Fitness"
+      },
+      "text": {
+        "en": "Exercise library by body part",
+        "uz": "Tana qismlari bo'yicha mashqlar kutubxonasi"
+      },
+      "status": "soon",
+      "link": ""
+    },
+    {
+      "name": {
+        "en": "IKJON CRM",
+        "uz": "IKJON CRM"
+      },
+      "text": {
+        "en": "Students, payments and attendance for learning centres",
+        "uz": "O'quv markazlari uchun talabalar, to'lovlar va davomat"
+      },
+      "status": "dev",
+      "link": ""
+    }
+  ],
+  "principles_intro": {
+    "label": {
+      "en": "How we work",
+      "uz": "Qanday ishlaymiz"
+    },
+    "title": {
+      "en": "Trust is built step by step",
+      "uz": "Ishonch bosqichma-bosqich quriladi"
+    },
+    "text": {
+      "en": "Four rules we follow in everything we make.",
+      "uz": "Har bir loyihamizda to'rtta qoidaga amal qilamiz."
+    }
+  },
+  "principles": [
+    {
+      "title": {
+        "en": "Evidence first",
+        "uz": "Avval dalil"
+      },
+      "text": {
+        "en": "Our health plans follow published research and show the studies behind them.",
+        "uz": "Sog'liq ilovalarimiz e'lon qilingan tadqiqotlarga asoslanadi va har bir reja manbasini ko'rsatadi."
+      }
+    },
+    {
+      "title": {
+        "en": "Privacy by design",
+        "uz": "Maxfiylik"
+      },
+      "text": {
+        "en": "No account needed and no tracking. Your data stays on your own device.",
+        "uz": "Hisob shart emas, kuzatuv yo'q. Ma'lumotlaringiz o'z qurilmangizda qoladi."
+      }
+    },
+    {
+      "title": {
+        "en": "Honest about limits",
+        "uz": "Halollik"
+      },
+      "text": {
+        "en": "Our apps never replace a doctor or a teacher, and they say so clearly.",
+        "uz": "Ilovalarimiz shifokor o'rnini bosmaydi va buni ochiq aytadi."
+      }
+    },
+    {
+      "title": {
+        "en": "Always improving",
+        "uz": "Doimiy rivojlanish"
+      },
+      "text": {
+        "en": "Every service is tested in our own centre first, then opened to everyone.",
+        "uz": "Har bir xizmat avval o'zimizda sinovdan o'tadi, so'ng hammaga ochiladi."
+      }
+    }
+  ],
+  "contact": {
+    "label": {
+      "en": "Contact",
+      "uz": "Aloqa"
+    },
+    "title": {
+      "en": "Talk to IKJON",
+      "uz": "Biz bilan bog'laning"
+    },
+    "text": {
+      "en": "For courses, events, partnerships or questions about our apps, message us on Telegram or Instagram.",
+      "uz": "Kurslar, tadbirlar, hamkorlik yoki ilovalar bo'yicha savollar uchun bizga Telegram yoki Instagram orqali yozing."
+    },
+    "links": [
+      {
+        "name": "Telegram",
+        "handle": "@ikjon_education",
+        "url": "https://t.me/ikjon_education"
+      },
+      {
+        "name": "Instagram",
+        "handle": "@ikjon_education",
+        "url": "https://www.instagram.com/ikjon_education"
+      },
+      {
+        "name": "YouTube",
+        "handle": "GearBox_23 · @ikjon",
+        "url": "https://www.youtube.com/@ikjon"
+      },
+      {
+        "name": "TikTok",
+        "handle": "@ikjon__",
+        "url": "https://www.tiktok.com/@ikjon__"
+      }
+    ]
+  },
+  "footer": {
+    "links": [],
+    "fine": {
+      "en": "© 2026 IKJON Consulting & Education Centre, Uzbekistan. This website uses no cookies and no tracking.",
+      "uz": "© 2026 IKJON Consulting & Education Centre, O'zbekiston. Bu sayt cookie yoki kuzatuv vositalaridan foydalanmaydi."
+    }
+  }
+}
