@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>IKJON Joint Rehab — Sports Injury Recovery &amp; Joint Health</title>
 <meta name="description" content="Free, research-based recovery plans for 24 common sports injuries — knee, ankle, back, shoulder and more — with a plan finder, daily joint-health programmes and 113 guided exercises. Private: no account, no tracking.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://api.lemonsqueezy.com; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#1A4264">
 <meta name="color-scheme" content="light dark">
@@ -1424,6 +1424,39 @@ const PREMIUM_LIVE=false,FREE_DAYS=7;
 try{const m=new URLSearchParams(location.search).get("premium");if(m==="preview")localStorage.setItem("ikjon-premium-preview","1");if(m==="off")localStorage.removeItem("ikjon-premium-preview")}catch(e){}
 const premiumOn=()=>{if(PREMIUM_LIVE)return true;try{return localStorage.getItem("ikjon-premium-preview")==="1"}catch(e){return false}};
 const isPro=()=>!!(S.pro&&S.pro.key);
+/* Licence keys (Lemon Squeezy License API). Fill in after the store is set up; until then only the
+   preview test key works, and only in preview mode. We store just the key, its device-instance id
+   and status — never the buyer's name or email that the API also returns. */
+const LICCFG={api:"https://api.lemonsqueezy.com/v1/licenses/",storeId:null,productIds:[]};
+const TEST_KEY="IKJON-TEST-0000-PREVIEW",RECHECK_DAYS=3;
+let lic={busy:false,msg:"",bad:false,confirmOff:false};
+function lsPost(action,params){const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),15000);
+ return fetch(LICCFG.api+action,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams(params).toString(),signal:ctl.signal,credentials:"omit",referrerPolicy:"no-referrer"})
+  .then(r=>r.json().catch(()=>({error:"Unexpected reply ("+r.status+")"}))).finally(()=>clearTimeout(tm))}
+const ourProduct=m=>!!m&&LICCFG.storeId!=null&&String(m.store_id)===String(LICCFG.storeId)&&(!LICCFG.productIds.length||LICCFG.productIds.map(String).includes(String(m.product_id)));
+const keyShape=k=>/^[A-Za-z0-9-]{8,64}$/.test(k);
+function activateKey(raw){const key=String(raw||"").trim();
+ if(!keyShape(key)){lic={busy:false,bad:true,msg:"That doesn't look like a licence key. Copy it exactly from your receipt email."};render();return}
+ if(key===TEST_KEY){if(PREMIUM_LIVE||!premiumOn()){lic={busy:false,bad:true,msg:"This key is not valid."};render();return}
+  S.pro={key,inst:"test",status:"active",exp:null,at:dayKey(new Date()),chk:Date.now(),test:true};save();lic={busy:false,bad:false,msg:"Test key accepted — Premium unlocked (preview only)."};render();return}
+ if(LICCFG.storeId==null){lic={busy:false,bad:true,msg:"Premium isn't open yet. Please try again soon."};render();return}
+ if(!navigator.onLine){lic={busy:false,bad:true,msg:"You're offline. Connect to the internet to activate your key."};render();return}
+ lic={busy:true,bad:false,msg:"Checking your key…"};render();
+ lsPost("activate",{license_key:key,instance_name:"IKJON Joint Rehab · "+(navigator.userAgentData&&navigator.userAgentData.mobile?"phone":"device")+" · "+Math.random().toString(36).slice(2,8)})
+ .then(j=>{if(j&&j.activated&&ourProduct(j.meta)){S.pro={key,inst:j.instance&&j.instance.id,status:j.license_key&&j.license_key.status||"active",exp:j.license_key&&j.license_key.expires_at||null,at:dayKey(new Date()),chk:Date.now(),plan:j.meta.variant_name||""};save();lic={busy:false,bad:false,msg:"Premium unlocked. Thank you for supporting IKJON!"}}
+   else if(j&&j.activated){lsPost("deactivate",{license_key:key,instance_id:j.instance&&j.instance.id}).catch(()=>{});lic={busy:false,bad:true,msg:"This key is for a different product."}}
+   else lic={busy:false,bad:true,msg:/limit/i.test(j&&j.error||"")?"This key is already used on the maximum number of devices. Remove it from an old device first, or contact us.":"This key is not valid"+(j&&j.error?" ("+j.error+")":"")+". Check it against your receipt email."};render()})
+ .catch(()=>{lic={busy:false,bad:true,msg:"Couldn't reach the licence server. Check your connection and try again."};render()})}
+function removeKey(){const k=S.pro;if(!k)return;const done=()=>{delete S.pro;save();lic={busy:false,bad:false,msg:"Premium removed from this device. You can use your key on another device.",confirmOff:false};render()};
+ if(k.test||!k.inst){done();return}
+ lic={busy:true,bad:false,msg:"Removing…"};render();lsPost("deactivate",{license_key:k.key,instance_id:k.inst}).then(done,done)}
+function recheckKey(force){const k=S.pro;if(!k||k.test||!k.inst||LICCFG.storeId==null||!navigator.onLine)return;
+ if(!force&&Date.now()-(k.chk||0)<RECHECK_DAYS*864e5)return;
+ lsPost("validate",{license_key:k.key,instance_id:k.inst}).then(j=>{if(!S.pro)return;
+  if(j&&j.valid&&ourProduct(j.meta)){S.pro.status=j.license_key&&j.license_key.status||"active";S.pro.exp=j.license_key&&j.license_key.expires_at||null;S.pro.chk=Date.now();save();return}
+  const st=j&&j.license_key&&j.license_key.status;
+  if((j&&j.valid===false&&(st==="expired"||st==="disabled"||/not found|invalid/i.test(j.error||"")))){delete S.pro;save();lic={busy:false,bad:true,msg:st==="expired"?"Your Premium subscription has ended. Renew to unlock again.":"Your licence key is no longer valid."};render()}
+ }).catch(()=>{})}
 const freePlan=p=>p.kind==="prog"&&p.id==="fullbody";
 const dayLocked=(p,day)=>premiumOn()&&!isPro()&&!!p&&!freePlan(p)&&day>FREE_DAYS;
 const phaseLocked=k=>premiumOn()&&!isPro()&&k>0;
@@ -1431,13 +1464,24 @@ function premCard(why){return `<div class="prem"><span class="chip">Premium</spa
  <p style="margin:0">Your first ${FREE_DAYS} days are free. Premium unlocks the rest:</p>
  <ul><li>Every injury plan at full length — 30, 60, 90 days and more</li><li>All recovery phases as guided sessions</li><li>The knee &amp; ankle joint-care programme</li></ul>
  <div class="row"><button class="btn warm" data-go="premium">See Premium</button></div></div>`}
+function licBox(){const m=lic.msg?`<p role="status" style="margin:8px 0 0;font-weight:700;color:${lic.bad?"var(--bad)":"var(--good)"}">${esc(lic.msg)}</p>`:"";
+ if(isPro()){const k=S.pro;return `<h3>Premium is active on this device</h3><p class="muted">Key ending ${esc(k.key.slice(-4))}${k.plan?" · "+esc(k.plan):""}${k.exp?" · renews or ends "+esc(new Date(k.exp).toLocaleDateString()):""}${k.test?" · test key":""}</p>${m}
+  <div class="row" style="margin-top:12px">${lic.confirmOff?`<span>Remove Premium from this device?</span><button class="btn sm" style="background:var(--bad)" id="licOffYes" ${lic.busy?"disabled":""}>Yes, remove</button><button class="btn alt sm" id="licOffNo">Keep it</button>`:`<button class="btn alt sm" id="licOffAsk">Remove from this device</button>`}</div>
+  <p class="muted" style="font-size:.85rem;margin-top:8px">Moving to a new phone? Remove it here first, then enter the same key on the new phone.</p>`}
+ return `<h3>${LICCFG.storeId==null?"Have a licence key?":"Unlock Premium"}</h3>
+  <p class="muted">${LICCFG.storeId==null?"Premium is opening shortly. Your progress is saved on this device and will carry over.":"After you buy Premium, your licence key arrives by email. Paste it here."}</p>
+  <form id="licForm" class="row" style="margin-top:10px;gap:8px" autocomplete="off" onsubmit="return false">
+   <label for="licKey" class="sr" style="position:absolute;left:-9999px">Licence key</label>
+   <input id="licKey" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" maxlength="64" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" style="flex:1 1 220px;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)">
+   <button class="btn warm" id="licGo" ${lic.busy?"disabled":""}>${lic.busy?"Checking…":"Activate"}</button></form>${m}
+  <p class="muted" style="font-size:.85rem;margin-top:8px">Your key is checked with our payment provider, Lemon Squeezy. We save only the key on this device — no name, email or account.</p>`}
 function premiumView(){return `<button class="back" data-go="home">← Home</button><div><span class="chip" style="color:var(--orange);background:rgba(217,113,31,.12)">Premium</span></div><h1 style="margin-top:6px">IKJON Joint Rehab Premium</h1>
  <p class="muted" style="margin-top:6px;max-width:62ch">Keep everything free that keeps you safe and healthy, and unlock full recovery plans when you need them.</p>
  <div class="cols" style="margin-top:16px">
   <div class="box"><h3>Always free</h3><ul><li>Everyday full-body health plan (30/60/90 days)</li><li>Find your plan</li><li>The first ${FREE_DAYS} days of every plan</li><li>Exercise library with demos</li><li>Pain diary, export and delete</li></ul></div>
   <div class="prem"><span class="chip">Premium</span><ul><li>All ${INJ.length} injury plans at full length</li><li>All recovery phases as guided sessions</li><li>Knee &amp; ankle joint-care programme</li><li>Every new plan we add</li></ul></div>
  </div>
- <div class="box" style="margin-top:16px">${isPro()?`<h3>Premium is active on this device</h3><p class="muted">Thank you for supporting IKJON.</p>`:`<h3>Coming soon</h3><p class="muted">Premium is opening shortly. Your progress is saved on this device and will carry over.</p>`}</div>
+ <div class="box" style="margin-top:16px">${licBox()}</div>
  <p class="muted" style="font-size:.85rem;margin-top:12px">No account needed. Your plan and pain diary stay on your device.</p>`}
 function startPlan(o){S.plan=Object.assign({start:dayKey(new Date()),done:{}},o);save();selDay=null;calPage=null;go("plan")}
 
@@ -1724,6 +1768,10 @@ app.addEventListener("click",ev=>{
   case "saveLog":S.logs.push({date:new Date().toISOString(),title:ses.title,pain:ses.pain,note:document.getElementById("pnote").value.trim()});if(ses.meta.day&&S.plan)S.plan.done[ses.meta.day]=true;save();go(ses.meta.day?"plan":"progress");break;
   case "skipLog":if(ses.meta.day&&S.plan){S.plan.done[ses.meta.day]=true;save()}go(ses.meta.day?"plan":"home");break;
   case "ckReset":ck={area:null,onset:null,age:null,sym:new Set(),red:new Set()};render();window.scrollTo(0,0);break;
+  case "licGo":activateKey(document.getElementById("licKey").value);break;
+  case "licOffAsk":lic.confirmOff=true;lic.msg="";render();break;
+  case "licOffNo":lic.confirmOff=false;render();break;
+  case "licOffYes":removeKey();break;
   case "stopAsk":confirmStop=true;render();break;
   case "stopNo":confirmStop=false;render();break;
   case "stopYes":S.plan=null;selDay=null;save();confirmStop=false;go("home");break;
@@ -1770,6 +1818,7 @@ dlg.addEventListener("close",()=>{document.getElementById("exDlgBody").innerHTML
 try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{})}catch(e){}
 render();
 showGate();
+recheckKey();addEventListener("online",()=>recheckKey());
 </script>
 <script>if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
 </body>
