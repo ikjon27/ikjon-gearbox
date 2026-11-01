@@ -188,6 +188,14 @@ dialog::backdrop{background:rgba(10,25,40,.55)}
 .dc.today{box-shadow:0 0 0 3px var(--orange) inset}
 .dc.sel{outline:2px solid var(--ink);outline-offset:1px}
 .dc.future{opacity:.75}
+.dc.lock{opacity:.5}
+.dc.lock::before{content:"";position:absolute;left:4px;top:4px;width:7px;height:5px;border:1.5px solid currentColor;border-bottom:0;border-radius:4px 4px 0 0}
+.dc.lock::after{content:"";position:absolute;left:3px;top:8px;width:9px;height:6px;background:currentColor;border-radius:1px}
+.prem{border:2px solid var(--orange);background:var(--surface);border-radius:16px;padding:18px;display:grid;gap:10px}
+.prem .chip{color:var(--orange);background:rgba(217,113,31,.12)}
+.prem ul{margin:0;padding-left:20px}
+.today .prem{color:var(--ink)}
+.lockrow{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:var(--orange)}
 .dayhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
 .kind{font-weight:700;color:var(--orange)}
 .tasks{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px}
@@ -1408,6 +1416,29 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const injById=id=>INJ.find(i=>i.id===id);
 const painColor=p=>p<=2?"var(--good)":p<=5?"var(--warn)":"var(--bad)";
 const PHC=["var(--p0)","var(--p1)","var(--p2)","var(--p3)","var(--p4)"];
+/* ===== Premium =====
+   Free forever: Everyday full-body plan, Find your plan, exercise library, pain diary, export.
+   Premium: injury plans and the knee & ankle programme after the first 7 days, and phases 2+ as guided sessions.
+   PREMIUM_LIVE stays false until payments open; preview with ?premium=preview (turn off with ?premium=off). */
+const PREMIUM_LIVE=false,FREE_DAYS=7;
+try{const m=new URLSearchParams(location.search).get("premium");if(m==="preview")localStorage.setItem("ikjon-premium-preview","1");if(m==="off")localStorage.removeItem("ikjon-premium-preview")}catch(e){}
+const premiumOn=()=>{if(PREMIUM_LIVE)return true;try{return localStorage.getItem("ikjon-premium-preview")==="1"}catch(e){return false}};
+const isPro=()=>!!(S.pro&&S.pro.key);
+const freePlan=p=>p.kind==="prog"&&p.id==="fullbody";
+const dayLocked=(p,day)=>premiumOn()&&!isPro()&&!!p&&!freePlan(p)&&day>FREE_DAYS;
+const phaseLocked=k=>premiumOn()&&!isPro()&&k>0;
+function premCard(why){return `<div class="prem"><span class="chip">Premium</span><h3 style="margin:0">${esc(why)}</h3>
+ <p style="margin:0">Your first ${FREE_DAYS} days are free. Premium unlocks the rest:</p>
+ <ul><li>Every injury plan at full length — 30, 60, 90 days and more</li><li>All recovery phases as guided sessions</li><li>The knee &amp; ankle joint-care programme</li></ul>
+ <div class="row"><button class="btn warm" data-go="premium">See Premium</button></div></div>`}
+function premiumView(){return `<button class="back" data-go="home">← Home</button><div><span class="chip" style="color:var(--orange);background:rgba(217,113,31,.12)">Premium</span></div><h1 style="margin-top:6px">IKJON Joint Rehab Premium</h1>
+ <p class="muted" style="margin-top:6px;max-width:62ch">Keep everything free that keeps you safe and healthy, and unlock full recovery plans when you need them.</p>
+ <div class="cols" style="margin-top:16px">
+  <div class="box"><h3>Always free</h3><ul><li>Everyday full-body health plan (30/60/90 days)</li><li>Find your plan</li><li>The first ${FREE_DAYS} days of every plan</li><li>Exercise library with demos</li><li>Pain diary, export and delete</li></ul></div>
+  <div class="prem"><span class="chip">Premium</span><ul><li>All ${INJ.length} injury plans at full length</li><li>All recovery phases as guided sessions</li><li>Knee &amp; ankle joint-care programme</li><li>Every new plan we add</li></ul></div>
+ </div>
+ <div class="box" style="margin-top:16px">${isPro()?`<h3>Premium is active on this device</h3><p class="muted">Thank you for supporting IKJON.</p>`:`<h3>Coming soon</h3><p class="muted">Premium is opening shortly. Your progress is saved on this device and will carry over.</p>`}</div>
+ <p class="muted" style="font-size:.85rem;margin-top:12px">No account needed. Your plan and pain diary stay on your device.</p>`}
 function startPlan(o){S.plan=Object.assign({start:dayKey(new Date()),done:{}},o);save();selDay=null;calPage=null;go("plan")}
 
 function go(v,arg,ph){view=v;cur=arg??null;if(ph!=null)phaseIdx=ph;stopTimers();confirmStop=false;confirmWipe=false;render();window.scrollTo(0,0)}
@@ -1428,6 +1459,7 @@ function bodyMap(){
 function todayCard(){const p=S.plan;if(!p)return "";const n=dayNum(p);
  if(n>p.days)return `<div class="today"><div class="eyebrow">My plan</div><h2>${esc(planName(p))} — finished!</h2><p>Great work. Start a maintenance plan to keep your joints strong.</p><div class="row"><button class="btn" data-go="plan">See summary</button></div></div>`;
  const dd=planDay(Math.max(1,n)),done=Object.keys(p.done).length;
+ if(dayLocked(p,n))return `<div class="today"><div class="eyebrow">Today · Day ${n} of ${p.days}</div><h2>${esc(planName(p))}</h2>${premCard("Day "+n+" is part of Premium")}</div>`;
  return `<div class="today"><div class="top2"><div><div class="eyebrow">Today · Day ${n} of ${p.days}</div><h2>${esc(dd.title)}</h2><p>${esc(planName(p))} · ${esc(dd.phName)}</p></div>
   <div class="row"><button class="btn" data-day="${n}" data-run="1">${p.done[n]?"Do again":"Start session"}</button><button class="btn alt sm" data-go="plan">Open plan</button></div></div>
   <div class="minilist">${dd.items.map(x=>`<span>${esc(EX[x.e][0])}</span>`).join("")}</div>
@@ -1483,8 +1515,8 @@ function injView(){
  <div class="phases" role="tablist" aria-label="Recovery phases">${i.phases.map((p,k)=>`<button class="ph" role="tab" aria-selected="${k===phaseIdx}" data-ph="${k}"><small>Phase ${k+1} · ${esc(p.w)}</small><b>${esc(p.t)}</b></button>`).join("")}</div>
  <div class="phasebody" role="tabpanel">
   <div class="row" style="justify-content:space-between"><div><h2>Phase ${phaseIdx+1}: ${esc(ph.t)}</h2><p class="muted">${esc(ph.goal)}</p></div>
-  <button class="btn warm" data-startph="${i.id}" data-ph2="${phaseIdx}">Try this phase now</button></div>
-  <ul class="exlist">${ph.x.map(exRow).join("")}</ul>
+  ${phaseLocked(phaseIdx)?`<span class="lockrow">Premium</span>`:`<button class="btn warm" data-startph="${i.id}" data-ph2="${phaseIdx}">Try this phase now</button>`}</div>
+  ${phaseLocked(phaseIdx)?premCard("Phase "+(phaseIdx+1)+" is part of Premium"):`<ul class="exlist">${ph.x.map(exRow).join("")}</ul>`}
   <div class="crit"><b>Move to the next phase when:</b><ul style="margin:0;padding-left:18px">${ph.exit.map(s=>`<li>${esc(s)}</li>`).join("")}</ul></div>
  </div></section>`}
 function progView(){
@@ -1507,18 +1539,19 @@ function planView(){
  const pages=Math.ceil(p.days/28);if(calPage==null)calPage=Math.floor((selDay-1)/28);calPage=Math.min(Math.max(calPage,0),pages-1);
  let cells="";const c0=calPage*28+1,c1=Math.min(p.days,c0+27);
  for(let w=c0;w<=c1;w+=7){cells+=`<span class="wk wkn">Wk ${Math.ceil(w/7)}</span>`;for(let k=w;k<w+7;k++){if(k>p.days){cells+="<span></span>";continue}const pk=phs.findIndex(x=>k>=x.r[0]&&k<=x.r[1]);const rest=(k-1)%7===6;
-  cells+=`<button class="dc${rest?" rest":""}${p.done[k]?" done":""}${k===n?" today":""}${k===selDay?" sel":""}${k>n?" future":""}" style="background-color:${PHC[pk%5]}" data-sel="${k}" aria-label="Day ${k}${p.done[k]?", done":""}">${k}</button>`}}
+  cells+=`<button class="dc${rest?" rest":""}${p.done[k]?" done":""}${k===n?" today":""}${k===selDay?" sel":""}${k>n?" future":""}${dayLocked(p,k)?" lock":""}" style="background-color:${PHC[pk%5]}" data-sel="${k}" aria-label="Day ${k}${p.done[k]?", done":""}${dayLocked(p,k)?", Premium":""}">${k}</button>`}}
  const dt=dateOf(p,selDay);
  return `<div class="row" style="justify-content:space-between"><div><div class="eyebrow">My plan</div><h1>${esc(planName(p))}</h1></div></div>
  <p class="muted" style="margin-top:4px">Started ${dateOf(p,1).toLocaleDateString()} · ${n>p.days?"Finished":`Day ${Math.max(n,1)} of ${p.days}`} · ${done} days completed</p>
  <div class="strip" aria-hidden="true">${phs.map((x,k)=>`<i style="width:${(x.r[1]-x.r[0]+1)/p.days*100}%;background:${PHC[k%5]}"></i>`).join("")}</div>
  <div class="legend2">${phs.map((x,k)=>`<span><i style="background:${PHC[k%5]}"></i>${esc(x.name)} (days ${x.r[0]}–${x.r[1]})</span>`).join("")}<span><i class="dc rest" style="width:12px;height:12px;min-height:0;background-color:var(--surface)"></i>Recovery day</span></div>
  <div class="plancols">
-  <div class="box calbox"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Calendar</h3><div class="row" style="gap:6px"><button class="btn alt sm" data-cal="-1" ${calPage<=0?"disabled":""} aria-label="Previous 4 weeks">‹</button><span class="muted" style="font-size:.85rem;font-variant-numeric:tabular-nums">Days ${c0}–${c1}</span><button class="btn alt sm" data-cal="1" ${calPage>=pages-1?"disabled":""} aria-label="Next 4 weeks">›</button></div></div><div class="cal">${cells}</div><p class="muted" style="font-size:.8rem;margin-top:8px">Tap a day to see its workout. Orange ring = today, ✓ = done, stripes = recovery day.</p></div>
+  <div class="box calbox"><div class="row" style="justify-content:space-between"><h3 style="margin:0">Calendar</h3><div class="row" style="gap:6px"><button class="btn alt sm" data-cal="-1" ${calPage<=0?"disabled":""} aria-label="Previous 4 weeks">‹</button><span class="muted" style="font-size:.85rem;font-variant-numeric:tabular-nums">Days ${c0}–${c1}</span><button class="btn alt sm" data-cal="1" ${calPage>=pages-1?"disabled":""} aria-label="Next 4 weeks">›</button></div></div><div class="cal">${cells}</div><p class="muted" style="font-size:.8rem;margin-top:8px">Tap a day to see its workout. Orange ring = today, ✓ = done, stripes = recovery day.${premiumOn()&&!isPro()&&!freePlan(p)?" Lock = Premium.":""}</p></div>
   <div class="box daybox"><div class="dayhead"><div><div class="eyebrow">Day ${selDay} · ${dt.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"short"})}</div><h2>${esc(dd.title)}</h2><p class="muted">${esc(dd.phName)} · <span class="kind">${esc(dd.kind)}</span> · ~${estMin(dd.items)} min${dd.early?" · easier first weeks of phase":""}</p></div></div>
-   <ul class="exlist">${dd.items.map(exRow).join("")}</ul>
+   ${dayLocked(p,selDay)?premCard("Day "+selDay+" is part of Premium"):`   <ul class="exlist">${dd.items.map(exRow).join("")}</ul>
    <ul class="tasks">${dd.tasks.map((t,k)=>`<li><input type="checkbox" id="tk${selDay}-${k}" data-task="${selDay}-${k}" ${p.tasks&&p.tasks[selDay+"-"+k]?"checked":""}><label for="tk${selDay}-${k}">${esc(t)}</label></li>`).join("")}</ul>
    <div class="row" style="margin-top:14px"><button class="btn warm" data-day="${selDay}" data-run="1">${p.done[selDay]?"Do again":"Start session"}</button><button class="btn alt sm" data-toggle="${selDay}">${p.done[selDay]?"Mark not done":"Mark day done"}</button></div>
+`}
    ${p.kind==="injury"?`<p class="cue"><b>Progress rule:</b> move on to the next phase only when its goals are met and pain stays green or amber. If pain is red, repeat the last week.</p>`:""}
   </div></div>
  <div class="row" style="margin-top:20px">${confirmStop?`<span>Stop this plan? Your progress log is kept.</span><button class="btn sm" style="background:var(--bad)" id="stopYes">Yes, stop plan</button><button class="btn alt sm" id="stopNo">Keep it</button>`:`<button class="btn alt sm" id="stopAsk">Stop or change plan</button>`}</div>`}
@@ -1595,7 +1628,7 @@ function finishView(){
 
 
 /* ===== legal, privacy & settings ===== */
-const APPVER="1.0";
+const APPVER="1.1";
 const LEGAL={"updated": "30 October 2026", "privacy": "<h1>Privacy Policy</h1>\n<p class=\"lmeta\">IKJON Joint Rehab · Effective 30 October 2026</p>\n<div class=\"lsum\"><b>In short:</b> IKJON Joint Rehab does not collect, store or share your personal data. There is no account, no advertising, no analytics and no tracking. Everything you enter stays on your own device.</div>\n<h2>1. Who we are</h2>\n<p>IKJON Joint Rehab (\"the app\") is provided by IKJON Consulting &amp; Education Centre, Uzbekistan (\"IKJON\", \"we\", \"us\"). Contact: ikjonoec@gmail.com or Telegram / Instagram @ikjon_education.</p>\n<h2>2. Information we collect</h2>\n<p>We do not collect any personal information. We do not ask for your name, email, phone number, location, photos or contacts, and the app does not use cookies, advertising IDs, analytics or tracking tools.</p>\n<h2>3. Information stored on your device</h2>\n<p>To make the app work, it saves the following in your browser's local storage on your own device only:</p>\n<ul><li>the plan you choose (injury or programme, start date, plan length, days completed and ticked tasks);</li><li>your session log (date, pain score from 0–10 and any notes you type);</li><li>that you accepted the Terms of Use, and the date.</li></ul>\n<p>This information is never sent to us or to anyone else. We cannot see it, and we cannot recover it for you. Pain scores and notes are health-related, so we recommend protecting your device with a screen lock.</p>\n<h2>4. Technical data when the app loads</h2>\n<p>When you open or update the app, your device downloads the app's files from our web host. Like any website, the hosting provider may automatically process basic technical data (such as your IP address and browser type) in its server logs so it can deliver the files securely. We do not use this data to identify you, and we do not combine it with anything else. All exercise photos, the logo and fonts are packaged with the app, so the app does not contact other websites.</p>\n<h2>5. Google Play</h2>\n<p>If you install the app from Google Play, Google processes information about your download under the Google Privacy Policy. We only receive anonymous, aggregated statistics from Google (for example, the number of installs). We receive no personal information from Google.</p>\n<h2>6. Permissions</h2>\n<p>The app does not request access to your camera, microphone, location, contacts, photos or files.</p>\n<h2>7. Sharing</h2>\n<p>We do not sell, rent or share personal data, because we do not have any.</p>\n<h2>8. Children</h2>\n<p>The app is intended for people aged 16 and over. Young people under 16 should use it together with a parent or guardian. We do not knowingly collect any data from anyone, including children.</p>\n<h2>9. Your choices and control</h2>\n<ul><li><b>Export:</b> In Privacy &amp; settings you can save a copy of your plan and log.</li><li><b>Delete:</b> In Privacy &amp; settings you can delete all app data on this device at any time.</li><li>Uninstalling the app, or clearing your browser's site data, also deletes everything.</li></ul>\n<h2>10. Security</h2>\n<p>Because your information never leaves your device, it cannot be exposed by a breach of our systems. The app is served over a secure, encrypted connection (HTTPS).</p>\n<h2>11. Your rights</h2>\n<p>Under the Law of the Republic of Uzbekistan \"On Personal Data\" and similar laws elsewhere, you have rights to know what personal data is processed about you, and to access, correct or delete it. As we hold no personal data about you, there is nothing for us to provide or delete, but you can contact us with any question.</p>\n<h2>12. Future changes</h2>\n<p>If we ever add features that need personal data (for example accounts or payments), we will update this policy before the feature launches, explain exactly what is collected and why, and ask for your permission where the law requires it. The date at the top shows when this policy last changed.</p>\n<h2>13. Contact</h2>\n<p>IKJON Consulting &amp; Education Centre, Uzbekistan · ikjonoec@gmail.com · Telegram / Instagram @ikjon_education</p>", "terms": "<h1>Terms of Use</h1>\n<p class=\"lmeta\">IKJON Joint Rehab · Effective 30 October 2026</p>\n<div class=\"lsum\"><b>In short:</b> IKJON Joint Rehab gives general exercise education. It is not medical advice and not a medical device. Listen to your body, stop if something feels wrong, and see a doctor or physiotherapist when in doubt.</div>\n<h2>1. Agreement</h2>\n<p>By using IKJON Joint Rehab (\"the app\"), provided by IKJON Consulting &amp; Education Centre (\"IKJON\", \"we\"), you agree to these Terms of Use and to our Privacy Policy. If you do not agree, please do not use the app.</p>\n<h2>2. What the app is</h2>\n<p>The app offers general education about common sports injuries and joint health, exercise plans, demonstrations and a pain diary. It is based on published research, but it is general information that is not tailored to your personal medical situation.</p>\n<h2>3. Not medical advice, not a medical device</h2>\n<p>The app is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. The plan finder suggests exercise plans based on what you tick; it does not identify or diagnose any injury. Always consult a qualified healthcare professional about an injury or health condition, and never ignore or delay professional advice because of something in the app.</p>\n<h2>4. Your safety</h2>\n<ul><li>See a doctor before starting if you have a recent injury, recent surgery, a heart or lung condition, high blood pressure, are pregnant, or are unsure whether exercise is safe for you.</li><li>Seek urgent medical help if you notice any warning sign listed in the app, such as being unable to bear weight, numbness, a deformed joint, fever with a hot swollen joint, or loss of bladder or bowel control.</li><li>Stop an exercise if pain is sharp or goes above 5/10, if you feel dizzy, short of breath or unwell, or if swelling increases afterwards.</li><li>After surgery, always follow your surgeon's and physiotherapist's instructions over the app.</li></ul>\n<h2>5. Who can use the app</h2>\n<p>The app is intended for people aged 16 and over. Anyone under 16 should use it with a parent or guardian, who accepts these terms on their behalf.</p>\n<h2>6. Using the app responsibly</h2>\n<p>You may use the app for your own personal, non-commercial purposes. You may not copy, resell, republish or redistribute the app or its content, or remove our name or logo, without our written permission. Coaches and teachers may show the app to the people they work with.</p>\n<h2>7. Our content and brand</h2>\n<p>The IKJON name, logo, text, plans and animated demonstrations belong to IKJON. Exercise photographs come from the Free Exercise DB project and are in the public domain.</p>\n<h2>8. Availability and changes</h2>\n<p>We work to keep the app accurate and available, and we update it as research changes. We may change, add or remove features or content at any time. We do not promise that the app will always be available or free of errors.</p>\n<h2>9. Responsibility</h2>\n<p>You use the exercises at your own risk and are responsible for choosing what is suitable for you. To the maximum extent permitted by law, IKJON is not liable for any injury, loss or damage arising from use of the app or reliance on its content. Nothing in these terms limits any rights you have that cannot be limited under applicable law.</p>\n<h2>10. Law</h2>\n<p>These terms are governed by the laws of the Republic of Uzbekistan.</p>\n<h2>11. Changes to these terms</h2>\n<p>We may update these terms. The date at the top shows the latest version. If a change is important, we will tell you in the app. Continuing to use the app after a change means you accept the updated terms.</p>\n<h2>12. Contact</h2>\n<p>IKJON Consulting &amp; Education Centre, Uzbekistan · ikjonoec@gmail.com · Telegram / Instagram @ikjon_education</p>", "disclaimer": "<h1>Medical disclaimer</h1>\n<p class=\"lmeta\">IKJON Joint Rehab</p>\n<div class=\"lsum\"><b>IKJON Joint Rehab is not a medical device and does not diagnose, treat, cure, or prevent any medical condition.</b></div>\n<p>The information, plans, exercises and plan finder in this app are for general education only. They are not a substitute for professional medical advice, diagnosis or treatment.</p>\n<ul><li>Always ask a doctor or physiotherapist about an injury, pain or health condition.</li><li>The plan finder only suggests plans to look at, based on what you tick. It does not identify your injury. Several problems can feel alike, and only a professional examination can confirm what is wrong and how serious it is.</li><li>If you notice a warning sign listed in the app, stop and get medical help before exercising.</li><li>Stop any exercise that causes sharp pain, pain above 5/10, dizziness, shortness of breath or increasing swelling.</li><li>After surgery, follow your surgeon's and physiotherapist's instructions over anything in this app.</li></ul>\n<p>In an emergency, call your local emergency number (103 for an ambulance in Uzbekistan).</p>"};
 const LTITLE={privacy:"Privacy Policy",terms:"Terms of Use",disclaimer:"Medical disclaimer"};
 function legalView(){return `<button class="back" data-go="about">← Privacy &amp; settings</button><article class="legal">${LEGAL[cur]}</article>`}
@@ -1605,7 +1638,7 @@ function aboutView(){
  <div class="lsum" style="max-width:70ch"><b>Private by design.</b> No account, no ads, no analytics, no tracking. Your plan and pain diary are saved only on this device — IKJON never receives them.</div>
  <div class="setgrid">
   <div class="box"><h3>What is saved on this device</h3>
-   <div class="datarow"><span>Current plan</span><b>${p?esc(planName(p)):"None"}</b></div>
+   <div class="datarow"><span>Current plan</span><b>${p?esc(planName(p)):"None"}</b></div>${premiumOn()?`<div class="datarow"><span>Premium</span><b>${isPro()?"Active":`<button class="btn alt sm" data-go="premium">See Premium</button>`}</b></div>`:""}
    <div class="datarow"><span>Days completed</span><b>${p?Object.keys(p.done).length:0}</b></div>
    <div class="datarow"><span>Sessions in pain diary</span><b>${n}</b></div>
    <div class="datarow"><span>Terms accepted</span><b>${S.consent?new Date(S.consent.date).toLocaleDateString():"—"}</b></div>
@@ -1653,9 +1686,9 @@ document.querySelector(".foot").addEventListener("click",ev=>{const b=ev.target.
    RENDER & EVENTS
    ========================================================= */
 function render(){
- const tabFor={injury:"injuries",prog:"home",session:"",about:"",legal:""}[view]??view;
+ const tabFor={injury:"injuries",prog:"home",session:"",about:"",legal:"",premium:""}[view]??view;
  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-current",b.dataset.v===tabFor?"page":"false"));
- app.innerHTML= view==="home"?homeView(): view==="injuries"?injuriesView(): view==="injury"?injView(): view==="prog"?progView(): view==="plan"?planView(): view==="check"?checkView(): view==="about"?aboutView(): view==="legal"?legalView(): view==="library"?libraryView(): view==="progress"?progressView(): sessionView();
+ app.innerHTML= view==="home"?homeView(): view==="injuries"?injuriesView(): view==="injury"?injView(): view==="prog"?progView(): view==="plan"?planView(): view==="check"?checkView(): view==="about"?aboutView(): view==="legal"?legalView(): view==="premium"?premiumView(): view==="library"?libraryView(): view==="progress"?progressView(): sessionView();
  mountAnims();
  if(view==="session"&&!ses.done&&ses.running&&ses.mode==="work")runClock(setDone);
  const qi=document.getElementById("q");if(qi){qi.oninput=()=>{q=qi.value;const p=qi.selectionStart;render();const n=document.getElementById("q");n.focus();n.setSelectionRange(p,p)}}
@@ -1673,11 +1706,11 @@ app.addEventListener("click",ev=>{
  if(D.ph!=null&&view==="injury"){phaseIdx=+D.ph;render();return}
  if(D.startinj){const i=injById(D.startinj),s=i.sev[+D.sev];startPlan({kind:"injury",id:i.id,days:s.days,sevLabel:s.l});return}
  if(D.startprog){const len=+document.getElementById("plen").value,lvl=document.getElementById("plvl").value;startPlan({kind:"prog",id:D.startprog,days:len,lvl});return}
- if(D.startph){const i=injById(D.startph),p=i.phases[+D.ph2];startSession(p.x,`${i.name} · Phase ${+D.ph2+1}`,{inj:i.id});return}
+ if(D.startph){if(phaseLocked(+D.ph2)){go("premium");return}const i=injById(D.startph),p=i.phases[+D.ph2];startSession(p.x,`${i.name} · Phase ${+D.ph2+1}`,{inj:i.id});return}
  if(D.sel){selDay=+D.sel;render();if(innerWidth<=900)document.querySelector(".daybox")?.scrollIntoView({behavior:"smooth"});return}
  if(D.cal){calPage+=+D.cal;render();return}
  if(D.toggle){const k=+D.toggle;if(S.plan.done[k])delete S.plan.done[k];else S.plan.done[k]=true;save();render();return}
- if(D.run){const k=+D.day,dd=planDay(k);startSession(dd.items,`Day ${k} · ${dd.title}`,{day:k});return}
+ if(D.run){const k=+D.day;if(dayLocked(S.plan,k)){go("premium");return}const dd=planDay(k);startSession(dd.items,`Day ${k} · ${dd.title}`,{day:k});return}
  if(D.legal){go("legal",D.legal);return}
  if(D.dm){demoMode=D.dm;render();return}
  if(D.ck){const g=D.ck,v=D.cv;if(g==="area"){if(ck.area!==v){ck={area:v,onset:ck.onset,age:ck.age,sym:new Set(),red:new Set()}}}else ck[g]=ck[g]===v?null:v;render();return}
