@@ -1821,6 +1821,11 @@ try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{})}catch
 render();
 showGate();
 recheckKey();addEventListener("online",()=>recheckKey());
+/* Unlock link from the Lemon Squeezy receipt: https://www.ikjon-gearbox.com/rehab/#key=[license_key] (hash is never sent to any server). */
+(function(){const m=location.hash.match(/^#key=([A-Za-z0-9-]{8,64})$/);if(!m)return;
+ try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+ if(isPro()&&S.pro.key===m[1]){go("premium");return}
+ go("premium");const i=document.getElementById("licKey");if(i)i.value=m[1];activateKey(m[1])})();
 </script>
 <script>if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
 </body>
