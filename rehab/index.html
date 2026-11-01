@@ -1424,10 +1424,11 @@ const PREMIUM_LIVE=false,FREE_DAYS=7;
 try{const m=new URLSearchParams(location.search).get("premium");if(m==="preview")localStorage.setItem("ikjon-premium-preview","1");if(m==="off")localStorage.removeItem("ikjon-premium-preview")}catch(e){}
 const premiumOn=()=>{if(PREMIUM_LIVE)return true;try{return localStorage.getItem("ikjon-premium-preview")==="1"}catch(e){return false}};
 const isPro=()=>!!(S.pro&&S.pro.key);
+const PREMIUM_BUY=()=>premiumOn();
 /* Licence keys (Lemon Squeezy License API). Fill in after the store is set up; until then only the
    preview test key works, and only in preview mode. We store just the key, its device-instance id
    and status — never the buyer's name or email that the API also returns. */
-const LICCFG={api:"https://api.lemonsqueezy.com/v1/licenses/",storeId:null,productIds:[]};
+const LICCFG={api:"https://api.lemonsqueezy.com/v1/licenses/",storeId:512569,productIds:[1492844],checkout:"https://ikjon-gearbox.lemonsqueezy.com/checkout/buy/e5932ea5-cacc-4f5e-bd52-f493273b9cfb",prices:[["Monthly","$2.99 / month"],["Yearly","$25 / year — best value"]]};
 const TEST_KEY="IKJON-TEST-0000-PREVIEW",RECHECK_DAYS=3;
 let lic={busy:false,msg:"",bad:false,confirmOff:false};
 function lsPost(action,params){const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),15000);
@@ -1469,7 +1470,10 @@ function licBox(){const m=lic.msg?`<p role="status" style="margin:8px 0 0;font-w
   <div class="row" style="margin-top:12px">${lic.confirmOff?`<span>Remove Premium from this device?</span><button class="btn sm" style="background:var(--bad)" id="licOffYes" ${lic.busy?"disabled":""}>Yes, remove</button><button class="btn alt sm" id="licOffNo">Keep it</button>`:`<button class="btn alt sm" id="licOffAsk">Remove from this device</button>`}</div>
   <p class="muted" style="font-size:.85rem;margin-top:8px">Moving to a new phone? Remove it here first, then enter the same key on the new phone.</p>`}
  return `<h3>${LICCFG.storeId==null?"Have a licence key?":"Unlock Premium"}</h3>
-  <p class="muted">${LICCFG.storeId==null?"Premium is opening shortly. Your progress is saved on this device and will carry over.":"After you buy Premium, your licence key arrives by email. Paste it here."}</p>
+  <p class="muted">${LICCFG.storeId==null?"Premium is opening shortly. Your progress is saved on this device and will carry over.":"Choose monthly or yearly. Cancel any time — your plan and diary are kept."}</p>
+  ${LICCFG.checkout&&PREMIUM_BUY()?`<div class="row" style="gap:8px;margin:10px 0">${LICCFG.prices.map(([n,p])=>`<div class="box" style="flex:1 1 140px;padding:12px"><b>${esc(n)}</b><br><span class="muted">${esc(p)}</span></div>`).join("")}</div>
+  <div class="row" style="margin-bottom:10px"><a class="btn warm" href="${LICCFG.checkout}" target="_blank" rel="noopener">Buy Premium</a></div>
+  <p class="muted" style="font-size:.85rem;margin:0 0 6px">Secure checkout by Lemon Squeezy. After paying, tap "Unlock Premium in the app" — or paste the key from your email below.</p>`:""}
   <form id="licForm" class="row" style="margin-top:10px;gap:8px" autocomplete="off" onsubmit="return false">
    <label for="licKey" class="sr" style="position:absolute;left:-9999px">Licence key</label>
    <input id="licKey" type="text" inputmode="text" autocapitalize="characters" spellcheck="false" maxlength="64" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" style="flex:1 1 220px;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)">
