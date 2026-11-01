@@ -12,7 +12,7 @@
     "areas": false,
     "logo": false,
     "apps": false,
-    "principles": false
+    "principles": true
   },
   "hero": {
     "label": {
