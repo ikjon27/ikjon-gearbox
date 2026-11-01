@@ -1821,9 +1821,11 @@ try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{})}catch
 render();
 showGate();
 recheckKey();addEventListener("online",()=>recheckKey());
-/* Unlock link from the Lemon Squeezy receipt: https://www.ikjon-gearbox.com/rehab/#key=[license_key] (hash is never sent to any server). */
-(function(){const m=location.hash.match(/^#key=([A-Za-z0-9-]{8,64})$/);if(!m)return;
- try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}
+/* Unlock link from the Lemon Squeezy receipt: https://www.ikjon-gearbox.com/rehab/?key=[license_key] (also #key=). The key is removed from the address bar at once. */
+(function(){let k=null;const h=location.hash.match(/^#key=([A-Za-z0-9-]{8,64})$/);if(h)k=h[1];
+ let qs="";try{const u=new URLSearchParams(location.search);const q=u.get("key");if(q&&/^[A-Za-z0-9-]{8,64}$/.test(q))k=k||q;u.delete("key");qs=u.toString()}catch(e){}
+ if(!k)return;const m=[0,k];
+ try{history.replaceState(null,"",location.pathname+(qs?"?"+qs:""))}catch(e){}
  if(isPro()&&S.pro.key===m[1]){go("premium");return}
  go("premium");const i=document.getElementById("licKey");if(i)i.value=m[1];activateKey(m[1])})();
 </script>
