@@ -29,21 +29,27 @@ collections:
       - name: name
         label: Brand name
         widget: string
+        required: true
       - name: tagline
         label: Tagline
         widget: string
+        required: false
       - name: logo_header
         label: Logo in the top bar (white)
         widget: image
+        required: false
       - name: logo_main
         label: Main logo (hero)
         widget: image
+        required: false
       - name: logo_footer
         label: Footer logo (white)
         widget: image
+        required: false
       - name: logo_mark
         label: Logo mark in 'Our logo' section
         widget: image
+        required: false
     - name: sections
       label: Sections to show on the website
       hint: Switch a section on when its content is ready. Hidden sections keep their content saved.
@@ -53,22 +59,28 @@ collections:
         label: Numbers strip
         widget: boolean
         default: false
+        required: false
       - name: areas
         label: What we do (areas and services)
         widget: boolean
         default: false
+        required: false
       - name: logo
         label: Our logo, explained
         widget: boolean
         default: false
+        required: false
       - name: apps
         label: Apps
         widget: boolean
         default: false
+        required: false
       - name: principles
         label: How we work
         widget: boolean
         default: false
+        required: false
+      required: false
     - name: hero
       label: Top section
       widget: object
@@ -86,6 +98,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -99,6 +112,7 @@ collections:
           required: false
         name: title_start
         label: Headline
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -112,6 +126,7 @@ collections:
           required: false
         name: title_accent
         label: Headline accent word (teal)
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -125,6 +140,7 @@ collections:
           required: false
         name: text
         label: Introduction
+        required: false
       - widget: object
         collapsed: true
         fields:
@@ -142,6 +158,7 @@ collections:
           required: false
         name: button_main
         label: Main button
+        required: false
       - widget: object
         collapsed: true
         fields:
@@ -159,6 +176,8 @@ collections:
           required: false
         name: button_second
         label: Second button
+        required: false
+      required: false
     - name: facts
       label: Numbers strip
       widget: list
@@ -166,6 +185,7 @@ collections:
       - name: number
         label: Number
         widget: string
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -179,6 +199,8 @@ collections:
           required: false
         name: label
         label: Text under the number
+        required: false
+      required: false
     - widget: object
       collapsed: true
       fields:
@@ -195,6 +217,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -208,6 +231,7 @@ collections:
           required: false
         name: title
         label: Heading
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -221,8 +245,10 @@ collections:
           required: false
         name: text
         label: Introduction
+        required: false
       name: areas_intro
       label: '''What we do'' heading'
+      required: false
     - name: areas
       label: Areas and services
       widget: list
@@ -241,6 +267,7 @@ collections:
           required: false
         name: name
         label: Area name
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -254,6 +281,7 @@ collections:
           required: false
         name: text
         label: Description
+        required: false
       - name: items
         label: Services
         widget: list
@@ -272,6 +300,7 @@ collections:
             required: false
           name: name
           label: Service name
+          required: false
         - name: status
           label: Status
           widget: select
@@ -286,10 +315,12 @@ collections:
             value: soon
           - label: In development
             value: dev
+          required: false
         - name: link
           label: Link (leave empty if none)
           widget: string
           required: false
+        required: false
       - widget: object
         collapsed: true
         fields:
@@ -307,6 +338,8 @@ collections:
           required: false
         name: button
         label: Card button (optional)
+        required: false
+      required: false
     - name: logo_section
       label: '''Our logo'' section'
       widget: object
@@ -325,6 +358,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -338,6 +372,7 @@ collections:
           required: false
         name: title
         label: Heading
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -351,6 +386,7 @@ collections:
           required: false
         name: text
         label: Introduction
+        required: false
       - name: parts
         label: Logo parts (in order 1–4)
         widget: list
@@ -368,6 +404,7 @@ collections:
             required: false
           name: title
           label: Title
+          required: false
         - widget: object
           collapsed: false
           fields:
@@ -381,6 +418,9 @@ collections:
             required: false
           name: text
           label: Text
+          required: false
+        required: false
+      required: false
     - widget: object
       collapsed: true
       fields:
@@ -397,6 +437,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -410,6 +451,7 @@ collections:
           required: false
         name: title
         label: Heading
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -423,8 +465,10 @@ collections:
           required: false
         name: text
         label: Introduction
+        required: false
       name: apps_intro
       label: '''Apps'' heading'
+      required: false
     - name: featured_app
       label: Featured app
       widget: object
@@ -443,6 +487,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - name: name
         label: App name
         widget: string
@@ -459,6 +504,7 @@ collections:
           required: false
         name: text
         label: Description
+        required: false
       - name: points
         label: Key points
         widget: list
@@ -471,6 +517,7 @@ collections:
           label: O'zbekcha
           widget: string
           required: false
+        required: false
       - widget: object
         collapsed: true
         fields:
@@ -488,9 +535,12 @@ collections:
           required: false
         name: button
         label: Button
+        required: false
       - name: image
         label: Screenshot
         widget: image
+        required: false
+      required: false
     - widget: object
       collapsed: false
       fields:
@@ -504,6 +554,7 @@ collections:
         required: false
       name: coming_label
       label: '''Coming next'' label'
+      required: false
     - name: coming
       label: Coming next list
       widget: list
@@ -522,6 +573,7 @@ collections:
           required: false
         name: name
         label: Name
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -535,6 +587,7 @@ collections:
           required: false
         name: text
         label: Short description
+        required: false
       - name: status
         label: Status
         widget: select
@@ -549,10 +602,12 @@ collections:
           value: soon
         - label: In development
           value: dev
+        required: false
       - name: link
         label: Link (leave empty if none)
         widget: string
         required: false
+      required: false
     - widget: object
       collapsed: true
       fields:
@@ -569,6 +624,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -582,6 +638,7 @@ collections:
           required: false
         name: title
         label: Heading
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -595,8 +652,10 @@ collections:
           required: false
         name: text
         label: Introduction
+        required: false
       name: principles_intro
       label: '''How we work'' heading'
+      required: false
     - name: principles
       label: How we work
       widget: list
@@ -614,6 +673,7 @@ collections:
           required: false
         name: title
         label: Title
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -627,6 +687,8 @@ collections:
           required: false
         name: text
         label: Text
+        required: false
+      required: false
     - name: contact
       label: Contact
       widget: object
@@ -645,6 +707,7 @@ collections:
           required: false
         name: label
         label: Small label
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -658,6 +721,7 @@ collections:
           required: false
         name: title
         label: Heading
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -671,6 +735,7 @@ collections:
           required: false
         name: text
         label: Text
+        required: false
       - name: links
         label: Contact links
         widget: list
@@ -681,12 +746,16 @@ collections:
         - name: handle
           label: Handle shown (e.g. @ikjon_education)
           widget: string
+          required: false
         - name: url
           label: Link (must start with https://)
           widget: string
           pattern:
           - ^https://
           - The link must start with https://
+          required: false
+        required: false
+      required: false
     - name: footer
       label: Footer
       widget: object
@@ -699,12 +768,16 @@ collections:
         - name: en
           label: Text (English)
           widget: string
+          required: false
         - name: uz
           label: Text (O'zbekcha)
           widget: string
+          required: false
         - name: link
           label: Link
           widget: string
+          required: false
+        required: false
       - widget: object
         collapsed: false
         fields:
@@ -718,3 +791,5 @@ collections:
           required: false
         name: fine
         label: Small print
+        required: false
+      required: false
