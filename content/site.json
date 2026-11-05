@@ -191,8 +191,8 @@
         "uz": "Sog'liq"
       },
       "text": {
-        "en": "Free, research-based apps for injury recovery, joint health and everyday fitness. Private by design: no account and no tracking.",
-        "uz": "Tadqiqotlarga asoslangan bepul ilovalar: jarohatdan tiklanish, bo'g'imlar salomatligi va kundalik mashqlar."
+        "en": "Free, research-based apps for injury recovery, joint health and daily head-to-toe fitness for men and women. Private by design: no account and no tracking.",
+        "uz": "Tadqiqotlarga asoslangan bepul ilovalar: jarohatdan tiklanish, bo'g'imlar salomatligi hamda erkak va ayollar uchun boshdan-oyoqqacha kundalik fitnes."
       },
       "items": [
         {
@@ -208,8 +208,8 @@
             "en": "IKJON Fitness app",
             "uz": "IKJON Fitness ilovasi"
           },
-          "status": "soon",
-          "link": ""
+          "status": "live",
+          "link": "fitness/"
         }
       ],
       "button": {
@@ -388,11 +388,11 @@
         "uz": "IKJON Fitness"
       },
       "text": {
-        "en": "Exercise library by body part",
-        "uz": "Tana qismlari bo'yicha mashqlar kutubxonasi"
+        "en": "Daily head-to-toe plans for men and women: workouts, hair, face, posture, feet and nails",
+        "uz": "Erkak va ayollar uchun boshdan-oyoqqacha kundalik rejalar: mashqlar, soch, yuz, qomat, oyoq va tirnoqlar"
       },
-      "status": "soon",
-      "link": ""
+      "status": "live",
+      "link": "fitness/"
     },
     {
       "name": {
@@ -510,6 +510,11 @@
         "en": "Joint Rehab app",
         "uz": "Joint Rehab ilovasi",
         "link": "/rehab/"
+      },
+      {
+        "en": "IKJON Fitness app",
+        "uz": "IKJON Fitness ilovasi",
+        "link": "/fitness/"
       }
     ],
     "fine": {
