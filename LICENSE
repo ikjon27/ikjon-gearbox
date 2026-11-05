@@ -1,0 +1,23 @@
+Copyright (c) 2026 IKJON Consulting & Education Centre, Uzbekistan.
+All rights reserved.
+
+This repository contains the IKJON website (www.ikjon-gearbox.com) and the
+IKJON Joint Rehab web app. The source code, text, exercise plans, animations,
+designs, the IKJON name and the IKJON logo are the property of
+IKJON Consulting & Education Centre.
+
+The code is visible on GitHub only so that the website can be published.
+Being able to see it does NOT give you permission to use it. No licence is
+granted to copy, modify, distribute, publish, sublicense or sell any part of
+this repository, in whole or in part, without prior written permission.
+
+IKJON(TM) and the IKJON logo are trademarks of IKJON Consulting & Education
+Centre and may not be used in a way that suggests a connection with, or
+endorsement by, IKJON.
+
+Third-party material keeps its own terms:
+- Exercise photographs in rehab/img/ come from the Free Exercise DB project
+  (public domain, The Unlicense).
+- Sveltia CMS, loaded by admin/, is used under its own MIT licence.
+
+Permissions and enquiries: ikjongearbox@gmail.com
