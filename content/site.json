@@ -500,7 +500,18 @@
     ]
   },
   "footer": {
-    "links": [],
+    "links": [
+      {
+        "en": "Injury rehab guides",
+        "uz": "Jarohatdan keyingi mashqlar",
+        "link": "/rehab/guides/"
+      },
+      {
+        "en": "Joint Rehab app",
+        "uz": "Joint Rehab ilovasi",
+        "link": "/rehab/"
+      }
+    ],
     "fine": {
       "en": "© 2026 IKJON Consulting & Education Centre, Uzbekistan. All rights reserved. IKJON™ and the IKJON logo are trademarks of IKJON Consulting & Education Centre. This website uses no cookies and no tracking.",
       "uz": "© 2026 IKJON Consulting & Education Centre, O'zbekiston. Barcha huquqlar himoyalangan. IKJON™ va IKJON logotipi IKJON Consulting & Education Centre savdo belgilaridir. Bu sayt cookie yoki kuzatuv vositalaridan foydalanmaydi."

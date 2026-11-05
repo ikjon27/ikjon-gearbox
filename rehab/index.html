@@ -380,7 +380,7 @@ textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:1
    <div><b>Our standards</b><p>Plans follow published research and are updated as new evidence appears. Content last reviewed: October 2026.</p></div>
   </div>
   <p class="flinks"><button data-legal="privacy">Privacy Policy</button><button data-legal="terms">Terms of Use</button><button data-legal="disclaimer">Medical disclaimer</button><button data-go2="about">Privacy &amp; settings</button></p>
-  <p class="fine">IKJON Joint Rehab is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. It is for education and guidance. It does not replace a diagnosis or treatment from a doctor or physiotherapist. Your data stays on this device. Exercise photos: Free Exercise DB (public domain). © 2026 IKJON Consulting &amp; Education Centre. All rights reserved. IKJON™ and the IKJON logo are trademarks of IKJON Consulting &amp; Education Centre.</p>
+  <p class="fine">IKJON Joint Rehab is not a medical device and does not diagnose, treat, cure, or prevent any medical condition. It is for education and guidance. It does not replace a diagnosis or treatment from a doctor or physiotherapist. Your data stays on this device. Exercise photos: Free Exercise DB (public domain). © 2026 IKJON Consulting &amp; Education Centre. All rights reserved. IKJON™ and the IKJON logo are trademarks of IKJON Consulting &amp; Education Centre. <a href="guides/">Injury rehab guides</a>.</p>
  </div></footer>
 <dialog id="exDlg"><div class="dlg" id="exDlgBody"></div></dialog>
 <div class="gate" id="gate" hidden></div>
@@ -1825,6 +1825,11 @@ try{navigator.wakeLock&&navigator.wakeLock.request("screen").catch(()=>{})}catch
 render();
 showGate();
 recheckKey();addEventListener("online",()=>recheckKey());
+/* Links from the injury guides: /rehab/#injury=<id> opens that plan, /rehab/#find opens Find your plan. */
+function openFromHash(){const h=location.hash;let m;
+ if((m=h.match(/^#injury=([a-z0-9-]{2,30})$/))&&INJ.some(i=>i.id===m[1])){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}go("injury",m[1])}
+ else if(h==="#find"){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}go("check")}}
+openFromHash();addEventListener("hashchange",openFromHash);
 /* Unlock link from the Lemon Squeezy receipt: https://www.ikjon-gearbox.com/rehab/?key=[license_key] (also #key=). The key is removed from the address bar at once. */
 (function(){let k=null;const h=location.hash.match(/^#key=([A-Za-z0-9-]{8,64})$/);if(h)k=h[1];
  let qs="";try{const u=new URLSearchParams(location.search);const q=u.get("key");if(q&&/^[A-Za-z0-9-]{8,64}$/.test(q))k=k||q;u.delete("key");qs=u.toString()}catch(e){}
