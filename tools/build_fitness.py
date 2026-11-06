@@ -149,6 +149,11 @@ EXTRA_CSS = """
 .player h2{margin-bottom:2px}
 .foot .fine{max-width:70ch}
 .tabs .tab{white-space:nowrap}
+.toast{background:var(--good);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;margin:14px 0 0}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
+.badge{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;opacity:.55;display:flex;flex-direction:column;gap:2px}
+.badge.on{opacity:1;border-color:var(--orange);background:var(--orange-tint)}.badge span{font-size:1.6rem}.badge b{font-size:.9rem}.badge small{font-size:.75rem;color:var(--muted)}
+.qgrid{display:grid;gap:10px;margin-top:12px}.qopt{text-align:left;font-weight:700;font-size:1.05rem;cursor:pointer;color:var(--ink)}.qopt:hover{border-color:var(--teal)}
 """
 
 SHELL = f"""<!doctype html>
