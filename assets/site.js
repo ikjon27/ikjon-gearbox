@@ -68,10 +68,11 @@
       "</div></section>");
     if (on(d, "goals") && list(d.goals).length) out.push('<section class="block goals" id="start"><div class="wrap">' + head(d.goals_intro || {}, lang) + '<div class="goalgrid">' +
       list(d.goals).map(function (g) {
-        var live = g.status !== "soon" && g.status !== "dev", href = safeLink(g.button && g.button.link), more = safeLink(g.more && g.more.link);
-        return '<article class="goal' + (live ? "" : " later") + '"><span class="gico" aria-hidden="true">' + t(g.icon, lang) + "</span><h3>" + t(g.title, lang) + "</h3><p>" + t(g.text, lang) + "</p>" +
-          '<div class="gact">' + (live ? btn(g.button, "solid", lang) : chip(g.status, lang) + (href ? btn(g.button, "ghost", lang) : "")) +
-          (more && t(g.more, lang) ? '<a class="gmore" href="' + more + '"' + ext(more) + ">" + t(g.more, lang) + "</a>" : "") + "</div></article>";
+        var live = g.status !== "soon" && g.status !== "dev", href = safeLink(g.button && g.button.link), label = t(g.button, lang), more = safeLink(g.more && g.more.link), img = safeImg(g.image);
+        return '<article class="goal' + (live ? "" : " later") + '"><div class="gimg">' + (img ? '<img src="' + img + '" alt="" width="400" height="240" loading="lazy">' : '<span class="gico" aria-hidden="true">' + t(g.icon, lang) + "</span>") +
+          (live ? "" : chip(g.status, lang)) + '</div><div class="gbody"><h3>' + t(g.title, lang) + "</h3><p>" + t(g.text, lang) + "</p>" +
+          (more && t(g.more, lang) ? '<a class="gmore" href="' + more + '"' + ext(more) + ">" + t(g.more, lang) + " →</a>" : "") +
+          '<div class="gact">' + (href && label ? '<a class="gbtn' + (live ? "" : " ghost") + '" href="' + href + '"' + ext(href) + "><span>" + label + '</span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>' : "") + "</div>" + "</div></article>";
       }).join("") + "</div></div></section>");
     if (on(d, "facts") && list(d.facts).length) out.push('<div class="facts"><div class="wrap">' + list(d.facts).map(function (f) {
       return '<div class="fact"><b>' + t(f.number, lang) + "</b><span>" + t(f.label, lang) + "</span></div>";

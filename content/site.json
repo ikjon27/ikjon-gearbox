@@ -78,7 +78,8 @@
         "en": "Read the injury guides",
         "uz": "Jarohat qo'llanmalarini o'qish",
         "link": "/rehab/guides/"
-      }
+      },
+      "image": "/brand/goals/injury.svg"
     },
     {
       "icon": "💪",
@@ -91,11 +92,12 @@
         "uz": "Yelka, ko'krak, orqa, oyoq va mustahkam bel uchun 3 oylik uy rejasi."
       },
       "button": {
-        "en": "Start the men's plan",
-        "uz": "Erkaklar rejasini boshlash",
+        "en": "Start men's plan",
+        "uz": "Erkaklar rejasi",
         "link": "/fitness/#plan=men"
       },
-      "status": "live"
+      "status": "live",
+      "image": "/brand/goals/men.svg"
     },
     {
       "icon": "✨",
@@ -108,11 +110,12 @@
         "uz": "Dumba, oyoq, bel, qo'llar va tik qomat uchun 3 oylik uy rejasi."
       },
       "button": {
-        "en": "Start the women's plan",
-        "uz": "Ayollar rejasini boshlash",
+        "en": "Start women's plan",
+        "uz": "Ayollar rejasi",
         "link": "/fitness/#plan=women"
       },
-      "status": "live"
+      "status": "live",
+      "image": "/brand/goals/women.svg"
     },
     {
       "icon": "💇",
@@ -125,11 +128,12 @@
         "uz": "Har kuni bosh terisini uqalash, stressni kamaytirish va sog'lom soch uchun ovqatlanish odatlari."
       },
       "button": {
-        "en": "Start the hair plan",
-        "uz": "Soch rejasini boshlash",
+        "en": "Start hair plan",
+        "uz": "Soch rejasi",
         "link": "/fitness/#plan=hair"
       },
-      "status": "live"
+      "status": "live",
+      "image": "/brand/goals/hair.svg"
     },
     {
       "icon": "🙂",
@@ -142,11 +146,12 @@
         "uz": "Tikroq turing va tetikroq ko'rining: yuz, ko'z va yuqori orqa mashqlari."
       },
       "button": {
-        "en": "Start the posture plan",
-        "uz": "Qomat rejasini boshlash",
+        "en": "Start posture plan",
+        "uz": "Qomat rejasi",
         "link": "/fitness/#plan=face"
       },
-      "status": "live"
+      "status": "live",
+      "image": "/brand/goals/face.svg"
     },
     {
       "icon": "🌿",
@@ -159,11 +164,12 @@
         "uz": "Bepul 20 daqiqalik boshdan-oyoqqacha tartib: soch, yuz, ko'z, tana, oyoq va odatlar."
       },
       "button": {
-        "en": "Start the daily plan",
-        "uz": "Kundalik rejani boshlash",
+        "en": "Start daily plan",
+        "uz": "Kundalik reja",
         "link": "/fitness/#plan=daily"
       },
-      "status": "live"
+      "status": "live",
+      "image": "/brand/goals/daily.svg"
     },
     {
       "icon": "📚",
@@ -180,7 +186,8 @@
         "uz": "Kurslar haqida so'rash",
         "link": "#contact"
       },
-      "status": "soon"
+      "status": "soon",
+      "image": "/brand/goals/english.svg"
     },
     {
       "icon": "⚽",
@@ -197,7 +204,8 @@
         "uz": "",
         "link": ""
       },
-      "status": "soon"
+      "status": "soon",
+      "image": "/brand/goals/football.svg"
     }
   ],
   "facts": [

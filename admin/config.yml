@@ -144,6 +144,10 @@ collections:
         label: Emoji icon
         widget: string
         required: false
+      - name: image
+        label: Picture (shown at the top of the card, 5:3 shape works best)
+        widget: image
+        required: false
       - widget: object
         collapsed: false
         fields:
