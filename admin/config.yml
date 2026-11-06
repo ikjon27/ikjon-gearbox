@@ -315,6 +315,40 @@ collections:
         name: button_second
         label: Second button
         required: false
+      - name: badges
+        label: Small ticks under the buttons (e.g. No account needed)
+        widget: list
+        required: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+      - name: phones
+        label: App screenshots on the right (up to 2, tall phone shape)
+        widget: list
+        required: false
+        field:
+          name: image
+          label: Screenshot
+          widget: image
+      - name: floats
+        label: Floating labels next to the phones (up to 3, emoji welcome)
+        widget: list
+        required: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
       required: false
     - name: facts
       label: Numbers strip

@@ -61,11 +61,16 @@
 
   function renderMain(d, lang) {
     var b = d.brand || {}, h = d.hero || {}, out = [];
-    out.push('<section class="hero"><div class="wrap"><div><p class="label">' + t(h.label, lang) + "</p><h1>" + t(h.title_start, lang) +
+    var phones = list(h.phones).map(safeImg).filter(Boolean).slice(0, 2), floats = list(h.floats), badges = list(h.badges);
+    var visual = phones.length ? '<div class="hero-vis" aria-hidden="true"><span class="glow"></span>' +
+        phones.map(function (src, i) { return '<img class="phone p' + (i + 1) + '" src="' + src + '" alt="" width="540" height="960"' + (i ? ' loading="lazy"' : "") + ">"; }).join("") +
+        floats.slice(0, 3).map(function (f, i) { return '<span class="float f' + (i + 1) + '">' + t(f, lang) + "</span>"; }).join("") + "</div>"
+      : (safeImg(b.logo_main) ? '<img class="hero-logo" src="' + safeImg(b.logo_main) + '" alt="' + t(b.name, lang) + ' logo" width="715" height="716">' : "");
+    out.push('<section class="hero"><div class="hero-bg" aria-hidden="true">' + (safeImg(b.logo_mark) ? '<img src="' + safeImg(b.logo_mark) + '" alt="">' : "") + '</div><div class="wrap"><div class="hero-copy"><p class="pill">' + t(h.label, lang) + "</p><h1>" + t(h.title_start, lang) +
       " <em>" + t(h.title_accent, lang) + '</em></h1><p class="lede">' + t(h.text, lang) + '</p><div class="cta">' +
-      btn(h.button_main, "solid", lang) + btn(h.button_second, "ghost", lang) + "</div></div>" +
-      (safeImg(b.logo_main) ? '<img class="hero-logo" src="' + safeImg(b.logo_main) + '" alt="' + t(b.name, lang) + ' logo" width="715" height="716">' : "") +
-      "</div></section>");
+      btn(h.button_main, "solid", lang) + btn(h.button_second, "ghost", lang) + "</div>" +
+      (badges.length ? '<ul class="trust">' + badges.map(function (x) { return "<li>" + t(x, lang) + "</li>"; }).join("") + "</ul>" : "") +
+      "</div>" + visual + "</div></section>");
     if (on(d, "goals") && list(d.goals).length) out.push('<section class="block goals" id="start"><div class="wrap">' + head(d.goals_intro || {}, lang) + '<div class="goalgrid">' +
       list(d.goals).map(function (g) {
         var live = g.status !== "soon" && g.status !== "dev", href = safeLink(g.button && g.button.link), label = t(g.button, lang), more = safeLink(g.more && g.more.link), img = safeImg(g.image);

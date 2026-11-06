@@ -29,19 +29,51 @@
       "uz": "Grow."
     },
     "text": {
-      "en": "IKJON is a growing family of education, sport and health projects. We help people learn, train and recover, one step at a time.",
-      "uz": "IKJON — ta'lim, sport va sog'liq yo'nalishidagi loyihalar oilasi. Biz odamlarga o'rganish, mashq qilish va tiklanishga yordam beramiz — bosqichma-bosqich, har kuni."
+      "en": "Free apps and guides that help you recover from injury, get fit from head to toe, and grow every day. Built in Uzbekistan, made for everyone.",
+      "uz": "Jarohatdan tiklanish, boshdan-oyoqqacha sog'lom bo'lish va har kuni o'sishga yordam beradigan bepul ilovalar va qo'llanmalar. O'zbekistonda yaratilgan, hamma uchun."
     },
     "button_main": {
+      "en": "Find what you need",
+      "uz": "Kerakli narsani toping",
+      "link": "#start"
+    },
+    "button_second": {
       "en": "Contact us",
       "uz": "Biz bilan bog'laning",
       "link": "#contact"
     },
-    "button_second": {
-      "en": "What are you looking for?",
-      "uz": "Nimani izlayapsiz?",
-      "link": "#start"
-    }
+    "badges": [
+      {
+        "en": "100% free to start",
+        "uz": "Boshlash 100% bepul"
+      },
+      {
+        "en": "No account needed",
+        "uz": "Ro'yxatdan o'tish shart emas"
+      },
+      {
+        "en": "English · O'zbekcha · Русский",
+        "uz": "English · O'zbekcha · Русский"
+      }
+    ],
+    "phones": [
+      "/brand/fitness-screen.png",
+      "/brand/rehab-screen.png"
+    ],
+    "floats": [
+      {
+        "en": "🔥 5-day streak",
+        "uz": "🔥 5 kun ketma-ket"
+      },
+      {
+        "en": "🩹 24 recovery plans",
+        "uz": "🩹 24 ta tiklanish rejasi"
+      },
+      {
+        "en": "🎧 Voice coach",
+        "uz": "🎧 Ovozli murabbiy"
+      }
+    ]
   },
   "goals_intro": {
     "label": {
