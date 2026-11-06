@@ -473,20 +473,10 @@
       "uz": "Biz bilan bog'laning"
     },
     "text": {
-      "en": "For courses, events, partnerships or questions about our apps, message us on Telegram or Instagram.",
-      "uz": "Kurslar, tadbirlar, hamkorlik yoki ilovalar bo'yicha savollar uchun bizga Telegram yoki Instagram orqali yozing."
+      "en": "For courses, events, partnerships or questions about our apps, email us at ikjongearbox@gmail.com.",
+      "uz": "Kurslar, tadbirlar, hamkorlik yoki ilovalar bo'yicha savollar uchun bizga ikjongearbox@gmail.com manziliga yozing."
     },
     "links": [
-      {
-        "name": "Telegram",
-        "handle": "@ikjon_education",
-        "url": "https://t.me/ikjon_education"
-      },
-      {
-        "name": "Instagram",
-        "handle": "@ikjon_education",
-        "url": "https://www.instagram.com/ikjon_education"
-      },
       {
         "name": "YouTube",
         "handle": "GearBox_23 · @ikjon",

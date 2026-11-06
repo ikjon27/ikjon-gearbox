@@ -744,7 +744,7 @@ collections:
           label: Name (e.g. Telegram)
           widget: string
         - name: handle
-          label: Handle shown (e.g. @ikjon_education)
+          label: Handle shown (e.g. @ikjon)
           widget: string
           required: false
         - name: url

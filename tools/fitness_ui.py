@@ -141,7 +141,7 @@ UI = {
  "m_removed": ("Premium removed from this device.", "Premium shu qurilmadan olib tashlandi.", "Premium удалён с этого устройства."),
  "m_ended": ("Your Premium subscription has ended. Renew to unlock again.", "Premium obunangiz tugadi. Qayta ochish uchun yangilang.", "Ваша подписка Premium закончилась. Продлите, чтобы снова открыть."),
  "removing": ("Removing…", "Olib tashlanmoqda…", "Удаляем…"),
- "contact": ("Questions? ikjongearbox@gmail.com · Telegram / Instagram @ikjon_education", "Savollar bormi? ikjongearbox@gmail.com · Telegram / Instagram @ikjon_education", "Вопросы? ikjongearbox@gmail.com · Telegram / Instagram @ikjon_education"),
+ "contact": ("Questions? ikjongearbox@gmail.com", "Savollar bormi? ikjongearbox@gmail.com", "Вопросы? ikjongearbox@gmail.com"),
  "for_men": ("Men", "Erkaklar", "Мужчины"),
  "for_women": ("Women", "Ayollar", "Женщины"),
  "for_all": ("Everyone", "Hamma uchun", "Для всех"),
