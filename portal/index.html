@@ -159,7 +159,7 @@ const T={
   level:"Level",certs:"Certificates",nocerts:"No certificates yet — keep going!",view:"View & download",print:"Print / save as PDF",close:"Close",certof:"Certificate of achievement",awarded:"is awarded to",forcomp:"for successfully completing",date:"Date",certid:"Certificate no.",director:"Director",
   appsp:"Your IKJON apps. Fitness and Joint Rehab open in a new tab and keep your progress on your own phone.",soon:"Coming soon",
   addlogin:"Create login",name:"Full name",group:"Group",role:"Role",status:"Status",active:"Active",created:"Login created (preview — not saved to a server)",
-  prev_bar:"Preview with sample data — nothing is saved to a server.",exit:"Exit preview",
+  prev_bar:"Preview with sample data — nothing is saved to a server.",exit:"Exit preview",bad:"Wrong login or password.",inactive:"This login is switched off. Please contact the centre.",neterr:"Can't reach the server. Check your internet and try again.",loading:"Signing in…",pass_once:"Give these to the person. The password is shown only once:",print_slip:"Print login slip",
   setp:"Language",theme:"Appearance",auto:"Automatic",light:"Light",dark:"Dark",security:"Security",sec1:"Two-step sign-in (code from an authenticator app) is required for the owner account once the database is connected.",sec2:"You are signed out automatically after 30 minutes without activity.",lastin:"Last sign-in: {d}",
   mon:"Mon",tue:"Tue",wed:"Wed",thu:"Thu",fri:"Fri",sat:"Sat",progress_of:"{p}% complete",teacher_l:"Teacher"},
  uz:{portal:"Portal",tag:"IKJON Consulting & Education Centre",h1a:"Markazingiz —",h1b:"hammasi bir joyda.",p1:"O'qituvchingiz ochgan kurslar va uy vazifalari",p2:"Dars jadvali va markaz e'lonlari",p3:"Natijalar, daraja va sertifikatlar",p4:"IKJON Fitness, Joint Rehab va boshqalar",signin:"Kirish",signin_p:"IKJON bergan login bilan kiring. Ochiq ro'yxatdan o'tish yo'q.",login:"Email yoki login",pass:"Parol",go:"Kirish",forgot:"Parolni unutdingizmi? O'qituvchingiz yoki markazdan uni tiklashni so'rang.",back:"← Saytga qaytish",demo_h:"Ko'rib chiqish rejimi",demo_p:"Haqiqiy baza hali ulanmagan. Namuna ma'lumotlar bilan ko'rib chiqing:",as_owner:"Rahbar",as_teacher:"O'qituvchi",as_student:"Talaba",demo_err:"Ko'rib chiqish rejimi: quyidan namuna hisobni tanlang.",
@@ -170,7 +170,7 @@ const T={
   level:"Daraja",certs:"Sertifikatlar",nocerts:"Hali sertifikat yo'q — davom eting!",view:"Ko'rish va yuklab olish",print:"Chop etish / PDF saqlash",close:"Yopish",certof:"Yutuq sertifikati",awarded:"ga beriladi",forcomp:"muvaffaqiyatli tamomlagani uchun",date:"Sana",certid:"Sertifikat №",director:"Direktor",
   appsp:"IKJON ilovalaringiz. Fitness va Joint Rehab yangi oynada ochiladi va natijalaringizni o'z telefoningizda saqlaydi.",soon:"Tez kunda",
   addlogin:"Login yaratish",name:"To'liq ism",group:"Guruh",role:"Rol",status:"Holat",active:"Faol",created:"Login yaratildi (ko'rib chiqish — serverga saqlanmadi)",
-  prev_bar:"Namuna ma'lumotlar bilan ko'rib chiqish — serverga hech narsa saqlanmaydi.",exit:"Chiqish",
+  prev_bar:"Namuna ma'lumotlar bilan ko'rib chiqish — serverga hech narsa saqlanmaydi.",exit:"Chiqish",bad:"Login yoki parol noto'g'ri.",inactive:"Bu login o'chirilgan. Markaz bilan bog'laning.",neterr:"Serverga ulanib bo'lmadi. Internetni tekshirib, qayta urinib ko'ring.",loading:"Kirilmoqda…",pass_once:"Buni o'sha odamga bering. Parol faqat bir marta ko'rsatiladi:",print_slip:"Login varag'ini chop etish",
   setp:"Til",theme:"Ko'rinish",auto:"Avtomatik",light:"Yorug'",dark:"Qorong'i",security:"Xavfsizlik",sec1:"Baza ulangach, rahbar hisobi uchun ikki bosqichli kirish (autentifikator ilovasidagi kod) majburiy bo'ladi.",sec2:"30 daqiqa harakatsizlikdan so'ng tizimdan avtomatik chiqasiz.",lastin:"Oxirgi kirish: {d}",
   mon:"Du",tue:"Se",wed:"Ch",thu:"Pa",fri:"Ju",sat:"Sh",progress_of:"{p}% bajarildi",teacher_l:"O'qituvchi"}
 };
@@ -178,7 +178,7 @@ const t=(k,v)=>{let s=(T[LANG]&&T[LANG][k])||T.en[k]||k;if(v)for(const x in v)s=
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 
 /* ---------- sample data (preview only) ---------- */
-const D={
+const D=PREVIEW?{
  users:[
   {id:"u1",name:"Ikromjon",role:"owner"},
   {id:"u2",name:"Dilnoza Karimova",role:"teacher",groups:["g1","g2"]},
@@ -203,7 +203,7 @@ const D={
   {id:"n3",title:"New: IKJON Fitness app",body:"Try our free daily head-to-toe health plans — open Apps in the portal.",date:"2026-11-01",aud:"all",by:"u1"}],
  levels:{u3:[["A2","done",100],["B1","now",72],["B2","next",0]],u4:[["B1","now",45]],u5:[["A2","done",100],["B1","now",30]],u6:[["Starter","now",60]]},
  certs:{u3:[{id:"IK-2026-0142",title:"General English A2",date:"2026-06-20"}]}
-};
+}:{users:[],groups:[],courses:[],tt:[],news:[],levels:{},certs:{}};
 let S={user:null,view:"dash",theme:"auto"};
 try{const o=JSON.parse(sessionStorage.getItem("ikjon-portal")||"null");if(o)S=Object.assign(S,o)}catch(e){}
 const save=()=>{try{sessionStorage.setItem("ikjon-portal",JSON.stringify({user:S.user,view:S.view,theme:S.theme}));localStorage.setItem("ikjon-portal-lang",LANG)}catch(e){}};
@@ -214,6 +214,33 @@ const uname=id=>(D.users.find(u=>u.id===id)||{}).name||"";
 const fmtDate=s=>new Date(s+"T12:00:00").toLocaleDateString(LANG==="uz"?"uz-UZ":"en-GB",{day:"numeric",month:"long",year:"numeric"});
 const DAYS=["mon","tue","wed","thu","fri","sat"];
 const initials=n=>n.split(" ").map(x=>x[0]).slice(0,2).join("").toUpperCase();
+/* ---------- real backend (Supabase, plain HTTPS — no third-party scripts) ---------- */
+const TOK_KEY="ikjon-portal-auth";
+let AUTH=null;try{AUTH=JSON.parse(sessionStorage.getItem(TOK_KEY)||"null")}catch(e){}
+const saveAuth=()=>{try{AUTH?sessionStorage.setItem(TOK_KEY,JSON.stringify(AUTH)):sessionStorage.removeItem(TOK_KEY)}catch(e){}};
+const toEmail=l=>{l=String(l||"").trim().toLowerCase();return l.includes("@")?l:l+"@users.ikjon-gearbox.com"};
+async function authCall(grant,body){const r=await fetch(CONFIG.supabaseUrl+"/auth/v1/token?grant_type="+grant,{method:"POST",headers:{apikey:CONFIG.anonKey,"Content-Type":"application/json"},body:JSON.stringify(body)});
+ const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error_description||j.msg||"sign-in failed");AUTH={at:j.access_token,rt:j.refresh_token,exp:Date.now()+(j.expires_in-60)*1000,uid:j.user.id};saveAuth();return AUTH}
+async function token(){if(!AUTH)throw new Error("signed out");if(Date.now()>AUTH.exp)await authCall("refresh_token",{refresh_token:AUTH.rt});return AUTH.at}
+async function api(path,opt={}){const r=await fetch(CONFIG.supabaseUrl+path,Object.assign({},opt,{headers:Object.assign({apikey:CONFIG.anonKey,Authorization:"Bearer "+await token(),"Content-Type":"application/json"},opt.headers||{})}));
+ if(r.status===401){AUTH=null;saveAuth();S.user=null;render();throw new Error("session ended")}const j=await r.json().catch(()=>null);if(!r.ok)throw new Error((j&&(j.message||j.error))||("HTTP "+r.status));return j}
+const rest=(q)=>api("/rest/v1/"+q);
+async function loadAll(){
+ const [prof,groups,gm,ann,tt,courses,cg,units,prog,levels,certs]=await Promise.all([rest("profiles?select=id,full_name,role,active"),rest("groups?select=id,name,teacher_id&order=name"),rest("group_members?select=group_id,user_id"),
+  rest("announcements?select=id,title,body,group_id,author_id,created_at&order=created_at.desc&limit=60"),rest("timetable?select=group_id,weekday,starts,ends,room"),rest("courses?select=id,name,icon,position&order=position"),
+  rest("course_groups?select=course_id,group_id"),rest("units?select=id,course_id,title,position,status,open_from&order=position"),rest("progress?select=user_id,unit_id,pct"),rest("levels?select=user_id,level,status,pct"),rest("certificates?select=id,user_id,title,issued_on&order=issued_on.desc")]);
+ const mine=prof.find(p=>p.id===AUTH.uid);if(!mine||!mine.active)throw new Error("inactive");
+ const cols=["rgba(0,151,178,.15)","rgba(217,113,31,.15)","rgba(30,123,74,.15)","rgba(122,90,200,.15)"];
+ D.users=prof.map(p=>({id:p.id,name:p.full_name,role:p.role,groups:gm.filter(m=>m.user_id===p.id).map(m=>m.group_id).concat(groups.filter(g=>g.teacher_id===p.id).map(g=>g.id))}));
+ D.groups=groups.map(g=>({id:g.id,name:g.name,teacher:g.teacher_id}));
+ D.news=ann.map(a=>({id:a.id,title:a.title,body:a.body,date:a.created_at.slice(0,10),aud:a.group_id||"all",by:a.author_id}));
+ D.tt=tt.map(x=>({d:x.weekday,s:x.starts.slice(0,5),e:x.ends.slice(0,5),g:x.group_id,r:x.room||""}));
+ D.courses=courses.map((c,i)=>({id:c.id,icon:c.icon||"📘",col:cols[i%4],name:c.name,groups:cg.filter(x=>x.course_id===c.id).map(x=>x.group_id),
+  units:units.filter(u=>u.course_id===c.id).map(u=>u.status==="open"||(u.status==="scheduled"&&u.open_from&&u.open_from<=new Date().toISOString().slice(0,10))?[u.title,"open",(prog.find(p=>p.unit_id===u.id&&p.user_id===AUTH.uid)||{pct:0}).pct]:u.status==="scheduled"?[u.title,"date",u.open_from]:[u.title,"lock"])}));
+ D.levels={};levels.forEach(l=>{(D.levels[l.user_id]=D.levels[l.user_id]||[]).push([l.level,l.status,l.pct])});
+ D.certs={};certs.forEach(c=>{(D.certs[c.user_id]=D.certs[c.user_id]||[]).push({id:c.id,title:c.title,date:c.issued_on})});
+ S.user=AUTH.uid;}
+const genPass=()=>{const a="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",v=new Uint32Array(12);crypto.getRandomValues(v);return Array.from(v,x=>a[x%a.length]).join("")};
 function applyTheme(){const r=document.documentElement;if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme)}
 
 /* ---------- icons ---------- */
@@ -320,18 +347,28 @@ function bind(){
  root.querySelectorAll("[data-go]").forEach(a=>a.onclick=e=>{e.preventDefault();S.view=a.dataset.go;save();render();scrollTo(0,0)});
  root.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.theme;save();render()});
  root.querySelectorAll("[data-cert]").forEach(b=>b.onclick=()=>openCert(b.dataset.cert));
- const lf=document.getElementById("lf");if(lf)lf.onsubmit=e=>{e.preventDefault();const er=document.getElementById("lerr");if(PREVIEW){er.textContent=t("demo_err");return}};
- const so=()=>{S.user=null;S.view="dash";save();render()};["so","soM"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=so});
+ const lf=document.getElementById("lf");if(lf)lf.onsubmit=async e=>{e.preventDefault();const er=document.getElementById("lerr");if(PREVIEW){er.textContent=t("demo_err");return}
+  const btn=lf.querySelector("button");btn.disabled=true;er.textContent=t("loading");
+  try{await authCall("password",{email:toEmail(document.getElementById("lu").value),password:document.getElementById("lp").value});await loadAll();S.view="dash";save();render()}
+  catch(x){AUTH=null;saveAuth();er.textContent=/inactive/.test(x.message)?t("inactive"):/fetch|network/i.test(x.message)?t("neterr"):t("bad");btn.disabled=false}};
+ const so=()=>{if(!PREVIEW&&AUTH){fetch(CONFIG.supabaseUrl+"/auth/v1/logout",{method:"POST",headers:{apikey:CONFIG.anonKey,Authorization:"Bearer "+AUTH.at}}).catch(()=>{});AUTH=null;saveAuth()}S.user=null;S.view="dash";save();render()};["so","soM"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=so});
  const pb=document.getElementById("postBtn");if(pb)pb.onclick=()=>{const ti=document.getElementById("nt").value.trim(),bo=document.getElementById("nb").value.trim();if(!ti||!bo)return;
-  D.news.unshift({id:"n"+Date.now(),title:ti,body:bo,date:new Date().toISOString().slice(0,10),aud:document.getElementById("na").value,by:S.user});render();toast(t("posted"))};
+  const aud=document.getElementById("na").value;
+  if(PREVIEW){D.news.unshift({id:"n"+Date.now(),title:ti,body:bo,date:new Date().toISOString().slice(0,10),aud,by:S.user});render();toast(t("posted"));return}
+  pb.disabled=true;api("/rest/v1/announcements",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({title:ti,body:bo,group_id:aud==="all"?null:aud})}).then(loadAll).then(()=>{render();toast(t("posted"))}).catch(x=>{pb.disabled=false;toast(x.message)})};
  const ab=document.getElementById("addBtn");if(ab)ab.onclick=()=>{const n=document.getElementById("pn").value.trim();if(!n)return;const r=(document.getElementById("pr")||{}).value||"student";
-  D.users.push({id:"u"+Date.now(),name:n,role:r,groups:[document.getElementById("pg").value]});render();toast(t("created"))};
+  const g=document.getElementById("pg").value;
+  if(PREVIEW){D.users.push({id:"u"+Date.now(),name:n,role:r,groups:[g]});render();toast(t("created"));return}
+  const login=n.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g,".").replace(/^\.|\.$/g,"").slice(0,30)+"."+Math.floor(100+Math.random()*900),password=genPass();ab.disabled=true;
+  api("/functions/v1/create-user",{method:"POST",body:JSON.stringify({full_name:n,login,password,role:r,group_id:g})}).then(async res=>{await loadAll();render();
+   const dl=document.getElementById("dlg");document.getElementById("dlgBody").innerHTML=`<div id="printArea"><h3>IKJON Consulting Centre — ${esc(t("portal"))}</h3><p>${esc(t("pass_once"))}</p><p style="font-size:1.1rem"><b>${esc(n)}</b><br>${esc(t("login"))}: <code>${esc(login)}</code><br>${esc(t("pass"))}: <code>${esc(password)}</code><br>www.ikjon-gearbox.com/portal/</p></div><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px"><button class="btn alt" id="dc">${t("close")}</button><button class="btn" id="dp">${t("print_slip")}</button></div>`;
+   dl.showModal();document.getElementById("dc").onclick=()=>dl.close();document.getElementById("dp").onclick=()=>window.print()}).catch(x=>{ab.disabled=false;toast(x.message)})};
 }
 /* auto sign-out after 30 minutes without activity */
-let idle;const resetIdle=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(S.user){S.user=null;save();render()}},30*60*1000)};
+let idle;const resetIdle=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(S.user){S.user=null;AUTH=null;saveAuth();save();render()}},30*60*1000)};
 ["click","keydown","touchstart"].forEach(ev=>addEventListener(ev,resetIdle,{passive:true}));resetIdle();
 const hv=location.hash.slice(1);if(VIEWS[hv])S.view=hv;
-render();
+if(!PREVIEW){S.user=null;if(AUTH){root.innerHTML='<p style="padding:40px;text-align:center" class="muted">'+t("loading")+'</p>';loadAll().then(render).catch(()=>{AUTH=null;saveAuth();render()})}else render()}else render();
 </script>
 </body>
 </html>
