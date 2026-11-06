@@ -10,7 +10,7 @@
     soon:   {cls: "soon", en: "Coming soon",    uz: "Tez kunda"},
     dev:    {cls: "soon", en: "In development", uz: "Ishlab chiqilmoqda"}
   };
-  var NAV = [["areas", "#what", {en: "What we do", uz: "Faoliyat"}], ["logo", "#logo", {en: "Our logo", uz: "Logotip"}], ["apps", "#apps", {en: "Apps", uz: "Ilovalar"}], ["principles", "#how", {en: "How we work", uz: "Qanday ishlaymiz"}], ["contact", "#contact", {en: "Contact", uz: "Aloqa"}]];
+  var NAV = [["goals", "#start", {en: "Start here", uz: "Boshlash"}], ["areas", "#what", {en: "What we do", uz: "Faoliyat"}], ["logo", "#logo", {en: "Our logo", uz: "Logotip"}], ["apps", "#apps", {en: "Apps", uz: "Ilovalar"}], ["principles", "#how", {en: "How we work", uz: "Qanday ishlaymiz"}], ["contact", "#contact", {en: "Contact", uz: "Aloqa"}]];
   // A section is shown only when it is switched on in the editor (Sections to show).
   function on(d, key) { if (key === "contact") return true; var s = d.sections; return !s || s[key] !== false; }
 
@@ -30,7 +30,7 @@
     u = String(u || "").trim();
     if (!u) return "";
     if (/^https:\/\//i.test(u) || /^#[\w-]*$/.test(u)) return esc(u);
-    if (/^(\/|\.\/)?[\w\-./]*$/.test(u) && u.indexOf("//") === -1 && u.indexOf("..") === -1) return esc(u.replace(/^\//, ""));
+    if (/^(\/|\.\/)?[\w\-./]*(#[\w=\-]*)?$/.test(u) && u.indexOf("//") === -1 && u.indexOf("..") === -1) return esc(u.replace(/^\//, ""));
     return "";
   }
   // Allow only images stored on our own site.
@@ -66,6 +66,13 @@
       btn(h.button_main, "solid", lang) + btn(h.button_second, "ghost", lang) + "</div></div>" +
       (safeImg(b.logo_main) ? '<img class="hero-logo" src="' + safeImg(b.logo_main) + '" alt="' + t(b.name, lang) + ' logo" width="715" height="716">' : "") +
       "</div></section>");
+    if (on(d, "goals") && list(d.goals).length) out.push('<section class="block goals" id="start"><div class="wrap">' + head(d.goals_intro || {}, lang) + '<div class="goalgrid">' +
+      list(d.goals).map(function (g) {
+        var live = g.status !== "soon" && g.status !== "dev", href = safeLink(g.button && g.button.link), more = safeLink(g.more && g.more.link);
+        return '<article class="goal' + (live ? "" : " later") + '"><span class="gico" aria-hidden="true">' + t(g.icon, lang) + "</span><h3>" + t(g.title, lang) + "</h3><p>" + t(g.text, lang) + "</p>" +
+          '<div class="gact">' + (live ? btn(g.button, "solid", lang) : chip(g.status, lang) + (href ? btn(g.button, "ghost", lang) : "")) +
+          (more && t(g.more, lang) ? '<a class="gmore" href="' + more + '"' + ext(more) + ">" + t(g.more, lang) + "</a>" : "") + "</div></article>";
+      }).join("") + "</div></div></section>");
     if (on(d, "facts") && list(d.facts).length) out.push('<div class="facts"><div class="wrap">' + list(d.facts).map(function (f) {
       return '<div class="fact"><b>' + t(f.number, lang) + "</b><span>" + t(f.label, lang) + "</span></div>";
     }).join("") + "</div></div>");
@@ -85,11 +92,11 @@
       '</div></div><ol class="parts">' + list(ls.parts).map(function (p, i) {
         return '<li><span class="n">' + (i + 1) + "</span><div><b>" + t(p.title, lang) + "</b><span>" + t(p.text, lang) + "</span></div></li>";
       }).join("") + "</ol></div></div></section>");
-    var fa = d.featured_app || {};
-    if (on(d, "apps")) out.push('<section class="block" id="apps"><div class="wrap">' + head(d.apps_intro || {}, lang) + '<div class="apps">' + (t(fa.name, lang) ? '<article class="feature"><div><p class="label">' + t(fa.label, lang) +
+    var fas = list(d.featured_apps).length ? list(d.featured_apps) : (d.featured_app ? [d.featured_app] : []);
+    if (on(d, "apps")) out.push('<section class="block" id="apps"><div class="wrap">' + head(d.apps_intro || {}, lang) + '<div class="apps"><div class="feats">' + fas.filter(function (fa) { return t(fa.name, lang); }).map(function (fa) { return '<article class="feature"><div><p class="label">' + t(fa.label, lang) +
       "</p><h3>" + t(fa.name, lang) + "</h3><p>" + t(fa.text, lang) + "</p><ul>" + list(fa.points).map(function (p) { return "<li>" + t(p, lang) + "</li>"; }).join("") + "</ul>" +
       btn(fa.button, "solid", lang) + "</div>" + (safeImg(fa.image) ? '<img src="' + safeImg(fa.image) + '" alt="' + t(fa.name, lang) + ' on a phone" width="540" height="960" loading="lazy">' : "") +
-      '</article>' : '') + '<div class="roadmap"><p class="label">' + t(d.coming_label, lang) + "</p>" + list(d.coming).map(function (c) {
+      '</article>'; }).join("") + '</div><div class="roadmap"><p class="label">' + t(d.coming_label, lang) + "</p>" + list(d.coming).map(function (c) {
         var href = safeLink(c.link), name = t(c.name, lang);
         return '<div class="rm"><div><b>' + (href ? '<a href="' + href + '"' + ext(href) + ">" + name + "</a>" : name) + '</b><span class="d">' + t(c.text, lang) + "</span></div>" + chip(c.status, lang) + "</div>";
       }).join("") + "</div></div></div></section>");

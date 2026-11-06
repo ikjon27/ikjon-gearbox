@@ -1101,6 +1101,9 @@ document.getElementById("exDlg").addEventListener("click",e=>{if(e.target.id==="
 (function(){try{const u=new URL(location.href);let k=u.searchParams.get("key");const h=new URLSearchParams(location.hash.slice(1));if(!k)k=h.get("key");
  if(k){u.searchParams.delete("key");history.replaceState(null,"",u.pathname+(u.search||""));view="settings";render();activateKey(k)}}catch(e){}})();
 try{speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
+/* deep link from the website: /fitness/#plan=men|women|hair|face|daily → asks one question, then shows that plan */
+(function(){const m=/^plan=(men|women|hair|face|daily)$/.exec(location.hash.slice(1));if(!m)return;const id=m[1];
+ quiz=id==="men"?{who:"m",goal:"body"}:id==="women"?{who:"w",goal:"body"}:{who:"m",goal:id};view="quiz";history.replaceState(null,"",location.pathname+location.search)})();
 const hv=location.hash.slice(1);if(["quiz","plans","month","body","lib","prog","premium","settings"].includes(hv))view=hv;
 render();gate();recheckKey();
 

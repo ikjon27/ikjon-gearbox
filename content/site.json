@@ -11,8 +11,9 @@
     "facts": false,
     "areas": false,
     "logo": false,
-    "apps": false,
-    "principles": true
+    "apps": true,
+    "principles": true,
+    "goals": true
   },
   "hero": {
     "label": {
@@ -37,11 +38,168 @@
       "link": "#contact"
     },
     "button_second": {
-      "en": "",
-      "uz": "",
-      "link": ""
+      "en": "What are you looking for?",
+      "uz": "Nimani izlayapsiz?",
+      "link": "#start"
     }
   },
+  "goals_intro": {
+    "label": {
+      "en": "Start here",
+      "uz": "Shu yerdan boshlang"
+    },
+    "title": {
+      "en": "What are you looking for?",
+      "uz": "Nimani izlayapsiz?"
+    },
+    "text": {
+      "en": "Pick what you need today and we'll open the right free app, ready on the right plan. No account needed.",
+      "uz": "Bugun sizga nima kerakligini tanlang — biz kerakli bepul ilovani mos reja bilan ochamiz. Ro'yxatdan o'tish shart emas."
+    }
+  },
+  "goals": [
+    {
+      "icon": "🩹",
+      "title": {
+        "en": "I'm injured or in pain",
+        "uz": "Jarohat oldim yoki og'riq bor"
+      },
+      "text": {
+        "en": "Day-by-day recovery plans for knee, ankle, back, shoulder and 20 more injuries.",
+        "uz": "Tizza, to'piq, bel, yelka va yana 20 ta jarohat uchun kunma-kun tiklanish rejalari."
+      },
+      "button": {
+        "en": "Find my recovery plan",
+        "uz": "Tiklanish rejamni topish",
+        "link": "/rehab/#find"
+      },
+      "status": "live",
+      "more": {
+        "en": "Read the injury guides",
+        "uz": "Jarohat qo'llanmalarini o'qish",
+        "link": "/rehab/guides/"
+      }
+    },
+    {
+      "icon": "💪",
+      "title": {
+        "en": "Stronger, fitter body — men",
+        "uz": "Kuchli va chiroyli tana — erkaklar"
+      },
+      "text": {
+        "en": "3-month home plan for shoulders, chest, back, legs and a firm waist.",
+        "uz": "Yelka, ko'krak, orqa, oyoq va mustahkam bel uchun 3 oylik uy rejasi."
+      },
+      "button": {
+        "en": "Start the men's plan",
+        "uz": "Erkaklar rejasini boshlash",
+        "link": "/fitness/#plan=men"
+      },
+      "status": "live"
+    },
+    {
+      "icon": "✨",
+      "title": {
+        "en": "Toned, strong body — women",
+        "uz": "Tarang va kuchli tana — ayollar"
+      },
+      "text": {
+        "en": "3-month home plan for glutes, legs, waist, arms and upright posture.",
+        "uz": "Dumba, oyoq, bel, qo'llar va tik qomat uchun 3 oylik uy rejasi."
+      },
+      "button": {
+        "en": "Start the women's plan",
+        "uz": "Ayollar rejasini boshlash",
+        "link": "/fitness/#plan=women"
+      },
+      "status": "live"
+    },
+    {
+      "icon": "💇",
+      "title": {
+        "en": "Hair & scalp care",
+        "uz": "Soch va bosh terisi parvarishi"
+      },
+      "text": {
+        "en": "Daily scalp massage, stress care and food habits that support healthy hair.",
+        "uz": "Har kuni bosh terisini uqalash, stressni kamaytirish va sog'lom soch uchun ovqatlanish odatlari."
+      },
+      "button": {
+        "en": "Start the hair plan",
+        "uz": "Soch rejasini boshlash",
+        "link": "/fitness/#plan=hair"
+      },
+      "status": "live"
+    },
+    {
+      "icon": "🙂",
+      "title": {
+        "en": "Face, neck & posture",
+        "uz": "Yuz, bo'yin va qomat"
+      },
+      "text": {
+        "en": "Stand taller and look fresher: face, eye and upper-back exercises.",
+        "uz": "Tikroq turing va tetikroq ko'rining: yuz, ko'z va yuqori orqa mashqlari."
+      },
+      "button": {
+        "en": "Start the posture plan",
+        "uz": "Qomat rejasini boshlash",
+        "link": "/fitness/#plan=face"
+      },
+      "status": "live"
+    },
+    {
+      "icon": "🌿",
+      "title": {
+        "en": "Stay healthy every day",
+        "uz": "Har kuni sog'lom bo'lish"
+      },
+      "text": {
+        "en": "A free 20-minute head-to-toe routine: hair, face, eyes, body, feet and habits.",
+        "uz": "Bepul 20 daqiqalik boshdan-oyoqqacha tartib: soch, yuz, ko'z, tana, oyoq va odatlar."
+      },
+      "button": {
+        "en": "Start the daily plan",
+        "uz": "Kundalik rejani boshlash",
+        "link": "/fitness/#plan=daily"
+      },
+      "status": "live"
+    },
+    {
+      "icon": "📚",
+      "title": {
+        "en": "Learn English & IELTS",
+        "uz": "Ingliz tili va IELTS"
+      },
+      "text": {
+        "en": "Courses from beginner to C2, IELTS preparation and Kids English.",
+        "uz": "Boshlang'ichdan C2 gacha kurslar, IELTS tayyorlov va bolalar ingliz tili."
+      },
+      "button": {
+        "en": "Ask about courses",
+        "uz": "Kurslar haqida so'rash",
+        "link": "#contact"
+      },
+      "status": "soon"
+    },
+    {
+      "icon": "⚽",
+      "title": {
+        "en": "Football training",
+        "uz": "Futbol mashg'ulotlari"
+      },
+      "text": {
+        "en": "Daily skill sessions and a 30-day plan for players.",
+        "uz": "O'yinchilar uchun kunlik mashg'ulotlar va 30 kunlik reja."
+      },
+      "button": {
+        "en": "",
+        "uz": "",
+        "link": ""
+      },
+      "status": "soon"
+    }
+  ],
   "facts": [
     {
       "number": "4",
@@ -322,42 +480,23 @@
       "uz": "Ilovalarimiz telefon yoki kompyuter brauzerida ochiladi, o'rnatiladi va internetsiz ham ishlaydi."
     }
   },
-  "featured_app": {
-    "label": {
-      "en": "Available now",
-      "uz": "Hozir mavjud"
-    },
-    "name": "IKJON Joint Rehab",
-    "text": {
-      "en": "Day-by-day plans to recover from sports injuries and keep every joint healthy.",
-      "uz": "Sport jarohatlaridan tiklanish va bo'g'imlar salomatligi uchun kunma-kun rejalar."
-    },
-    "points": [
-      {
-        "en": "24 injuries, 30 to 270-day plans by severity",
-        "uz": "24 ta jarohat uchun 30–270 kunlik rejalar"
-      },
-      {
-        "en": "113 exercises with photo and animated demos",
-        "uz": "113 ta mashq, foto va animatsiya bilan"
-      },
-      {
-        "en": "No account, no ads, no tracking",
-        "uz": "Hisob yo'q, reklama yo'q, kuzatuv yo'q"
-      }
-    ],
-    "button": {
-      "en": "Open the app",
-      "uz": "Ilovani ochish",
-      "link": "rehab/"
-    },
-    "image": "/brand/rehab-screen.png"
-  },
   "coming_label": {
     "en": "Coming next",
     "uz": "Keyingi bosqichlar"
   },
   "coming": [
+    {
+      "name": {
+        "en": "Injury rehab guides",
+        "uz": "Jarohatdan tiklanish qo'llanmalari"
+      },
+      "text": {
+        "en": "24 free guides in English, O'zbekcha and Русский",
+        "uz": "Ingliz, o'zbek va rus tillarida 24 ta bepul qo'llanma"
+      },
+      "status": "live",
+      "link": "rehab/guides/"
+    },
     {
       "name": {
         "en": "IKJON learning app",
@@ -381,18 +520,6 @@
       },
       "status": "soon",
       "link": ""
-    },
-    {
-      "name": {
-        "en": "IKJON Fitness",
-        "uz": "IKJON Fitness"
-      },
-      "text": {
-        "en": "Daily head-to-toe plans for men and women: workouts, hair, face, posture, feet and nails",
-        "uz": "Erkak va ayollar uchun boshdan-oyoqqacha kundalik rejalar: mashqlar, soch, yuz, qomat, oyoq va tirnoqlar"
-      },
-      "status": "live",
-      "link": "fitness/"
     },
     {
       "name": {
@@ -511,5 +638,69 @@
       "en": "© 2026 IKJON Consulting & Education Centre, Uzbekistan. All rights reserved. IKJON™ and the IKJON logo are trademarks of IKJON Consulting & Education Centre. This website uses no cookies and no tracking.",
       "uz": "© 2026 IKJON Consulting & Education Centre, O'zbekiston. Barcha huquqlar himoyalangan. IKJON™ va IKJON logotipi IKJON Consulting & Education Centre savdo belgilaridir. Bu sayt cookie yoki kuzatuv vositalaridan foydalanmaydi."
     }
-  }
+  },
+  "featured_apps": [
+    {
+      "label": {
+        "en": "Available now",
+        "uz": "Hozir mavjud"
+      },
+      "name": "IKJON Joint Rehab",
+      "text": {
+        "en": "Day-by-day plans to recover from sports injuries and keep every joint healthy.",
+        "uz": "Sport jarohatlaridan tiklanish va bo'g'imlar salomatligi uchun kunma-kun rejalar."
+      },
+      "points": [
+        {
+          "en": "24 injuries, 30 to 270-day plans by severity",
+          "uz": "24 ta jarohat uchun 30–270 kunlik rejalar"
+        },
+        {
+          "en": "113 exercises with photo and animated demos",
+          "uz": "113 ta mashq, foto va animatsiya bilan"
+        },
+        {
+          "en": "No account, no ads, no tracking",
+          "uz": "Hisob yo'q, reklama yo'q, kuzatuv yo'q"
+        }
+      ],
+      "button": {
+        "en": "Open Joint Rehab",
+        "uz": "Joint Rehab'ni ochish",
+        "link": "rehab/"
+      },
+      "image": "/brand/rehab-screen.png"
+    },
+    {
+      "label": {
+        "en": "Available now",
+        "uz": "Hozir mavjud"
+      },
+      "name": "IKJON Fitness",
+      "text": {
+        "en": "Daily head-to-toe health plans for men and women, from hair to toenails.",
+        "uz": "Erkak va ayollar uchun sochdan oyoq tirnoqlarigacha kundalik salomatlik rejalari."
+      },
+      "points": [
+        {
+          "en": "Men's & women's 3-month plans, hair, face & posture plans",
+          "uz": "Erkak va ayollar uchun 3 oylik rejalar, soch, yuz va qomat rejalari"
+        },
+        {
+          "en": "Voice coach, adaptive workouts, streaks & achievements",
+          "uz": "Ovozli murabbiy, moslashuvchan mashg'ulotlar, ketma-ketlik va yutuqlar"
+        },
+        {
+          "en": "English, O'zbekcha, Русский · no account, no tracking",
+          "uz": "English, O'zbekcha, Русский · hisob yo'q, kuzatuv yo'q"
+        }
+      ],
+      "button": {
+        "en": "Open IKJON Fitness",
+        "uz": "IKJON Fitness'ni ochish",
+        "link": "fitness/"
+      },
+      "image": "/brand/fitness-screen.png"
+    }
+  ]
 }

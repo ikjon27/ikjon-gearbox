@@ -55,6 +55,11 @@ collections:
       hint: Switch a section on when its content is ready. Hidden sections keep their content saved.
       widget: object
       fields:
+      - name: goals
+        label: What are you looking for? (goal buttons)
+        widget: boolean
+        default: true
+        required: false
       - name: facts
         label: Numbers strip
         widget: boolean
@@ -79,6 +84,135 @@ collections:
         label: How we work
         widget: boolean
         default: false
+        required: false
+      required: false
+    - name: goals_intro
+      label: '''What are you looking for?'' heading'
+      widget: object
+      collapsed: true
+      fields:
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: label
+        label: Small label
+        required: false
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Heading
+        required: false
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Introduction
+        required: false
+      required: false
+    - name: goals
+      label: Goal buttons (visitor picks what they need)
+      hint: Each card sends visitors to the right app. Links like /fitness/#plan=men open a plan directly; /rehab/#find opens the rehab plan finder.
+      widget: list
+      summary: '{{fields.title.en}}'
+      fields:
+      - name: icon
+        label: Emoji icon
+        widget: string
+        required: false
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: string
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: string
+          required: false
+        name: title
+        label: Title
+        required: false
+      - widget: object
+        collapsed: false
+        fields:
+        - name: en
+          label: English
+          widget: text
+          required: false
+        - name: uz
+          label: O'zbekcha
+          widget: text
+          required: false
+        name: text
+        label: Short description
+        required: false
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Button text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Button text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link (e.g. /fitness/#plan=men or /rehab/#find)
+          widget: string
+          required: false
+        name: button
+        label: Button
+        required: false
+      - widget: object
+        collapsed: true
+        fields:
+        - name: en
+          label: Extra link text (English)
+          widget: string
+          required: false
+        - name: uz
+          label: Extra link text (O'zbekcha)
+          widget: string
+          required: false
+        - name: link
+          label: Link
+          widget: string
+          required: false
+        name: more
+        label: Extra link (optional)
+        required: false
+      - name: status
+        label: Status
+        widget: select
+        options: [live, soon, dev]
+        default: live
         required: false
       required: false
     - name: hero
@@ -469,10 +603,10 @@ collections:
       name: apps_intro
       label: '''Apps'' heading'
       required: false
-    - name: featured_app
-      label: Featured app
-      widget: object
-      collapsed: true
+    - name: featured_apps
+      label: Featured apps (big cards with a button)
+      widget: list
+      summary: '{{fields.name}}'
       fields:
       - widget: object
         collapsed: false
