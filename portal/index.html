@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IKJON Consulting Centre — Portal</title>
+<meta name="description" content="Sign-in portal for IKJON Consulting & Education Centre staff and students.">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0B2236">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="/rehab/icons/favicon-48.png" sizes="48x48" type="image/png">
+<style>
+:root{
+  --navy:#1A4264;--navy-d:#0B2236;--teal:#0097B2;--orange:#D9711F;--orange-l:#F08A35;
+  --bg:#F3F6F9;--surface:#FFFFFF;--ink:#13304A;--muted:#5A7186;--line:#DCE5EC;--tint:#E8F3F7;--good:#1E7B4A;--bad:#B3261E;
+  --side:#0B2236;--side-ink:#CFE0EA;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;--display:Georgia,"Noto Serif",serif;
+  color-scheme:light
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1620;--surface:#11222F;--ink:#E4EEF4;--muted:#9DB4C4;--line:#213648;--tint:#14303E;--teal:#2DB7D1;--orange:#EE8A3C;--good:#6FD39C;--bad:#F2B8B5;--side:#071521;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0A1620;--surface:#11222F;--ink:#E4EEF4;--muted:#9DB4C4;--line:#213648;--tint:#14303E;--teal:#2DB7D1;--orange:#EE8A3C;--good:#6FD39C;--bad:#F2B8B5;--side:#071521;color-scheme:dark}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--body)}
+a{color:var(--teal)}button,input,select,textarea{font:inherit;color:inherit}
+[hidden]{display:none!important}
+h1,h2,h3{margin:0;line-height:1.2}
+.muted{color:var(--muted)}.small{font-size:.88rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer;text-decoration:none;background:linear-gradient(135deg,var(--orange-l),var(--orange));color:#fff;box-shadow:0 8px 20px -10px rgba(217,113,31,.8)}
+.btn:hover{filter:brightness(1.05)}.btn:focus-visible,.nav a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.btn.alt{background:var(--surface);color:var(--ink);border:1.5px solid var(--line);box-shadow:none}.btn.alt:hover{border-color:var(--teal)}
+.btn.sm{padding:8px 13px;font-size:.9rem;border-radius:10px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:3px 10px;background:var(--tint);color:var(--teal)}
+.chip.o{background:rgba(217,113,31,.14);color:var(--orange)}.chip.g{background:rgba(30,123,74,.14);color:var(--good)}.chip.lock{background:var(--line);color:var(--muted)}
+input,select,textarea{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px}
+label.f{display:block;font-weight:700;font-size:.9rem;margin:14px 0 6px}
+
+/* ---------- sign in ---------- */
+.login{min-height:100vh;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.login-art{position:relative;overflow:hidden;color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between;
+  background:radial-gradient(900px 500px at 90% 0%,rgba(0,151,178,.5),transparent 60%),radial-gradient(600px 400px at 0% 100%,rgba(217,113,31,.4),transparent 60%),linear-gradient(160deg,#0B2236,#123A5A 60%,#1A4264)}
+.login-art::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.2px);background-size:22px 22px}
+.login-art>*{position:relative}
+.brandrow{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}.brandrow img{height:42px;width:auto}
+.brandrow b{font-family:var(--display);font-weight:400;letter-spacing:.3em;font-size:1.25rem}
+.login-art h1{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;max-width:12em}
+.login-art h1 em{font-style:normal;color:#F59A4E}
+.login-art ul{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:10px;color:#CFE3EE}
+.login-art li::before{content:"✓";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:rgba(0,151,178,.35);color:#9FEAF8;font-size:.75rem;font-weight:800;margin-right:10px}
+.login-form{display:grid;place-items:center;padding:40px 24px;background:var(--surface)}
+.card-login{width:min(100%,400px)}
+.card-login h2{font-size:1.7rem;margin-bottom:6px}
+.err{color:var(--bad);font-weight:700;margin-top:10px;min-height:1.4em}
+.demo{margin-top:22px;padding:16px;border-radius:14px;background:var(--tint);border:1px dashed var(--teal)}
+.demo .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.langsw{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.12)}
+.langsw button{border:0;background:none;color:inherit;padding:5px 11px;border-radius:999px;font-weight:700;font-size:.8rem;cursor:pointer}
+.langsw button[aria-pressed="true"]{background:#fff;color:#0B2236}
+@media (max-width:860px){.login{grid-template-columns:1fr}.login-art{padding:28px 20px;min-height:auto}.login-art ul{display:none}.login-art h1{font-size:1.9rem;margin-top:22px}}
+
+/* ---------- app shell ---------- */
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--side-ink);padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px}
+.side .brandrow img{height:34px}.side .brandrow b{font-size:1.05rem}
+.side .sub{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#7FA8BF;margin-top:-8px;padding-left:2px}
+.nav{display:grid;gap:4px}
+.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;color:var(--side-ink);text-decoration:none;font-weight:600}
+.nav a svg{flex:none;opacity:.85}
+.nav a:hover{background:rgba(255,255,255,.06)}
+.nav a[aria-current]{background:linear-gradient(135deg,rgba(0,151,178,.35),rgba(0,151,178,.15));color:#fff;box-shadow:inset 3px 0 0 #2DB7D1}
+.me{margin-top:auto;display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:rgba(255,255,255,.05)}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;background:linear-gradient(135deg,var(--teal),#0B6F84);flex:none}
+.me b{display:block;color:#fff;font-size:.95rem}.me span{font-size:.78rem;color:#8FB3C7}
+.me button{margin-left:auto;background:none;border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:10px;padding:6px 9px;cursor:pointer;font-size:.8rem}
+.main{padding:28px clamp(16px,3vw,40px) 90px;max-width:1200px;width:100%}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:22px}
+.topbar h1{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:800;letter-spacing:-.02em}
+.preview{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(217,113,31,.12);color:var(--ink);border:1px solid rgba(217,113,31,.35);border-radius:12px;padding:10px 14px;margin-bottom:18px;font-size:.92rem}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 1px 2px rgba(10,30,45,.04),0 10px 26px -18px rgba(10,30,45,.25)}
+.card h3{font-size:1.05rem;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.welcome{position:relative;overflow:hidden;color:#fff;border:0;background:radial-gradient(500px 260px at 100% 0%,rgba(0,151,178,.55),transparent 60%),linear-gradient(135deg,#0B2236,#1A4264)}
+.welcome h2{font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:800;letter-spacing:-.02em}
+.welcome p{color:#CFE3EE;margin:6px 0 0}
+.welcome .stats{display:flex;gap:24px;flex-wrap:wrap;margin-top:18px}
+.welcome .stats b{display:block;font-size:1.6rem;font-weight:800;color:#fff}.welcome .stats span{font-size:.82rem;color:#A9CADB}
+.kpi b{display:block;font-size:1.9rem;font-weight:800;letter-spacing:-.02em}.kpi span{color:var(--muted);font-size:.9rem}
+.list{list-style:none;margin:0;padding:0;display:grid}
+.list li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}.list li:first-child{border-top:0;padding-top:0}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--teal);margin-top:7px;flex:none}.dot.o{background:var(--orange)}
+.bar{height:9px;border-radius:999px;background:var(--line);overflow:hidden}.bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--teal),#2DB7D1)}
+.course{display:flex;flex-direction:column;gap:10px}
+.course .top{display:flex;align-items:center;gap:12px}
+.cico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:1.4rem;flex:none}
+.units{list-style:none;padding:0;margin:4px 0 0;display:grid;gap:6px}
+.units li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 12px;border-radius:10px;background:var(--bg);font-size:.93rem}
+.units li.locked{color:var(--muted)}
+.tt{width:100%;border-collapse:separate;border-spacing:0;font-size:.92rem}
+.tt th,.tt td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.tt th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.slot{display:block;padding:8px 10px;border-radius:10px;background:var(--tint);border-left:4px solid var(--teal);margin-bottom:6px}.slot b{display:block}.slot.o{background:rgba(217,113,31,.1);border-left-color:var(--orange)}
+.tblwrap{overflow-x:auto}
+.apptile{display:flex;flex-direction:column;gap:8px;text-decoration:none;color:inherit;transition:transform .15s,border-color .15s}
+.apptile:hover{transform:translateY(-3px);border-color:var(--teal)}
+.apptile .cico{width:54px;height:54px;font-size:1.6rem}
+.cert{display:flex;gap:14px;align-items:center}
+.cert .medal{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;background:linear-gradient(135deg,#FFD58A,#D9711F);flex:none}
+table.people{width:100%;border-collapse:collapse;font-size:.93rem}table.people th,table.people td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+table.people th{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--good);color:#fff;font-weight:700;padding:12px 18px;border-radius:12px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);z-index:50}
+dialog{border:0;border-radius:18px;padding:0;max-width:min(560px,94vw);width:100%;background:var(--surface);color:var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.6)}
+dialog::backdrop{background:rgba(5,15,25,.55)}
+.dlg{padding:22px}
+/* certificate (also printable) */
+.certificate{background:#FFFDF6;color:#13304A;border:10px solid #1A4264;outline:2px solid #D9711F;outline-offset:-18px;padding:46px 40px;text-align:center;font-family:var(--display);aspect-ratio:1.414/1;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.certificate .t{letter-spacing:.35em;font-size:.9rem;color:#0097B2}.certificate h2{font-size:2.2rem;font-weight:400}.certificate .n{font-size:2rem;color:#D9711F;border-bottom:1px solid #D9711F;display:inline-block;padding:0 24px 6px;margin:6px auto}
+.certificate .row{display:flex;justify-content:space-between;margin-top:22px;font-family:var(--body);font-size:.85rem}
+@media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:fixed;inset:0;margin:0}}
+/* mobile */
+.bnav{display:none}
+@media (max-width:900px){
+ .shell{grid-template-columns:1fr}.side{display:none}
+ .bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--side);padding:6px 6px calc(6px + env(safe-area-inset-bottom));justify-content:space-around;gap:2px}
+ .bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9DB8C8;text-decoration:none;font-size:.68rem;font-weight:700;padding:6px 2px;border-radius:10px}
+ .bnav a[aria-current]{color:#fff;background:rgba(0,151,178,.3)}
+ .mtop{display:flex!important}
+}
+.mtop{display:none;align-items:center;justify-content:space-between;background:var(--side);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:20}
+.mtop .brandrow img{height:30px}.mtop .brandrow b{font-size:.95rem}
+.mtop button{background:none;border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:10px;padding:6px 10px;font-size:.8rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<dialog id="dlg"><div class="dlg" id="dlgBody"></div></dialog>
+<script>
+"use strict";
+/* ============================================================
+   IKJON Consulting Centre — portal
+   PREVIEW MODE: until CONFIG has a Supabase URL + anon key, the portal runs on sample
+   data in this browser only. Nothing is sent anywhere. Real sign-in replaces the demo.
+   ============================================================ */
+const CONFIG={supabaseUrl:"",anonKey:""};
+const PREVIEW=!CONFIG.supabaseUrl;
+
+/* ---------- language ---------- */
+let LANG=(()=>{try{return localStorage.getItem("ikjon-portal-lang")||((navigator.language||"").startsWith("uz")?"uz":"en")}catch(e){return"en"}})();
+const T={
+ en:{portal:"Portal",tag:"IKJON Consulting & Education Centre",h1a:"Your centre,",h1b:"all in one place.",p1:"Courses and homework opened by your teacher",p2:"Class timetable and centre announcements",p3:"Progress, level results and certificates",p4:"IKJON Fitness, Joint Rehab and more",signin:"Sign in",signin_p:"Use the login given to you by IKJON. There is no public sign-up.",login:"Email or username",pass:"Password",go:"Sign in",forgot:"Forgot your password? Ask your teacher or the centre to reset it.",back:"← Back to website",demo_h:"Preview mode",demo_p:"The real database isn't connected yet. Explore with sample data:",as_owner:"Owner",as_teacher:"Teacher",as_student:"Student",demo_err:"Preview mode: choose a sample account below.",
+  dash:"Dashboard",courses:"Courses",tt:"Timetable",news:"Announcements",prog:"Progress & certificates",apps:"Apps",people:"People & groups",settings:"Settings",signout:"Sign out",
+  hi:"Welcome back, {n}",today:"Today is {d}.",next:"Next class",nextnone:"No more classes today",latest:"Latest announcements",yourcourses:"Your courses",seeall:"See all",
+  owner:"Owner",teacher:"Teacher",student:"Student",students:"Students",groups:"Groups",teachers:"Teachers",classes:"Classes this week",unread:"New announcements",avg:"Average progress",
+  open:"Open",locked:"Not open yet",opens:"Opens {d}",done:"Done",units:"units open",room:"Room",newpost:"New announcement",title:"Title",msg:"Message",aud:"Who can see it",all:"Everyone",post:"Post",posted:"Announcement posted",
+  level:"Level",certs:"Certificates",nocerts:"No certificates yet — keep going!",view:"View & download",print:"Print / save as PDF",close:"Close",certof:"Certificate of achievement",awarded:"is awarded to",forcomp:"for successfully completing",date:"Date",certid:"Certificate no.",director:"Director",
+  appsp:"Your IKJON apps. Fitness and Joint Rehab open in a new tab and keep your progress on your own phone.",soon:"Coming soon",
+  addlogin:"Create login",name:"Full name",group:"Group",role:"Role",status:"Status",active:"Active",created:"Login created (preview — not saved to a server)",
+  prev_bar:"Preview with sample data — nothing is saved to a server.",exit:"Exit preview",
+  setp:"Language",theme:"Appearance",auto:"Automatic",light:"Light",dark:"Dark",security:"Security",sec1:"Two-step sign-in (code from an authenticator app) is required for the owner account once the database is connected.",sec2:"You are signed out automatically after 30 minutes without activity.",lastin:"Last sign-in: {d}",
+  mon:"Mon",tue:"Tue",wed:"Wed",thu:"Thu",fri:"Fri",sat:"Sat",progress_of:"{p}% complete",teacher_l:"Teacher"},
+ uz:{portal:"Portal",tag:"IKJON Consulting & Education Centre",h1a:"Markazingiz —",h1b:"hammasi bir joyda.",p1:"O'qituvchingiz ochgan kurslar va uy vazifalari",p2:"Dars jadvali va markaz e'lonlari",p3:"Natijalar, daraja va sertifikatlar",p4:"IKJON Fitness, Joint Rehab va boshqalar",signin:"Kirish",signin_p:"IKJON bergan login bilan kiring. Ochiq ro'yxatdan o'tish yo'q.",login:"Email yoki login",pass:"Parol",go:"Kirish",forgot:"Parolni unutdingizmi? O'qituvchingiz yoki markazdan uni tiklashni so'rang.",back:"← Saytga qaytish",demo_h:"Ko'rib chiqish rejimi",demo_p:"Haqiqiy baza hali ulanmagan. Namuna ma'lumotlar bilan ko'rib chiqing:",as_owner:"Rahbar",as_teacher:"O'qituvchi",as_student:"Talaba",demo_err:"Ko'rib chiqish rejimi: quyidan namuna hisobni tanlang.",
+  dash:"Bosh sahifa",courses:"Kurslar",tt:"Dars jadvali",news:"E'lonlar",prog:"Natijalar va sertifikatlar",apps:"Ilovalar",people:"Odamlar va guruhlar",settings:"Sozlamalar",signout:"Chiqish",
+  hi:"Xush kelibsiz, {n}",today:"Bugun {d}.",next:"Keyingi dars",nextnone:"Bugun boshqa dars yo'q",latest:"So'nggi e'lonlar",yourcourses:"Kurslaringiz",seeall:"Hammasi",
+  owner:"Rahbar",teacher:"O'qituvchi",student:"Talaba",students:"Talabalar",groups:"Guruhlar",teachers:"O'qituvchilar",classes:"Bu haftadagi darslar",unread:"Yangi e'lonlar",avg:"O'rtacha natija",
+  open:"Ochiq",locked:"Hali ochilmagan",opens:"{d} ochiladi",done:"Bajarildi",units:"bo'lim ochiq",room:"Xona",newpost:"Yangi e'lon",title:"Sarlavha",msg:"Matn",aud:"Kim ko'radi",all:"Hamma",post:"E'lon qilish",posted:"E'lon joylandi",
+  level:"Daraja",certs:"Sertifikatlar",nocerts:"Hali sertifikat yo'q — davom eting!",view:"Ko'rish va yuklab olish",print:"Chop etish / PDF saqlash",close:"Yopish",certof:"Yutuq sertifikati",awarded:"ga beriladi",forcomp:"muvaffaqiyatli tamomlagani uchun",date:"Sana",certid:"Sertifikat №",director:"Direktor",
+  appsp:"IKJON ilovalaringiz. Fitness va Joint Rehab yangi oynada ochiladi va natijalaringizni o'z telefoningizda saqlaydi.",soon:"Tez kunda",
+  addlogin:"Login yaratish",name:"To'liq ism",group:"Guruh",role:"Rol",status:"Holat",active:"Faol",created:"Login yaratildi (ko'rib chiqish — serverga saqlanmadi)",
+  prev_bar:"Namuna ma'lumotlar bilan ko'rib chiqish — serverga hech narsa saqlanmaydi.",exit:"Chiqish",
+  setp:"Til",theme:"Ko'rinish",auto:"Avtomatik",light:"Yorug'",dark:"Qorong'i",security:"Xavfsizlik",sec1:"Baza ulangach, rahbar hisobi uchun ikki bosqichli kirish (autentifikator ilovasidagi kod) majburiy bo'ladi.",sec2:"30 daqiqa harakatsizlikdan so'ng tizimdan avtomatik chiqasiz.",lastin:"Oxirgi kirish: {d}",
+  mon:"Du",tue:"Se",wed:"Ch",thu:"Pa",fri:"Ju",sat:"Sh",progress_of:"{p}% bajarildi",teacher_l:"O'qituvchi"}
+};
+const t=(k,v)=>{let s=(T[LANG]&&T[LANG][k])||T.en[k]||k;if(v)for(const x in v)s=s.split("{"+x+"}").join(v[x]);return s};
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- sample data (preview only) ---------- */
+const D={
+ users:[
+  {id:"u1",name:"Ikromjon",role:"owner"},
+  {id:"u2",name:"Dilnoza Karimova",role:"teacher",groups:["g1","g2"]},
+  {id:"u3",name:"Sardor Aliyev",role:"student",groups:["g1"]},
+  {id:"u4",name:"Madina Yusupova",role:"student",groups:["g1"]},
+  {id:"u5",name:"Jasur Tursunov",role:"student",groups:["g2"]},
+  {id:"u6",name:"Nilufar Rashidova",role:"student",groups:["g3"]},
+  {id:"u7",name:"Aziz Rahimov",role:"teacher",groups:["g3"]}],
+ groups:[{id:"g1",name:"IELTS 6.5 — Evening",teacher:"u2"},{id:"g2",name:"General English B1 — Morning",teacher:"u2"},{id:"g3",name:"Kids English — Saturday",teacher:"u7"}],
+ courses:[
+  {id:"ielts",icon:"🎯",col:"rgba(0,151,178,.15)",name:"IELTS Preparation",groups:["g1"],units:[["Reading — Skimming & scanning","open",100],["Listening — Section 1 & 2","open",80],["Writing Task 1 — Graphs","open",40],["Speaking Part 2 — Cue cards","date","2026-11-12"],["Full mock test 1","lock"]]},
+  {id:"gen",icon:"📘",col:"rgba(217,113,31,.15)",name:"General English B1",groups:["g2"],units:[["Unit 1 — People & places","open",100],["Unit 2 — Past experiences","open",60],["Unit 3 — Future plans","date","2026-11-10"],["Unit 4 — Health & body","lock"]]},
+  {id:"ml",icon:"🏅",col:"rgba(30,123,74,.15)",name:"Multilevel (CEFR) exam",groups:["g1","g2"],units:[["B1 — Reading path","open",30],["B1 — Listening path","open",0],["B2 — Writing path","lock"]]},
+  {id:"kids",icon:"🧸",col:"rgba(122,90,200,.15)",name:"Kids English",groups:["g3"],units:[["Colours & numbers","open",100],["My family","open",50],["Animals","lock"]]}],
+ tt:[
+  {d:0,s:"09:00",e:"10:30",g:"g2",r:"2"},{d:2,s:"09:00",e:"10:30",g:"g2",r:"2"},{d:4,s:"09:00",e:"10:30",g:"g2",r:"2"},
+  {d:0,s:"18:00",e:"19:30",g:"g1",r:"1"},{d:1,s:"18:00",e:"19:30",g:"g1",r:"1"},{d:3,s:"18:00",e:"19:30",g:"g1",r:"1"},
+  {d:5,s:"10:00",e:"11:30",g:"g3",r:"3"}],
+ news:[
+  {id:"n1",title:"Mock IELTS test on Saturday",body:"Full mock test (Listening, Reading, Writing) this Saturday at 10:00 in Room 1. Bring a pencil and your ID.",date:"2026-11-05",aud:"g1",by:"u2"},
+  {id:"n2",title:"Centre closed on 8 December",body:"The centre is closed for Constitution Day. Classes move to the next lesson day.",date:"2026-11-03",aud:"all",by:"u1"},
+  {id:"n3",title:"New: IKJON Fitness app",body:"Try our free daily head-to-toe health plans — open Apps in the portal.",date:"2026-11-01",aud:"all",by:"u1"}],
+ levels:{u3:[["A2","done",100],["B1","now",72],["B2","next",0]],u4:[["B1","now",45]],u5:[["A2","done",100],["B1","now",30]],u6:[["Starter","now",60]]},
+ certs:{u3:[{id:"IK-2026-0142",title:"General English A2",date:"2026-06-20"}]}
+};
+let S={user:null,view:"dash",theme:"auto"};
+try{const o=JSON.parse(sessionStorage.getItem("ikjon-portal")||"null");if(o)S=Object.assign(S,o)}catch(e){}
+const save=()=>{try{sessionStorage.setItem("ikjon-portal",JSON.stringify({user:S.user,view:S.view,theme:S.theme}));localStorage.setItem("ikjon-portal-lang",LANG)}catch(e){}};
+const me=()=>D.users.find(u=>u.id===S.user);
+const myGroups=u=>u.role==="owner"?D.groups.map(g=>g.id):(u.groups||[]);
+const gname=id=>(D.groups.find(g=>g.id===id)||{}).name||"";
+const uname=id=>(D.users.find(u=>u.id===id)||{}).name||"";
+const fmtDate=s=>new Date(s+"T12:00:00").toLocaleDateString(LANG==="uz"?"uz-UZ":"en-GB",{day:"numeric",month:"long",year:"numeric"});
+const DAYS=["mon","tue","wed","thu","fri","sat"];
+const initials=n=>n.split(" ").map(x=>x[0]).slice(0,2).join("").toUpperCase();
+function applyTheme(){const r=document.documentElement;if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme)}
+
+/* ---------- icons ---------- */
+const I=n=>`<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${({
+ dash:'<rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/>',
+ courses:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M8 7h8M8 11h6"/>',
+ tt:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+ news:'<path d="M3 11l15-6v14L3 13z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+ prog:'<circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/>',
+ apps:'<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
+ people:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6"/><path d="M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-5-5.7"/>',
+ settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
+})[n]||""}</svg>`;
+const NAV=u=>[["dash"],["courses"],["tt"],["news"],["prog"],["apps"]].concat(u.role!=="student"?[["people"]]:[]).concat([["settings"]]);
+
+/* ---------- views ---------- */
+function dashView(u){
+ const gs=myGroups(u),now=new Date(),wd=(now.getDay()+6)%7,hm=now.toTimeString().slice(0,5);
+ const nextC=D.tt.filter(x=>gs.includes(x.g)&&x.d===wd&&x.e>hm).sort((a,b)=>a.s<b.s?-1:1)[0];
+ const news=D.news.filter(n=>n.aud==="all"||gs.includes(n.aud)).slice(0,3);
+ const courses=D.courses.filter(c=>c.groups.some(g=>gs.includes(g)));
+ const stats=u.role==="owner"?[[D.users.filter(x=>x.role==="student").length,t("students")],[D.groups.length,t("groups")],[D.users.filter(x=>x.role==="teacher").length,t("teachers")]]
+  :u.role==="teacher"?[[gs.length,t("groups")],[D.users.filter(x=>x.role==="student"&&(x.groups||[]).some(g=>gs.includes(g))).length,t("students")],[D.tt.filter(x=>gs.includes(x.g)).length,t("classes")]]
+  :[[courses.length,t("courses")],[news.length,t("unread")],[((D.levels[u.id]||[]).find(l=>l[1]==="now")||[0,0,0])[2]+"%",t("avg")]];
+ return `<div class="grid" style="gap:18px">
+ <section class="card welcome"><p class="small" style="letter-spacing:.14em;text-transform:uppercase;color:#8FD6E6;margin:0 0 6px">${esc(t(u.role))}</p><h2>${esc(t("hi",{n:u.name.split(" ")[0]}))}</h2><p>${esc(t("today",{d:now.toLocaleDateString(LANG==="uz"?"uz-UZ":"en-GB",{weekday:"long",day:"numeric",month:"long"})}))}</p>
+  <div class="stats">${stats.map(s=>`<div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div>`).join("")}</div></section>
+ <div class="grid g2">
+  <section class="card"><h3>⏰ ${t("next")}</h3>${nextC?`<div class="slot"><b>${esc(gname(nextC.g))}</b>${nextC.s}–${nextC.e} · ${t("room")} ${esc(nextC.r)}</div>`:`<p class="muted">${t("nextnone")}</p>`}
+   <a href="#tt" class="small" data-go="tt">${t("seeall")} →</a></section>
+  <section class="card"><h3>📣 ${t("latest")}</h3><ul class="list">${news.map(n=>`<li><span class="dot${n.aud==="all"?" o":""}"></span><div><b>${esc(n.title)}</b><div class="small muted">${esc(fmtDate(n.date))} · ${esc(uname(n.by))}</div></div></li>`).join("")}</ul>
+   <a href="#news" class="small" data-go="news">${t("seeall")} →</a></section>
+ </div>
+ <section><div class="topbar" style="margin:6px 0 12px"><h3 style="font-size:1.15rem">${t("yourcourses")}</h3><a href="#courses" class="small" data-go="courses">${t("seeall")} →</a></div>
+  <div class="grid g3">${courses.map(courseCard).join("")}</div></section>
+ </div>`}
+function courseCard(c){const open=c.units.filter(x=>x[1]==="open"),pct=Math.round(open.reduce((a,x)=>a+x[2],0)/Math.max(1,c.units.length));
+ return `<article class="card course"><div class="top"><span class="cico" style="background:${c.col}">${c.icon}</span><div><b>${esc(c.name)}</b><div class="small muted">${open.length}/${c.units.length} ${t("units")}</div></div></div>
+ <div class="bar"><i style="width:${pct}%"></i></div><span class="small muted">${esc(t("progress_of",{p:pct}))}</span></article>`}
+function coursesView(u){const gs=myGroups(u);return `<div class="grid g2">${D.courses.filter(c=>c.groups.some(g=>gs.includes(g))).map(c=>`<article class="card course">
+ <div class="top"><span class="cico" style="background:${c.col}">${c.icon}</span><div><h3 style="margin:0">${esc(c.name)}</h3><div class="small muted">${c.groups.filter(g=>gs.includes(g)).map(gname).map(esc).join(" · ")}</div></div></div>
+ <ul class="units">${c.units.map(x=>`<li class="${x[1]==="open"?"":"locked"}"><span>${x[1]==="open"?"📖":"🔒"} ${esc(x[0])}</span>${x[1]==="open"?(x[2]>=100?`<span class="chip g">${t("done")}</span>`:`<span class="chip">${x[2]}%</span>`):x[1]==="date"?`<span class="chip o">${esc(t("opens",{d:fmtDate(x[2])}))}</span>`:`<span class="chip lock">${t("locked")}</span>`}</li>`).join("")}</ul></article>`).join("")}</div>`}
+function ttView(u){const gs=myGroups(u),ds=DAYS;
+ return `<div class="card tblwrap"><table class="tt"><thead><tr>${ds.map(d=>`<th>${t(d)}</th>`).join("")}</tr></thead><tbody><tr>${ds.map((d,i)=>`<td>${D.tt.filter(x=>x.d===i&&gs.includes(x.g)).sort((a,b)=>a.s<b.s?-1:1).map(x=>`<span class="slot${x.g==="g3"?" o":""}"><b>${x.s}–${x.e}</b>${esc(gname(x.g))}<br><span class="small muted">${t("room")} ${esc(x.r)} · ${esc(uname((D.groups.find(g=>g.id===x.g)||{}).teacher))}</span></span>`).join("")||'<span class="small muted">—</span>'}</td>`).join("")}</tr></tbody></table></div>`}
+function newsView(u){const gs=myGroups(u),can=u.role!=="student";
+ return `${can?`<section class="card" style="margin-bottom:16px"><h3>✍️ ${t("newpost")}</h3><label class="f" for="nt">${t("title")}</label><input id="nt" maxlength="120"><label class="f" for="nb">${t("msg")}</label><textarea id="nb" rows="3" maxlength="1500"></textarea>
+ <label class="f" for="na">${t("aud")}</label><select id="na">${u.role==="owner"?`<option value="all">${t("all")}</option>`:""}${gs.map(g=>`<option value="${g}">${esc(gname(g))}</option>`).join("")}</select><div style="margin-top:14px"><button class="btn" id="postBtn">${t("post")}</button></div></section>`:""}
+ <div class="grid">${D.news.filter(n=>n.aud==="all"||gs.includes(n.aud)).map(n=>`<article class="card"><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px"><span class="chip${n.aud==="all"?" o":""}">${esc(n.aud==="all"?t("all"):gname(n.aud))}</span><span class="small muted">${esc(fmtDate(n.date))} · ${esc(uname(n.by))}</span></div><h3>${esc(n.title)}</h3><p style="margin:0">${esc(n.body)}</p></article>`).join("")}</div>`}
+function progView(u){
+ const sid=u.role==="student"?u.id:null;
+ if(!sid){const st=D.users.filter(x=>x.role==="student"&&(u.role==="owner"||(x.groups||[]).some(g=>myGroups(u).includes(g))));
+  return `<div class="card tblwrap"><table class="people"><thead><tr><th>${t("name")}</th><th>${t("group")}</th><th>${t("level")}</th><th style="min-width:160px">%</th><th>${t("certs")}</th></tr></thead><tbody>${st.map(s=>{const l=(D.levels[s.id]||[]).find(x=>x[1]==="now")||["—","",0];
+   return `<tr><td><b>${esc(s.name)}</b></td><td>${esc((s.groups||[]).map(gname).join(", "))}</td><td>${esc(l[0])}</td><td><div class="bar"><i style="width:${l[2]}%"></i></div><span class="small muted">${l[2]}%</span></td><td>${(D.certs[s.id]||[]).length}</td></tr>`}).join("")}</tbody></table></div>`}
+ const lv=D.levels[sid]||[],cs=D.certs[sid]||[];
+ return `<div class="grid g2"><section class="card"><h3>📈 ${t("level")}</h3><ul class="list">${lv.map(l=>`<li style="flex-direction:column;align-items:stretch;gap:6px"><div style="display:flex;justify-content:space-between"><b>${esc(l[0])}</b>${l[1]==="done"?`<span class="chip g">${t("done")}</span>`:l[1]==="now"?`<span class="chip">${l[2]}%</span>`:`<span class="chip lock">${t("locked")}</span>`}</div><div class="bar"><i style="width:${l[2]}%"></i></div></li>`).join("")}</ul></section>
+ <section class="card"><h3>🏅 ${t("certs")}</h3>${cs.length?cs.map(c=>`<div class="cert"><span class="medal">🏅</span><div style="flex:1"><b>${esc(c.title)}</b><div class="small muted">${esc(fmtDate(c.date))} · ${esc(c.id)}</div></div><button class="btn sm" data-cert="${esc(c.id)}">${t("view")}</button></div>`).join(""):`<p class="muted">${t("nocerts")}</p>`}</section></div>`}
+function appsView(){const A=[["/fitness/","💪","rgba(217,113,31,.15)","IKJON Fitness","Daily head-to-toe plans for men and women",1],["/rehab/","🩹","rgba(0,151,178,.15)","IKJON Joint Rehab","Day-by-day injury recovery plans",1],["/rehab/guides/","📚","rgba(30,123,74,.15)","Injury guides","24 free guides in EN · UZ · RU",1],["","⚽","rgba(120,120,120,.15)","IKJON Football Training","Daily skill sessions and a 30-day plan",0]];
+ return `<p class="muted" style="margin:0 0 16px">${t("appsp")}</p><div class="grid g4">${A.map(a=>a[5]?`<a class="card apptile" href="${a[0]}" target="_blank" rel="noopener"><span class="cico" style="background:${a[2]}">${a[1]}</span><b>${esc(a[3])}</b><span class="small muted">${esc(a[4])}</span><span class="small" style="color:var(--teal);font-weight:700">${t("open")} ↗</span></a>`:`<div class="card apptile" style="opacity:.7"><span class="cico" style="background:${a[2]}">${a[1]}</span><b>${esc(a[3])}</b><span class="small muted">${esc(a[4])}</span><span class="chip lock" style="align-self:flex-start">${t("soon")}</span></div>`).join("")}</div>`}
+function peopleView(u){const gs=myGroups(u),list=D.users.filter(x=>x.id!==u.id&&(u.role==="owner"||(x.role==="student"&&(x.groups||[]).some(g=>gs.includes(g)))));
+ return `<div class="grid g2" style="margin-bottom:16px"><section class="card"><h3>➕ ${t("addlogin")}</h3><label class="f" for="pn">${t("name")}</label><input id="pn" maxlength="80">
+  ${u.role==="owner"?`<label class="f" for="pr">${t("role")}</label><select id="pr"><option value="student">${t("student")}</option><option value="teacher">${t("teacher")}</option></select>`:""}
+  <label class="f" for="pg">${t("group")}</label><select id="pg">${gs.map(g=>`<option value="${g}">${esc(gname(g))}</option>`).join("")}</select><div style="margin-top:14px"><button class="btn" id="addBtn">${t("addlogin")}</button></div></section>
+ <section class="card"><h3>👥 ${t("groups")}</h3><ul class="list">${D.groups.filter(g=>gs.includes(g.id)).map(g=>`<li><span class="dot"></span><div><b>${esc(g.name)}</b><div class="small muted">${t("teacher_l")}: ${esc(uname(g.teacher))} · ${D.users.filter(x=>(x.groups||[]).includes(g.id)&&x.role==="student").length} ${t("students").toLowerCase()}</div></div></li>`).join("")}</ul></section></div>
+ <div class="card tblwrap"><table class="people"><thead><tr><th>${t("name")}</th><th>${t("role")}</th><th>${t("group")}</th><th>${t("status")}</th></tr></thead><tbody>${list.map(x=>`<tr><td><div style="display:flex;gap:10px;align-items:center"><span class="av" style="width:32px;height:32px;font-size:.8rem">${esc(initials(x.name))}</span><b>${esc(x.name)}</b></div></td><td>${esc(t(x.role))}</td><td>${esc((x.groups||[]).map(gname).join(", ")||"—")}</td><td><span class="chip g">${t("active")}</span></td></tr>`).join("")}</tbody></table></div>`}
+function settingsView(){return `<div class="grid g2"><section class="card"><h3>🌐 ${t("setp")}</h3><div style="display:flex;gap:8px">${[["en","English"],["uz","O'zbekcha"]].map(([k,n])=>`<button class="btn ${LANG===k?"":"alt"} sm" data-lang="${k}">${n}</button>`).join("")}</div>
+ <h3 style="margin-top:18px">🎨 ${t("theme")}</h3><div style="display:flex;gap:8px;flex-wrap:wrap">${["auto","light","dark"].map(k=>`<button class="btn ${S.theme===k?"":"alt"} sm" data-theme="${k}">${t(k)}</button>`).join("")}</div></section>
+ <section class="card"><h3>🔒 ${t("security")}</h3><ul class="list"><li><span class="dot"></span><span>${t("sec1")}</span></li><li><span class="dot"></span><span>${t("sec2")}</span></li></ul></section></div>`}
+const VIEWS={dash:dashView,courses:coursesView,tt:ttView,news:newsView,prog:progView,apps:appsView,people:peopleView,settings:settingsView};
+
+/* ---------- render ---------- */
+const root=document.getElementById("root");
+function loginView(){document.title="IKJON Consulting Centre — "+t("signin");
+ return `<div class="login"><section class="login-art"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><a class="brandrow" href="/"><img src="/rehab/brand/mark-white.png" alt=""><b>IKJON</b></a>
+  <div class="langsw" role="group" aria-label="Language">${["en","uz"].map(k=>`<button data-lang="${k}" aria-pressed="${LANG===k}">${k.toUpperCase()}</button>`).join("")}</div></div>
+  <div><p style="letter-spacing:.18em;text-transform:uppercase;font-size:.78rem;color:#8FD6E6;font-weight:700;margin:0 0 14px">${t("tag")} · ${t("portal")}</p><h1>${t("h1a")} <em>${t("h1b")}</em></h1>
+  <ul><li>${t("p1")}</li><li>${t("p2")}</li><li>${t("p3")}</li><li>${t("p4")}</li></ul></div><p class="small" style="color:#8FB3C7;margin:0">Build • Improve • Grow</p></section>
+ <section class="login-form"><div class="card-login"><h2>${t("signin")}</h2><p class="muted" style="margin:0 0 8px">${t("signin_p")}</p>
+  <form id="lf" novalidate autocomplete="on"><label class="f" for="lu">${t("login")}</label><input id="lu" name="username" autocomplete="username" required>
+  <label class="f" for="lp">${t("pass")}</label><input id="lp" name="password" type="password" autocomplete="current-password" required>
+  <div class="err" id="lerr" role="alert"></div><button class="btn" style="width:100%" type="submit">${t("go")}</button></form>
+  <p class="small muted" style="margin-top:12px">${t("forgot")}</p>
+  ${PREVIEW?`<div class="demo"><b>🧪 ${t("demo_h")}</b><div class="small muted">${t("demo_p")}</div><div class="row">${[["u1","as_owner"],["u2","as_teacher"],["u3","as_student"]].map(([id,k])=>`<button class="btn alt sm" data-as="${id}">${t(k)}</button>`).join("")}</div></div>`:""}
+  <p style="margin-top:22px"><a href="/" class="small">${t("back")}</a></p></div></section></div>`}
+function shellView(u){const nav=NAV(u);document.title="IKJON Consulting Centre — "+t(S.view);
+ return `<div class="mtop"><a class="brandrow" href="#dash" data-go="dash"><img src="/rehab/brand/mark-white.png" alt=""><b>IKJON</b></a><button id="soM">${t("signout")}</button></div>
+ <div class="shell"><aside class="side"><a class="brandrow" href="#dash" data-go="dash"><img src="/rehab/brand/mark-white.png" alt=""><b>IKJON</b></a><div class="sub">Consulting Centre · ${t("portal")}</div>
+  <nav class="nav" aria-label="Portal">${nav.map(([k])=>`<a href="#${k}" data-go="${k}"${S.view===k?' aria-current="page"':""}>${I(k)}${t(k)}</a>`).join("")}</nav>
+  <div class="me"><span class="av">${esc(initials(u.name))}</span><div><b>${esc(u.name)}</b><span>${esc(t(u.role))}</span></div><button id="so">${t("signout")}</button></div></aside>
+ <main class="main" id="main">${PREVIEW?`<div class="preview">🧪 <span>${t("prev_bar")}</span></div>`:""}
+  <div class="topbar"><h1>${t(S.view)}</h1></div>${(VIEWS[S.view]||dashView)(u)}</main></div>
+ <nav class="bnav" aria-label="Portal">${nav.filter(([k])=>k!=="settings"&&k!=="people").slice(0,5).map(([k])=>`<a href="#${k}" data-go="${k}"${S.view===k?' aria-current="page"':""}>${I(k)}<span>${t(k)}</span></a>`).join("")}</nav>`}
+function render(){document.documentElement.lang=LANG;applyTheme();const u=me();
+ if(u&&u.role==="student"&&S.view==="people")S.view="dash";
+ root.innerHTML=u?shellView(u):loginView();bind();}
+function toast(m){const d=document.createElement("div");d.className="toast";d.setAttribute("role","status");d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+function openCert(id){const u=me(),c=(D.certs[u.id]||[]).find(x=>x.id===id);if(!c)return;const dl=document.getElementById("dlg");
+ document.getElementById("dlgBody").innerHTML=`<div id="printArea"><div class="certificate"><div class="t">IKJON CONSULTING &amp; EDUCATION CENTRE</div><h2>${t("certof")}</h2><div class="small" style="font-family:var(--body)">${LANG==="uz"?"":"This certificate "+t("awarded")}</div><div class="n">${esc(u.name)}</div><div class="small" style="font-family:var(--body)">${LANG==="uz"?esc(u.name)+" "+t("awarded")+" — ":""}${t("forcomp")}</div><h2 style="font-size:1.6rem">${esc(c.title)}</h2>
+ <div class="row"><span>${t("date")}: ${esc(fmtDate(c.date))}</span><span>${t("certid")} ${esc(c.id)}</span><span>${t("director")}: ____________</span></div></div></div>
+ <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button class="btn alt" id="dc">${t("close")}</button><button class="btn" id="dp">${t("print")}</button></div>`;
+ dl.showModal();document.getElementById("dc").onclick=()=>dl.close();document.getElementById("dp").onclick=()=>window.print()}
+function bind(){
+ root.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;save();render()});
+ root.querySelectorAll("[data-as]").forEach(b=>b.onclick=()=>{S.user=b.dataset.as;S.view="dash";save();render();scrollTo(0,0)});
+ root.querySelectorAll("[data-go]").forEach(a=>a.onclick=e=>{e.preventDefault();S.view=a.dataset.go;save();render();scrollTo(0,0)});
+ root.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>{S.theme=b.dataset.theme;save();render()});
+ root.querySelectorAll("[data-cert]").forEach(b=>b.onclick=()=>openCert(b.dataset.cert));
+ const lf=document.getElementById("lf");if(lf)lf.onsubmit=e=>{e.preventDefault();const er=document.getElementById("lerr");if(PREVIEW){er.textContent=t("demo_err");return}};
+ const so=()=>{S.user=null;S.view="dash";save();render()};["so","soM"].forEach(id=>{const b=document.getElementById(id);if(b)b.onclick=so});
+ const pb=document.getElementById("postBtn");if(pb)pb.onclick=()=>{const ti=document.getElementById("nt").value.trim(),bo=document.getElementById("nb").value.trim();if(!ti||!bo)return;
+  D.news.unshift({id:"n"+Date.now(),title:ti,body:bo,date:new Date().toISOString().slice(0,10),aud:document.getElementById("na").value,by:S.user});render();toast(t("posted"))};
+ const ab=document.getElementById("addBtn");if(ab)ab.onclick=()=>{const n=document.getElementById("pn").value.trim();if(!n)return;const r=(document.getElementById("pr")||{}).value||"student";
+  D.users.push({id:"u"+Date.now(),name:n,role:r,groups:[document.getElementById("pg").value]});render();toast(t("created"))};
+}
+/* auto sign-out after 30 minutes without activity */
+let idle;const resetIdle=()=>{clearTimeout(idle);idle=setTimeout(()=>{if(S.user){S.user=null;save();render()}},30*60*1000)};
+["click","keydown","touchstart"].forEach(ev=>addEventListener(ev,resetIdle,{passive:true}));resetIdle();
+const hv=location.hash.slice(1);if(VIEWS[hv])S.view=hv;
+render();
+</script>
+</body>
+</html>

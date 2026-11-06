@@ -1,3 +1,4 @@
 User-agent: *
+Disallow: /portal/
 Allow: /
 Sitemap: https://www.ikjon-gearbox.com/sitemap.xml

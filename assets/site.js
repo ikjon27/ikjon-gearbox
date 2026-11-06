@@ -56,7 +56,8 @@
       (safeImg(b.logo_header) ? '<img src="' + safeImg(b.logo_header) + '" alt="">' : "") +
       "<span>" + t(b.name, lang) + "</span></a>" +
       '<nav class="nav" aria-label="Main">' + NAV.filter(function (n) { return on(d, n[0]); }).map(function (n) { return '<a href="' + n[1] + '">' + esc(n[2][lang]) + "</a>"; }).join("") + "</nav>" +
-      '<div class="lang" role="group" aria-label="Language"><button id="lang-en" aria-pressed="' + (lang === "en") + '">EN</button><button id="lang-uz" aria-pressed="' + (lang === "uz") + '">UZ</button></div>';
+      '<div class="lang" role="group" aria-label="Language"><button id="lang-en" aria-pressed="' + (lang === "en") + '">EN</button><button id="lang-uz" aria-pressed="' + (lang === "uz") + '">UZ</button></div>' +
+      '<a class="signin" href="portal/"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + (lang === "uz" ? "Kirish" : "Sign in") + "</a>";
   }
 
   function renderMain(d, lang) {
