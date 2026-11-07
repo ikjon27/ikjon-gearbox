@@ -357,6 +357,13 @@ nav.tabs button.active{ color:var(--teal); }
 .phtoggle{ position:absolute; right:8px; top:8px; z-index:3; border:none; background:rgba(255,255,255,0.92); color:#12324D; font-weight:bold; font-size:.7rem; padding:5px 10px; border-radius:999px; box-shadow:0 2px 6px rgba(0,0,0,.2); }
 .pstage .pbadge{ z-index:3; }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="/rehab/icons/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/rehab/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="IKJON Football">
+<meta name="description" content="IKJON Football Training: 16 thirty-day programmes, quick guided sessions and weekly challenges for players. English, O'zbekcha, Русский.">
+<link rel="canonical" href="https://www.ikjon-gearbox.com/football/">
 </head>
 <body>
 <header class="topbar">
@@ -5659,5 +5666,6 @@ maybeOnboard();
 loadPhotos().then(()=>{ if(Object.keys(PHOTOS).length) refreshAll(); });
 
 </script>
+<script>if("serviceWorker" in navigator&&(location.protocol==="https:"||location.hostname==="localhost")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
 </body>
 </html>

@@ -1,0 +1,38 @@
+{
+  "name": "IKJON Football Training",
+  "short_name": "IKJON Football",
+  "description": "Daily football skill training: 30-day programmes, quick sessions and weekly challenges.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F1EA",
+  "theme_color": "#1A4264",
+  "lang": "en",
+  "categories": [
+    "sports",
+    "health",
+    "fitness"
+  ],
+  "icons": [
+    {
+      "src": "/rehab/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/rehab/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/rehab/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
