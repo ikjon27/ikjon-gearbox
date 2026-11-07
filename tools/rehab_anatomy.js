@@ -63,6 +63,22 @@ FIGS.kneeSide={w:300,h:330,draw(){const B=AC;return `
  <path d="M152 0H162L192 226 186 230 172 186Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="1.5" opacity=".6"/>`},
  labels:[["Quadriceps",232,40,"r"],["Hamstrings",8,90,"l"],["IT band",132,120,"r"],["Kneecap",230,166,"l"],["Patellar tendon",224,236,"l"],["Shin bone (tibia)",166,318,"m"],["Thigh bone",157,112,"m"]],
  sides:["Back of knee","Front of knee"]};
+FIGS.leg={w:320,h:330,draw(){const B=AC;return `
+ <path d="M70 0H206C210 60 204 150 196 220L200 252C232 262 280 280 312 300 318 312 312 322 296 324H112C88 324 76 306 80 284L88 238C70 200 58 120 70 0Z" fill="#FBE6D8"/>
+ <path d="M74 0H128L126 120 120 196 102 204C84 176 70 120 74 0Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".92" id="calfm"/>
+ <path d="M84 30Q96 70 110 60" fill="none" stroke="${B.musE}" stroke-width="1.5" opacity=".5"/><path d="M80 90Q100 130 116 116" fill="none" stroke="${B.musE}" stroke-width="1.5" opacity=".5"/>
+ <path d="M184 10H200L196 200 186 214Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="1.5" opacity=".85"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round"><path d="M150 0H182L184 226 190 248H146L150 226Z"/><path d="M130 0H142L144 244H128Z"/><circle cx="136" cy="254" r="13"/>
+  <ellipse cx="164" cy="268" rx="24" ry="15"/><path d="M84 280C88 266 108 262 132 270L150 282 146 302 118 310 92 306C82 300 80 290 84 280Z"/><path d="M178 262 210 270 296 302 300 314 186 300 168 282Z"/></g>
+ <g fill="${B.bone}"><path d="M150 0H182L184 226 190 248H146L150 226Z"/><path d="M130 0H142L144 244H128Z"/><circle cx="136" cy="254" r="13"/>
+  <ellipse cx="164" cy="268" rx="24" ry="15"/><path d="M84 280C88 266 108 262 132 270L150 282 146 302 118 310 92 306C82 300 80 290 84 280Z"/><path d="M178 262 210 270 296 302 300 314 186 300 168 282Z"/></g>
+ <path d="M206 276 216 302M232 284 240 306M258 292 264 310" stroke="${B.boneS}" stroke-width="3"/>
+ <g id="atfl"><path d="M146 256 172 262 170 270 144 264Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/></g>
+ <path d="M130 264 136 266 126 286 120 284Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/>
+ <g id="achil"><path d="M98 190 122 196 104 284 86 282Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/></g>
+ <g id="pf"><path d="M100 310Q190 318 290 316L288 322Q190 326 98 318Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="1.5"/></g>`},
+ labels:[["Calf muscles",8,70,"l"],["Shin muscle",214,60,"l"],["Shin bone (tibia)",166,130,"m"],["Fibula",124,180,"r"],["Achilles tendon",8,236,"l"],["Ankle ligaments",210,250,"l"],["Heel bone",30,300,"l"],["Plantar fascia",200,338,"l"]],
+ sides:["Back of leg","Toes"]};
 /* injury marks drawn on top of a figure; z = zoom centre & factor */
 const MARKS={
  tearline:(d)=>`<path d="${d}" fill="none" stroke="${AC.inj}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`,
@@ -84,6 +100,13 @@ Object.assign(ANATFIG,{
  osgood:{fig:"kneeSide",z:[206,250,2.5],extra:MARKS.glow(206,251,15)+`<ellipse cx="208" cy="252" rx="10" ry="8" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/><path d="M202 232 214 232 214 246 202 246Z" fill="#F6C9C4" opacity=".7"/>`},
  itbs:{fig:"kneeSide",z:[178,190,2.4],extra:`<path d="M168 168 176 166 186 210 178 214Z" fill="${AC.inj}" opacity=".45"/>`+MARKS.glow(178,190,16)},
  "knee-oa":{fig:"knee",z:[196,200,2.5],extra:`<path d="M160 197Q200 192 236 200L236 205Q200 198 160 202Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="1.5"/><path d="M240 196l8 4-8 4ZM236 212l8 3-8 4ZM158 188l-5 5 6 2Z" fill="${AC.boneE}"/>`+MARKS.tearline("M170 202l4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3")+MARKS.glow(200,200,14)}
+});
+Object.assign(ANATFIG,{
+ "ankle-sprain":{fig:"leg",z:[158,262,2.6],hide:["atfl"],extra:`<path d="M146 256 158 259 156 266 144 264Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2"/><path d="M162 260 172 262 170 270 160 268Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2"/>`+MARKS.glow(158,263,13)},
+ achilles:{fig:"leg",z:[104,246,2.6],extra:`<path d="M110 230 98 232 92 264 104 264C112 256 114 242 110 230Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/>`+MARKS.glow(104,248,13)},
+ plantar:{fig:"leg",z:[118,314,2.7],extra:`<path d="M100 310Q120 312 140 313L140 320Q120 320 98 318Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2"/>`+MARKS.glow(116,314,12)},
+ shin:{fig:"leg",z:[180,180,2.2],extra:`<path d="M182 120 184 226" stroke="${AC.inj}" stroke-width="5" stroke-linecap="round" opacity=".85"/>`+MARKS.glow(181,176,20)},
+ calf:{fig:"leg",z:[98,120,2.4],extra:`<path d="M80 104 118 108 116 136 84 132Z" fill="${AC.inj}" opacity=".35"/>`+MARKS.tearline("M82 118l6 6 5-7 6 7 5-7 6 7 5-6")+MARKS.glow(98,120,16)}
 });
 let anatUid=0;
 function anatSVG(id){const a=ANATFIG[id];if(!a)return"";const F=FIGS[a.fig],u="an"+(++anatUid),[px,py,z]=a.z,R=78,cx=F.w+110,cy=F.h/2;
@@ -203,6 +226,38 @@ Object.assign(ANAT,{
   heal:"It is not dangerous and settles when growth finishes (usually by 14–16). The bump may stay but stops hurting. Managing load — not total rest — keeps young players active.",
   muscles:[["quads","Gentle strength (and later stretching) reduces the pull on the growth area."],["glutes","Help with landing so the knee takes less."],["hamstrings","Balance the front and back of the thigh."],["calves","Absorb running and jumping forces."]],
   stronger:["Use the pain ladder: keep sport pain at 2/10 or less.","Use knee pads for kneeling and goalkeeping.","Talk to the coach about fewer jumping and sprint drills during growth spurts."]}
+});
+Object.assign(ANAT,{
+ "ankle-sprain":{part:"The outer ankle has three small ligaments that hold the ankle bones together. The one at the front (ATFL) is injured in almost every sprain; bad sprains also tear the one below (CFL).",
+  how:"The foot rolls inward — landing on someone's foot, stepping on uneven ground or turning quickly. Swelling and bruising appear on the outer ankle.",
+  grades:[["Grade 1 — stretched","Little swelling; you can walk with mild pain. 1–3 weeks."],["Grade 2 — partial tear","Clear swelling and bruising, limping. 3–6 weeks."],["Grade 3 — complete tear","Large swelling, the ankle feels unstable and walking is very hard. 6–12 weeks; get it checked."]],
+  heal:"Ligaments heal by laying down new fibres over 6–12 weeks. Early movement, walking as able and balance training make them stronger. Without proper rehab, up to 1 in 3 people sprain the same ankle again.",
+  muscles:[["calves","Strong calves control the ankle when you land and push off."],["tibialis","Shin muscles pull the foot up and steady it on landing."],["feet","Small foot muscles improve balance on uneven ground."],["gmed","Hip control reduces how hard you land on the ankle."]],
+  stronger:["Balance on one leg every day — eyes closed when it gets easy.","Keep balance and hop drills for 3 months after you are back.","Consider a brace or tape for sport in the first year after a bad sprain."]},
+ achilles:{part:"The Achilles tendon joins the calf muscles to the heel bone. It is the strongest tendon in the body. In tendinopathy the tendon is overloaded and thickens — most often 2–6 cm above the heel.",
+  how:"A rise in running, jumping or hill training, new shoes, or a hard surface — often in people over 30 when the tendon recovers more slowly.",
+  grades:[["Mild","Stiff in the morning, fine once warm."],["Moderate","Pain limits running."],["Severe","Pain walking, thickened tendon. Can take 3–6 months."]],
+  heal:"Tendons rebuild with steady, heavy calf loading over about 12 weeks. Rest alone makes them weaker. Pain up to 3–4/10 during loading is acceptable if it settles by the next morning.",
+  muscles:[["calves","The core treatment — heavy calf raises with straight and bent knees."],["hamstrings","Help push off so the calf and tendon aren't overloaded."],["glutes","Power for running that spares the lower leg."],["feet","Stable feet reduce twisting load on the tendon."]],
+  stronger:["Keep 2 calf-strength sessions a week forever.","Increase running by about 10% a week; add hills last.","Morning stiffness is your guide: if it is worse the next day, ease off."]},
+ plantar:{part:"The plantar fascia is a thick band under the foot. It runs from the heel bone to the base of the toes and supports the arch. In plantar fasciitis (heel pain) the band is overloaded where it attaches to the heel.",
+  how:"Long standing or walking, a jump in running, weight gain, tight calves or worn-out shoes.",
+  grades:[["Recent (under 6 weeks)","Morning pain only."],["6 weeks – 6 months","Pain most days, after standing."],["Over 6 months","Long-standing heel pain — still improves with loading."]],
+  heal:"Most people get better within 6–12 months, faster with the right exercise. High-load heel raises with the toes lifted strengthen the band itself; a supportive shoe and calf stretches also help.",
+  muscles:[["calves","Tight, weak calves pull on the heel and fascia."],["feet","Small foot muscles support the arch with the fascia."],["tibialis","Shin muscles help hold the arch."],["glutes","Better leg control spreads the load when you walk and run."]],
+  stronger:["Do the high-load heel raise (towel under toes) every other day.","Wear supportive shoes; avoid long barefoot walking on hard floors while sore.","Stretch the calf and arch before the first steps in the morning."]},
+ shin:{part:"Shin splints (medial tibial stress syndrome) is overload of the inner edge of the shin bone and the muscles attached to it, usually along the lower half.",
+  how:"A sudden jump in running, new hard surfaces, or worn shoes — common in new runners, football pre-season and military training.",
+  grades:[["Mild","Pain after running; eases during the run."],["Moderate","Pain throughout the run."],["Severe","Pain walking or at rest — rule out a stress fracture first."]],
+  heal:"Bone adapts to load over weeks. Reduce running enough to keep pain low, then build up slowly. One small, very painful spot on the bone can be a stress fracture — see a doctor.",
+  muscles:[["calves","Soleus and calf strength absorb running shock before the bone."],["tibialis","Shin muscles control the foot landing."],["feet","Arch strength reduces strain on the inner shin."],["glutes","Help with running form and load."]],
+  stronger:["Increase running by no more than 10% a week.","Mix running surfaces and replace worn shoes.","Run with slightly shorter, quicker steps."]},
+ calf:{part:"The calf has two main muscles: the gastrocnemius (the bulky upper calf) and the soleus (deeper and lower). A calf strain is a tear in one of them — most often the inner gastrocnemius.",
+  how:"A sudden push-off or acceleration ('like being hit in the calf'), often in tennis and football, and more common over 35. Soleus strains can come on gradually while running.",
+  grades:[["Grade 1","Tight; you can walk normally. 1–3 weeks."],["Grade 2","Limping; can't rise onto tiptoe on that leg. 3–6 weeks."],["Grade 3","Large tear — get checked by a doctor first."]],
+  heal:"Muscle heals in weeks. Gentle early walking and calf raises help the new fibres line up strongly. Rushing back to sprinting is the main cause of re-tears.",
+  muscles:[["calves","Rebuild both the bent-knee (soleus) and straight-knee (gastrocnemius) parts."],["hamstrings","Share push-off work in sprinting."],["glutes","Power for running so the calf takes less."],["feet","Better foot control reduces strain on the calf."]],
+  stronger:["Warm up with skips and calf raises before sprinting.","Return to sprinting step by step: 60%, 80%, then 100%.","Keep 2 calf sessions a week, especially if you are over 35."]}
 });
 const GROINTYPES=[["groin","Adductor-related"],["hipflexor","Iliopsoas-related"],["inguinal","Inguinal-related"],["pubic","Pubic-related"],["hiprelated","Hip-related"]];
 function anatBox(i){const a=ANAT[i.id];if(!a)return"";
