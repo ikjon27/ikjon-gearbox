@@ -1742,6 +1742,41 @@ FIGS.spine={w:300,h:330,draw(){const B=AC;let v="",dsc="",arch="";
  <path d="M114 216C100 240 86 280 70 330" fill="none" stroke="#E8B931" stroke-width="5" stroke-linecap="round"/><path d="M114 266C104 286 96 306 88 330" fill="none" stroke="#E8B931" stroke-width="4" stroke-linecap="round"/>`},
  labels:[["Back muscles",8,-2,"l"],["Vertebra",192,40,"l"],["Disc",192,96,"l"],["Nerve root",30,300,"l"],["L5",153,236,"m"],["Sacrum",190,300,"l"]],
  sides:["Back","Belly"]};
+FIGS.shoulder={w:300,h:330,draw(){const B=AC;return `
+ <path d="M40 40C110 10 220 20 290 70L300 330H120C100 260 80 180 60 140 40 110 30 70 40 40Z" fill="#FBE6D8"/>
+ <path d="M150 70C200 66 250 90 262 140 270 190 252 230 226 250L196 196Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".35"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round"><path d="M30 60C80 48 140 50 190 62L192 76C140 70 80 70 32 76Z"/><path d="M150 60C176 50 214 54 236 70L230 86C208 76 176 74 152 80Z"/>
+  <path d="M80 80 150 92 160 120 150 170 130 260 96 300 70 240Z"/><circle cx="186" cy="134" r="40"/><path d="M168 160H206L212 330H176Z"/></g>
+ <g fill="${B.bone}"><path d="M30 60C80 48 140 50 190 62L192 76C140 70 80 70 32 76Z"/><path d="M150 60C176 50 214 54 236 70L230 86C208 76 176 74 152 80Z"/>
+  <path d="M80 80 150 92 160 120 150 170 130 260 96 300 70 240Z"/><circle cx="186" cy="134" r="40"/><path d="M168 160H206L212 330H176Z"/></g>
+ <path d="M146 104C156 112 158 152 146 164" fill="none" stroke="${B.cartE}" stroke-width="5" id="lab"/>
+ <g id="cuff"><path d="M120 90C150 80 196 84 222 112L214 122C194 100 156 96 126 104Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/></g>`},
+ labels:[["Collarbone",30,46,"l"],["Acromion (shoulder roof)",298,52,"r"],["Rotator cuff tendon",298,104,"r"],["Shoulder blade",30,200,"l"],["Socket rim (labrum)",30,150,"l"],["Upper-arm bone",246,250,"l"],["Deltoid",290,200,"r"]],
+ sides:["",""]};
+FIGS.elbow={w:300,h:330,draw(){const B=AC;return `
+ <path d="M90 0H210L214 130C222 170 236 220 250 330H110C100 240 96 170 92 130Z" fill="#FBE6D8"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round"><path d="M128 0H172L176 110 200 140 190 160 120 160 108 140 124 110Z"/><path d="M128 162H160L186 330H160Z"/><path d="M164 162H190L224 330H198Z"/></g>
+ <g fill="${B.bone}"><path d="M128 0H172L176 110 200 140 190 160 120 160 108 140 124 110Z"/><path d="M128 162H160L186 330H160Z"/><path d="M164 162H190L224 330H198Z"/></g>
+ <ellipse cx="198" cy="142" rx="10" ry="12" fill="${B.boneS}"/>
+ <g id="ext"><path d="M192 146C212 160 228 220 244 320L214 322C206 250 196 200 186 160Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".85"/><path d="M190 148 200 158 196 168 186 160Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/></g>`},
+ labels:[["Upper-arm bone",150,-2,"m"],["Outer elbow bone (lateral epicondyle)",298,118,"r"],["Wrist extensor tendon",232,178,"l"],["Forearm extensor muscles",298,290,"r"],["Forearm bones",100,250,"l"]],
+ sides:["Little-finger side","Thumb side (outer elbow)"]};
+FIGS.neck={w:300,h:330,draw(){const B=AC;let v="";for(let k=0;k<7;k++){const y=96+k*30;v+=`<rect x="${144+k*2}" y="${y}" width="44" height="22" rx="5"/><path d="M${146+k*2} ${y+6}L${108+k*3} ${y+10} ${104+k*3} ${y+20} ${146+k*2} ${y+18}Z"/>`}
+ return `<path d="M120 0C190 -6 250 40 250 96 250 126 232 140 224 156L230 330H70C80 280 88 230 96 196 70 160 60 110 72 60 84 24 100 4 120 0Z" fill="#FBE6D8"/>
+ <path d="M84 70C96 120 100 200 92 330H56C64 220 64 120 62 70Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".85" id="nm"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round"><path d="M80 40C110 4 196 6 226 50 236 70 230 90 214 96H128L94 92C80 80 76 60 80 40Z"/>${v}<rect x="160" y="306" width="48" height="26" rx="5"/></g>
+ <g fill="${B.bone}"><path d="M80 40C110 4 196 6 226 50 236 70 230 90 214 96H128L94 92C80 80 76 60 80 40Z"/>${v}<rect x="160" y="306" width="48" height="26" rx="5"/></g>
+ ${[0,1,2,3,4,5].map(k=>`<rect x="${146+k*2}" y="${119+k*30}" width="42" height="7" rx="3" fill="${B.cart}" stroke="${B.cartE}" stroke-width="1.5"/>`).join("")}`},
+ labels:[["Skull",154,40,"m"],["Neck vertebrae",196,180,"l"],["Discs",196,240,"l"],["Neck muscles",4,150,"l"],["Upper back",206,326,"l"]],
+ sides:["Back","Face"]};
+FIGS.upperback={w:300,h:330,draw(){const B=AC;let sp="";for(let k=0;k<9;k++)sp+=`<rect x="141" y="${40+k*30}" width="18" height="22" rx="5"/>`;
+ return `<path d="M60 0H240C270 30 290 80 292 330H8C10 80 30 30 60 0Z" fill="#FBE6D8"/>
+ <path d="M150 10 30 70 70 200 150 280 230 200 270 70Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".55" id="trap"/>
+ <g stroke="${B.boneE}" stroke-width="4" stroke-linejoin="round">${sp}<path d="M64 70 124 82 116 112 92 200 70 172Z"/><path d="M236 70 176 82 184 112 208 200 230 172Z"/></g>
+ <g fill="${B.bone}">${sp}<path d="M64 70 124 82 116 112 92 200 70 172Z"/><path d="M236 70 176 82 184 112 208 200 230 172Z"/></g>
+ <g id="rhom"><path d="M120 100 140 104 140 190 108 180Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2"/><path d="M180 100 160 104 160 190 192 180Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2"/></g>`},
+ labels:[["Upper trapezius",150,-2,"m"],["Shoulder blade",40,226,"l"],["Muscles between shoulder blades",150,322,"m"],["Spine",166,60,"l"]],
+ sides:["",""]};
 /* injury marks drawn on top of a figure; z = zoom centre & factor */
 const MARKS={
  tearline:(d)=>`<path d="${d}" fill="none" stroke="${AC.inj}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`,
@@ -1777,6 +1812,13 @@ Object.assign(ANATFIG,{
  lbp:{fig:"spine",z:[70,215,2.0],extra:`<circle cx="66" cy="214" r="34" fill="#F2A33D" opacity=".18"/><circle cx="66" cy="214" r="20" fill="#F2A33D" opacity=".25"/><path d="M20 190 44 196M18 214 44 214M20 238 44 232" stroke="#E07A2E" stroke-width="3" stroke-linecap="round"/>`},
  sciatica:{fig:"spine",z:[118,212,2.6],extra:`<path d="M123 201 C108 202 106 214 123 213Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/><path d="M114 216C100 240 86 280 70 330" fill="none" stroke="${AC.inj}" stroke-width="5" stroke-linecap="round"/>`+MARKS.glow(114,212,13)},
  spondy:{fig:"spine",z:[106,234,2.7],extra:MARKS.tearline("M104 222l-4 5 5 4-4 5 5 4")+MARKS.glow(105,232,12)}
+});
+Object.assign(ANATFIG,{
+ shoulder:{fig:"shoulder",z:[176,100,2.5],hide:["cuff"],extra:`<path d="M120 90C150 80 196 84 222 112L214 122C194 100 156 96 126 104Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/>`+MARKS.glow(176,100,15)},
+ instab:{fig:"shoulder",z:[150,150,2.3],extra:`<circle cx="164" cy="168" r="40" fill="none" stroke="${AC.inj}" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M178 150 168 164" stroke="${AC.inj}" stroke-width="3" stroke-linecap="round"/><path d="M146 140C154 150 154 160 146 166" fill="none" stroke="${AC.inj}" stroke-width="6"/>`+MARKS.tearline("M150 142l-5 4 5 4-5 4 5 4")+MARKS.glow(148,152,13)},
+ "tennis-elbow":{fig:"elbow",z:[194,154,2.6],extra:`<path d="M190 148 200 158 196 168 186 160Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/>`+MARKS.glow(194,153,13)},
+ neck:{fig:"neck",z:[96,170,2.1],extra:`<circle cx="98" cy="170" r="34" fill="#F2A33D" opacity=".18"/><circle cx="98" cy="170" r="18" fill="#F2A33D" opacity=".25"/><path d="M58 150 74 156M56 172 74 172M58 194 74 188" stroke="#E07A2E" stroke-width="3" stroke-linecap="round"/>`},
+ upperback:{fig:"upperback",z:[124,140,2.2],extra:`<circle cx="126" cy="140" r="30" fill="#F2A33D" opacity=".2"/><circle cx="126" cy="140" r="16" fill="#F2A33D" opacity=".28"/><circle cx="174" cy="140" r="30" fill="#F2A33D" opacity=".2"/>`}
 });
 let anatUid=0;
 function anatSVG(id){const a=ANATFIG[id];if(!a)return"";const F=FIGS[a.fig],u="an"+(++anatUid),[px,py,z]=a.z,R=78,cx=F.w+110,cy=F.h/2;
@@ -1960,6 +2002,38 @@ Object.assign(ANAT,{
   heal:"With a break from bending backwards and twisting, most heal or settle within 3–6 months. A gradual, supervised return keeps it from coming back.",
   muscles:[["core","Holds the spine steady so the pars is protected."],["glutes","Power for kicking and bowling without arching the back."],["hamstrings","Tight hamstrings increase strain on the low back."],["hipflex","Tight hip flexors tilt the pelvis and arch the back."]],
   stronger:["Avoid back-arching moves until your doctor clears you.","Build core endurance (planks, dead bugs) before sport.","Limit bowling or high-load repetitions during growth spurts."]}
+});
+Object.assign(ANAT,{
+ shoulder:{part:"The rotator cuff is four small muscles whose tendons wrap around the ball of the shoulder and keep it centred in the socket. The top tendon (supraspinatus) runs under the bony roof of the shoulder (acromion) and is the one usually irritated.",
+  how:"Repeated lifting, throwing or overhead work, or a sudden rise in gym training. Weak shoulder-blade muscles and stiff upper back let the tendon get squeezed and overloaded.",
+  grades:[["Mild","Pain only when throwing or working overhead."],["Moderate","Dressing and reaching up hurt; painful arc lifting the arm sideways."],["Severe","Pain at night and a weak arm. A sudden loss of strength after a fall needs a doctor (possible tear)."]],
+  heal:"Tendon pain improves with progressive strengthening over 6–12 weeks. Exercise gives results similar to surgery for most people with impingement-type pain.",
+  muscles:[["cuff","The rotator cuff itself — band external and internal rotation."],["upperback","Shoulder-blade muscles give the cuff a stable base."],["delts","Strong shoulders share the lifting load."],["core","A stable trunk improves throwing and lifting technique."]],
+  stronger:["Work in a pain-free range first, then raise the arm higher week by week.","Balance pushing exercises with pulling (rows, Y-raises).","Warm up the cuff with a band before throwing or overhead lifting."]},
+ instab:{part:"The shoulder is a shallow ball-and-socket joint. A ring of cartilage (the labrum) deepens the socket. In a dislocation the ball comes out of the socket — usually forwards — and can tear the labrum and stretch the capsule.",
+  how:"A fall on an outstretched arm, or the arm forced up and back (tackling, blocking a shot, wrestling). Young athletes have the highest chance of it happening again.",
+  grades:[["Partial slip (subluxation)","Slipped and went back by itself."],["First dislocation","Fully out and put back by a doctor."],["Keeps happening","Several episodes — also see a shoulder specialist."]],
+  heal:"The torn labrum and stretched capsule need muscle control to protect them. Many people regain a stable shoulder with rehab; young contact athletes with repeated dislocations are often offered surgery.",
+  muscles:[["cuff","Keeps the ball centred in the socket — the key protector."],["upperback","Positions the socket under the ball."],["delts","Strength in the 'at-risk' arm positions."],["chest","Controls the arm in front of the body (push-ups, tackling)."]],
+  stronger:["Avoid the arm up-and-back position until strength returns.","Build strength in the at-risk position slowly before contact sport.","Any new dislocation means a medical check."]},
+ "tennis-elbow":{part:"Tennis elbow is overload of the tendon where the wrist-extensor muscles attach to the bony bump on the outer elbow (lateral epicondyle). These muscles lift the wrist and help you grip.",
+  how:"Repeated gripping and wrist work — racket sports, tools, carrying bags, typing or a mouse. Only a few cases come from tennis.",
+  grades:[["Mild","Pain only with heavy gripping."],["Moderate","Lifting a cup or kettle hurts."],["Long-standing","Pain for over 3 months — still improves with loading."]],
+  heal:"Most cases settle within a year, faster with tendon loading exercises. Steroid injections help short-term but results are worse later — exercise is the better long-term choice.",
+  muscles:[["forearms","Slow, heavy wrist-extension loading is the main treatment."],["cuff","A strong shoulder takes strain off the forearm."],["upperback","Better arm position for gripping and lifting."]],
+  stronger:["Lift and carry with the palm facing up when you can.","Use a thicker grip on tools and rackets.","Keep wrist exercises 2–3 times a week after it settles."]},
+ neck:{part:"The neck has seven small vertebrae with discs between them, joints at the back, and layers of muscles that hold up the head. With most neck pain no damage is found — the muscles and joints are sensitive and stiff.",
+  how:"Long phone or desk time with the head forward, poor sleep, stress, or a sudden awkward movement.",
+  grades:[["Acute (under 6 weeks)","A recent stiff neck — usually improves within weeks."],["Persistent (6–12 weeks)","Not settling; exercise helps."],["Chronic (over 3 months)","Long-term pain — strength, movement and breaks are key."]],
+  heal:"Most neck pain improves within weeks. Gentle movement and strengthening the deep neck and upper-back muscles help more than rest or a collar.",
+  muscles:[["neck","Deep neck muscles hold the head without strain."],["upperback","Shoulder-blade muscles support the neck from below."],["cuff","Arm strength reduces load on the neck when lifting."]],
+  stronger:["Hold the phone at eye level; screen at eye height.","Move your neck gently every 30–45 minutes.","See a doctor for dizziness, arm weakness or numbness."]},
+ upperback:{part:"Between the shoulder blades sit the rhomboids and the middle and lower trapezius. With long sitting they become tired and sore, and the upper back stiffens. Nothing is damaged.",
+  how:"Hours of sitting, phone use or driving with rounded shoulders, plus little upper-body strength training.",
+  grades:[["Mild","Ache after long sitting."],["Persistent","Pain most days for weeks."],["Long-standing","Months of ache — strength and movement breaks help most."]],
+  heal:"Moving the stiff upper back and strengthening the muscles between the shoulder blades usually helps within weeks.",
+  muscles:[["upperback","Rhomboids and trapezius — rows and Y-raises."],["cuff","Shoulder control for good arm position."],["core","Supports an upright posture without effort."],["chest","Stretch and balance tight chest muscles."]],
+  stronger:["Change position every 30–45 minutes; no single posture is perfect.","Do rows or band pull-aparts 3 times a week.","Set your screen at eye height."]}
 });
 const GROINTYPES=[["groin","Adductor-related"],["hipflexor","Iliopsoas-related"],["inguinal","Inguinal-related"],["pubic","Pubic-related"],["hiprelated","Hip-related"]];
 function anatBox(i){const a=ANAT[i.id];if(!a)return"";
