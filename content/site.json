@@ -228,15 +228,15 @@
         "uz": "Futbol mashg'ulotlari"
       },
       "text": {
-        "en": "Daily skill sessions and a 30-day plan for players.",
-        "uz": "O'yinchilar uchun kunlik mashg'ulotlar va 30 kunlik reja."
+        "en": "16 thirty-day programmes, quick guided sessions and weekly challenges for players.",
+        "uz": "O'yinchilar uchun 16 ta 30 kunlik dastur, qisqa mashg'ulotlar va haftalik challenjlar."
       },
       "button": {
-        "en": "",
-        "uz": "",
-        "link": ""
+        "en": "Start training",
+        "uz": "Mashg'ulotni boshlash",
+        "link": "/football/"
       },
-      "status": "soon",
+      "status": "live",
       "image": "/brand/goals/football.svg"
     }
   ],
@@ -551,18 +551,6 @@
     },
     {
       "name": {
-        "en": "IKJON Football Training",
-        "uz": "IKJON Football Training"
-      },
-      "text": {
-        "en": "Daily skill sessions and a 30-day plan",
-        "uz": "Kunlik mashg'ulotlar va 30 kunlik reja"
-      },
-      "status": "soon",
-      "link": ""
-    },
-    {
-      "name": {
         "en": "IKJON CRM",
         "uz": "IKJON CRM"
       },
@@ -672,6 +660,11 @@
         "en": "IKJON Fitness app",
         "uz": "IKJON Fitness ilovasi",
         "link": "/fitness/"
+      },
+      {
+        "en": "IKJON Football Training",
+        "uz": "IKJON Football Training",
+        "link": "/football/"
       }
     ],
     "fine": {
@@ -741,6 +734,37 @@
         "link": "fitness/"
       },
       "image": "/brand/fitness-screen.png"
+    },
+    {
+      "label": {
+        "en": "Available now",
+        "uz": "Hozir mavjud"
+      },
+      "name": "IKJON Football Training",
+      "text": {
+        "en": "Daily football skill training for players of every position and level.",
+        "uz": "Har qanday pozitsiya va darajadagi o'yinchilar uchun kundalik futbol mashg'ulotlari."
+      },
+      "points": [
+        {
+          "en": "16 thirty-day programmes picked for your position and level",
+          "uz": "Pozitsiya va darajangizga mos 16 ta 30 kunlik dastur"
+        },
+        {
+          "en": "Quick timed sessions, weekly challenges and share cards",
+          "uz": "Qisqa vaqtli mashg'ulotlar, haftalik challenjlar va ulashish kartalari"
+        },
+        {
+          "en": "English, O'zbekcha, Русский · no account needed",
+          "uz": "English, O'zbekcha, Русский · hisob shart emas"
+        }
+      ],
+      "button": {
+        "en": "Open Football Training",
+        "uz": "Football Training'ni ochish",
+        "link": "football/"
+      },
+      "image": "/brand/football-screen.png"
     }
   ]
 }
