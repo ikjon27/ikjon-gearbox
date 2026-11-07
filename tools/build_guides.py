@@ -46,6 +46,10 @@ SEO = {
  "sciatica": ("sciatica-exercises", "Sciatica Exercises & Relief Plan"),
  "spondy": ("spondylolysis-exercises", "Spondylolysis Rehab Exercises (Low Back Stress Fracture)"),
  "upperback": ("upper-back-posture-exercises", "Upper Back & Posture Exercises Plan"),
+ "hipflexor": ("hip-flexor-strain-rehab", "Hip Flexor (Iliopsoas) Strain Rehab Exercises & Plan"),
+ "inguinal": ("sports-hernia-groin-pain-exercises", "Sports Hernia (Inguinal Groin Pain) Exercises & Rehab"),
+ "pubic": ("osteitis-pubis-exercises", "Osteitis Pubis (Pubic Groin Pain) Exercises & Recovery"),
+ "hiprelated": ("hip-impingement-labral-tear-exercises", "Hip Impingement & Labral Tear Exercises: Groin Pain Plan"),
 }
 missing = [i["id"] for i in INJ if i["id"] not in SEO]
 assert not missing, f"Add SEO entries for: {missing}"
@@ -88,7 +92,12 @@ UI = {
    hub_lede="Free, stage-by-stage plans for {n} common sports and everyday injuries, built from published research and sports-medicine guidelines. Each guide shows the exercises, how to do them, how long recovery usually takes and the warning signs that mean you should see a doctor.",
    hub_cta="<b>Not sure which plan fits?</b> The app’s “Find your plan” asks a few questions and suggests plans to look at.", hub_ctabtn="Find your plan",
    hub_edu="<b>Education, not diagnosis.</b> These guides cannot tell you what injury you have. See a doctor or physiotherapist to confirm it.",
-   unit_min="min", unit_s="s", translated=""),
+   unit_min="min", unit_s="s", translated="",
+   und="Understand the injury", injured="What's injured", happens="How it happens", heals="How it heals", grades="How serious can it be?",
+   mus="Muscles to strengthen — recover and come back stronger", stronger="Come back stronger",
+   cap="Original IKJON illustration — the red area shows what is injured. Education only; a doctor or physiotherapist confirms the diagnosis.",
+   groin5="Groin pain has 5 main types. Doctors group it by where it comes from (Doha agreement). Pick the one that matches where it hurts:",
+   front="Front", back="Back", bm="Body map: muscles to strengthen are shown in orange", ill="Illustration"),
  "uz": dict(
    app="Bepul ilovani ochish", crumbs="Jarohatdan tiklanish qo‘llanmalari",
    h1="{name}: reabilitatsiya mashqlari va tiklanish rejasi", title="{name}: mashqlar va tiklanish rejasi | IKJON",
@@ -119,7 +128,12 @@ UI = {
    hub_lede="{n} ta keng tarqalgan sport va maishiy jarohatlar uchun bepul, bosqichma-bosqich rejalar; ular ilmiy tadqiqotlar va sport tibbiyoti tavsiyalariga asoslangan. Har bir qo‘llanmada mashqlar, ularni bajarish tartibi, tiklanish muddati va shifokorga borish kerakligini bildiruvchi xavfli belgilar bor.",
    hub_cta="<b>Qaysi reja mos kelishini bilmayapsizmi?</b> Ilovadagi «Find your plan» bir necha savol berib, mos rejalarni taklif qiladi.", hub_ctabtn="Rejamni topish",
    hub_edu="<b>Bu ta’lim, tashxis emas.</b> Bu qo‘llanmalar sizda qanday jarohat borligini ayta olmaydi. Buni shifokor yoki fizioterapevt tasdiqlashi kerak.",
-   unit_min="daqiqa", unit_s="s", translated="Matn ingliz tilidan tarjima qilingan."),
+   unit_min="daqiqa", unit_s="s", translated="Matn ingliz tilidan tarjima qilingan.",
+   und="Jarohatni tushunish", injured="Nima shikastlangan", happens="Qanday sodir bo‘ladi", heals="Qanday tuzaladi", grades="Qanchalik jiddiy bo‘lishi mumkin?",
+   mus="Kuchaytirish kerak bo‘lgan mushaklar — tiklaning va yanada kuchliroq qayting", stronger="Yanada kuchliroq qaytish",
+   cap="IKJON’ning original rasmi — qizil joy shikastlangan qismni ko‘rsatadi. Faqat ta’lim uchun; tashxisni shifokor yoki fizioterapevt tasdiqlaydi.",
+   groin5="Chov og‘rig‘ining 5 asosiy turi bor. Shifokorlar uni qayerdan kelib chiqishiga qarab guruhlaydi (Doha kelishuvi). Og‘riyotgan joyingizga mosini tanlang:",
+   front="Old tomoni", back="Orqa tomoni", bm="Tana xaritasi: kuchaytirish kerak bo‘lgan mushaklar to‘q sariq rangda", ill="Rasm"),
  "ru": dict(
    app="Открыть бесплатное приложение", crumbs="Реабилитация после травм",
    h1="{name}: упражнения и план реабилитации", title="{name}: упражнения и план восстановления | IKJON",
@@ -150,15 +164,28 @@ UI = {
    hub_lede="Бесплатные поэтапные планы при {n} частых спортивных и бытовых травмах, основанные на опубликованных исследованиях и рекомендациях спортивной медицины. В каждом руководстве — упражнения, техника выполнения, сроки восстановления и тревожные признаки, при которых нужно к врачу.",
    hub_cta="<b>Не знаете, какой план подходит?</b> Раздел «Find your plan» в приложении задаст несколько вопросов и предложит подходящие планы.", hub_ctabtn="Подобрать план",
    hub_edu="<b>Это обучение, а не диагноз.</b> Эти руководства не могут сказать, какая у вас травма. Подтвердите её у врача или физиотерапевта.",
-   unit_min="мин", unit_s="с", translated="Текст переведён с английского."),
+   unit_min="мин", unit_s="с", translated="Текст переведён с английского.",
+   und="Разберитесь в травме", injured="Что повреждено", happens="Как это происходит", heals="Как заживает", grades="Насколько это серьёзно?",
+   mus="Какие мышцы укреплять — восстановиться и стать сильнее", stronger="Вернуться сильнее",
+   cap="Оригинальная иллюстрация IKJON — красным отмечено повреждённое место. Только для обучения; диагноз подтверждает врач или физиотерапевт.",
+   groin5="Боль в паху бывает 5 основных типов. Врачи различают их по источнику боли (Дохийское соглашение). Выберите тот, что совпадает с местом боли:",
+   front="Спереди", back="Сзади", bm="Карта тела: мышцы для укрепления выделены оранжевым", ill="Иллюстрация"),
 }
 
 e = lambda s: html.escape(str(s if s is not None else ""), quote=True)
 
+for _L in ("uz", "ru"):
+    _x = os.path.join(ROOT, "tools", "i18n", f"anat_{_L}.json")
+    if os.path.exists(_x):
+        TR[_L].update(json.load(open(_x, encoding="utf-8")))
+MISSING = set()
+
 def t(s, L):
     """Translate a piece of app text into language L (falls back to English)."""
-    if L == "en" or s is None:
+    if L == "en" or not s:
         return s
+    if s not in TR[L]:
+        MISSING.add(s)
     return TR[L].get(s, s)
 
 def base(L):
@@ -224,6 +251,14 @@ ol.exs>li.nophoto{grid-template-columns:minmax(0,1fr)}ol.exs>li>img{width:120px;
 .card{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;color:inherit;text-decoration:none}.card:hover{border-color:var(--teal)}
 .card b{display:block;font-family:Georgia,serif;font-size:1.05rem}.card span{color:var(--mut);font-size:.9rem}
 details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0}summary{font-weight:700;cursor:pointer}
+.anatfig{margin:14px 0;background:#FAFCFD;border:1px solid var(--line);border-radius:16px;padding:10px}.anatfig svg{width:100%;height:auto;display:block}
+.anatfig figcaption{font-size:.8rem;color:#56708A;margin-top:6px}.anatfig text{font:600 11px Calibri,"Segoe UI",system-ui,sans-serif;fill:#1A4264}
+.grs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}.gr{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px}.gr p{margin:4px 0 0;font-size:.93rem}
+.gbar{display:block;height:7px;border-radius:999px;background:var(--line);margin-bottom:8px}.gbar i{display:block;height:100%;border-radius:999px;background:#F2B33D;width:34%}.g1 .gbar i{width:67%;background:linear-gradient(90deg,#F2B33D,#D9711F)}.g2 .gbar i{width:100%;background:linear-gradient(90deg,#F2B33D,#D9711F,#D7261E)}
+.musg{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:16px;align-items:center}.musg svg{width:100%;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px}.musg svg text{font:700 10px system-ui,sans-serif;fill:#56708A}
+.ml{list-style:none;padding:0;margin:0;display:grid;gap:8px}.ml li{display:grid;gap:2px;padding:10px 12px;border-radius:12px;background:var(--card);border-left:4px solid var(--orange)}.ml span{font-size:.92rem;color:var(--mut)}
+.g5{display:flex;flex-wrap:wrap;gap:8px}.g5b{border:1.5px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.88rem;text-decoration:none}.g5b.on{background:var(--band);color:#fff;border-color:var(--band)}
+@media (max-width:600px){.musg{grid-template-columns:1fr}.musg svg{max-width:240px;margin:0 auto}}
 footer{color:var(--mut);font-size:.85rem;text-align:center;padding:0 16px 32px;max-width:860px;margin:0 auto}footer a{color:inherit}
 @media (max-width:480px){ol.exs>li{grid-template-columns:88px minmax(0,1fr)}ol.exs>li.nophoto{grid-template-columns:minmax(0,1fr)}ol.exs>li>img{width:88px;height:64px}.top-cta{font-size:.8rem;padding:6px 11px}}"""
 
@@ -254,6 +289,40 @@ def page(L, title, desc, slug, body, ld):
 </body></html>
 """
 
+GROIN5 = [("groin", "Adductor-related"), ("hipflexor", "Iliopsoas-related"), ("inguinal", "Inguinal-related"), ("pubic", "Pubic-related"), ("hiprelated", "Hip-related")]
+ANAT = D.get("ANAT", {}); SVG = D.get("SVG", {}); BODY = D.get("BODY", {}); MUSNAME = D.get("MUSNAME", {})
+
+def tr_svg(svg, L, i):
+    """Translate the visible words inside an illustration."""
+    u = UI[L]
+    def rep(m):
+        txt = html.unescape(m.group(2)).strip()
+        arrow_l, arrow_r = txt.startswith("← "), txt.endswith(" →")
+        core = txt[2:] if arrow_l else txt[:-2] if arrow_r else txt
+        core = {"Front": u["front"], "Back": u["back"]}.get(core, t(core, L))
+        return m.group(1) + e(("← " if arrow_l else "") + core + (" →" if arrow_r else "")) + "</text>"
+    svg = re.sub(r"(<text[^>]*>)([^<]*)</text>", rep, svg)
+    svg = re.sub(r'aria-label="Illustration: [^"]*"', f'aria-label="{e(u["ill"])}: {e(t(i["name"], L))}"', svg)
+    svg = svg.replace('aria-label="Body map: muscles to strengthen are shown in orange"', f'aria-label="{e(u["bm"])}"')
+    return svg
+
+def anat_section(i, L):
+    a = ANAT.get(i["id"])
+    if not a:
+        return ""
+    u = UI[L]
+    g5 = ""
+    if any(i["id"] == g for g, _ in GROIN5):
+        g5 = f'<p class="note">{e(u["groin5"])}</p><p class="g5">' + "".join(
+            f'<a class="g5b{" on" if g == i["id"] else ""}" href="{base(L)}{SEO[g][0]}/">{e(t(n, L))}</a>' for g, n in GROIN5) + "</p>"
+    grades = "".join(f'<div class="gr g{k}"><span class="gbar"><i></i></span><b>{e(t(g[0], L))}</b><p>{e(t(g[1], L))}</p></div>' for k, g in enumerate(a["grades"]))
+    mus = "".join(f'<li><b>{e(t(MUSNAME.get(k, k), L))}</b><span>{e(t(why, L))}</span></li>' for k, why in a["muscles"])
+    return (f'<h2 id="understand">{u["und"]}</h2>{g5}<figure class="anatfig">{tr_svg(SVG.get(i["id"], ""), L, i)}<figcaption>{e(u["cap"])}</figcaption></figure>'
+            f'<h3>{u["injured"]}</h3><p>{e(t(a["part"], L))}</p><h3>{u["happens"]}</h3><p>{e(t(a["how"], L))}</p>'
+            f'<h3>{u["grades"]}</h3><div class="grs">{grades}</div><h3>{u["heals"]}</h3><p>{e(t(a["heal"], L))}</p>'
+            f'<h2>{u["mus"]}</h2><div class="musg">{tr_svg(BODY.get(i["id"], ""), L, i)}<ul class="ml">{mus}</ul></div>'
+            f'<h3>{u["stronger"]}</h3><ul>' + "".join(f"<li>{e(t(x, L))}</li>" for x in a["stronger"]) + "</ul>")
+
 def injury_page(i, L):
     u = UI[L]
     slug, seo_en = SEO[i["id"]]
@@ -274,6 +343,7 @@ def injury_page(i, L):
          f'<p class="lede">{e(t(i["what"], L))}</p>',
          f'<p class="muted small">{u["meta"].format(sport=e(t(i["sport"], L)), region=e(region), month=month)}</p>' if i.get("sport") else "",
          f'<p class="note">{u["edu"]}</p>',
+         anat_section(i, L),
          f'<div class="cta"><p>{u["cta1"]}{applang}</p><a class="btn" href="{app}">{u["cta1btn"].format(short=e(sh))}</a></div>']
     if i.get("signs"):
         b.append(f"<h2>{u['signs']}</h2><ul>" + "".join(f"<li>{e(t(s, L))}</li>" for s in i["signs"]) + "</ul>")
@@ -372,7 +442,8 @@ def main():
     add = "".join(f"\n  <url><loc>{x}</loc><lastmod>{TODAY.isoformat()}</lastmod><changefreq>monthly</changefreq><priority>{'0.9' if re.search(r'/guides/((uz|ru)/)?$', x) else '0.8'}</priority></url>" for x in urls)
     s = s.replace("</urlset>", add + "\n</urlset>")
     open(sm, "w", encoding="utf-8").write(s)
-    print(f"Built {len(urls)} pages")
+    print(f"Built {len(urls)} pages; untranslated strings: {len(MISSING)}")
+    json.dump(sorted(MISSING), open(os.path.join(ROOT, "tools", "i18n", "missing.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
 
 if __name__ == "__main__":
     main()
