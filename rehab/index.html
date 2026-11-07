@@ -1717,6 +1717,31 @@ FIGS.leg={w:320,h:330,draw(){const B=AC;return `
  <g id="pf"><path d="M100 310Q190 318 290 316L288 322Q190 326 98 318Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="1.5"/></g>`},
  labels:[["Calf muscles",8,70,"l"],["Shin muscle",214,60,"l"],["Shin bone (tibia)",166,130,"m"],["Fibula",124,180,"r"],["Achilles tendon",8,236,"l"],["Ankle ligaments",210,250,"l"],["Heel bone",30,300,"l"],["Plantar fascia",200,338,"l"]],
  sides:["Back of leg","Toes"]};
+FIGS.thigh={w:300,h:330,draw(){const B=AC;return `
+ <path d="M18 0H136C140 90 132 200 124 292 110 312 46 312 32 292 22 200 14 90 18 0Z" fill="#FBE6D8"/>
+ <path d="M164 0H282C286 90 278 200 270 292 256 312 192 312 178 292 168 200 160 90 164 0Z" fill="#FBE6D8"/>
+ <path d="M30 20C26 100 30 200 44 270L60 270C54 190 54 100 58 20Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2"/>
+ <path d="M124 20C128 100 124 190 112 260L92 284C100 240 100 120 98 20Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2"/>
+ <g id="rf"><path d="M62 10H96C100 100 96 190 86 262H70C60 190 58 100 62 10Z" fill="#EBA697" stroke="${B.musE}" stroke-width="2"/><path d="M79 20 78 250" stroke="${B.musE}" stroke-width="1" opacity=".5"/></g>
+ <ellipse cx="78" cy="290" rx="20" ry="16" fill="${B.bone}" stroke="${B.boneE}" stroke-width="3"/>
+ <path d="M166 0H280C280 30 260 52 222 54 184 52 166 30 166 0Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".85"/>
+ <g id="bf"><path d="M230 56H272C272 130 266 210 252 284H232C236 200 234 130 230 56Z" fill="#EBA697" stroke="${B.musE}" stroke-width="2"/></g>
+ <path d="M176 56H226C228 130 226 210 214 284H192C182 200 176 130 176 56Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2"/><path d="M200 60 204 280" stroke="${B.musE}" stroke-width="1.5" opacity=".6"/>
+ <path d="M188 300Q222 290 258 300" fill="none" stroke="${B.boneE}" stroke-width="3"/>`},
+ labels:[["Front: quadriceps",78,-2,"m"],["Back: hamstrings",222,-2,"m"],["Rectus femoris",78,150,"m"],["Kneecap",78,326,"m"],["Glutes",222,30,"m"],["Biceps femoris",298,170,"r"],["Inner hamstrings",168,200,"l"]],
+ sides:["",""]};
+FIGS.spine={w:300,h:330,draw(){const B=AC;let v="",dsc="",arch="";
+ for(let k=0;k<5;k++){const y=14+k*50;
+  arch+=`<path d="M124 ${y+6}C112 ${y+6} 104 ${y+8} 96 ${y+12}L58 ${y+18} 54 ${y+30} 94 ${y+30}C104 ${y+32} 114 ${y+32} 124 ${y+30}Z"/>`;
+  v+=`<rect x="120" y="${y}" width="66" height="36" rx="7"/>`;
+  if(k<4)dsc+=`<rect x="123" y="${y+37}" width="60" height="12" rx="5" fill="${B.cart}" stroke="${B.cartE}" stroke-width="2"/>`}
+ const body=`${arch}${v}<path d="M122 266H186C186 290 168 316 132 330H96C104 300 112 280 122 266Z"/>`;
+ return `<path d="M0 0H44C40 110 40 220 50 330H0Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".75"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round">${body}</g><g fill="${B.bone}">${body}</g>${dsc}
+ <rect x="123" y="251" width="60" height="12" rx="5" fill="${B.cart}" stroke="${B.cartE}" stroke-width="2"/>
+ <path d="M114 216C100 240 86 280 70 330" fill="none" stroke="#E8B931" stroke-width="5" stroke-linecap="round"/><path d="M114 266C104 286 96 306 88 330" fill="none" stroke="#E8B931" stroke-width="4" stroke-linecap="round"/>`},
+ labels:[["Back muscles",8,-2,"l"],["Vertebra",192,40,"l"],["Disc",192,96,"l"],["Nerve root",30,300,"l"],["L5",153,236,"m"],["Sacrum",190,300,"l"]],
+ sides:["Back","Belly"]};
 /* injury marks drawn on top of a figure; z = zoom centre & factor */
 const MARKS={
  tearline:(d)=>`<path d="${d}" fill="none" stroke="${AC.inj}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`,
@@ -1745,6 +1770,13 @@ Object.assign(ANATFIG,{
  plantar:{fig:"leg",z:[118,314,2.7],extra:`<path d="M100 310Q120 312 140 313L140 320Q120 320 98 318Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2"/>`+MARKS.glow(116,314,12)},
  shin:{fig:"leg",z:[180,180,2.2],extra:`<path d="M182 120 184 226" stroke="${AC.inj}" stroke-width="5" stroke-linecap="round" opacity=".85"/>`+MARKS.glow(181,176,20)},
  calf:{fig:"leg",z:[98,120,2.4],extra:`<path d="M80 104 118 108 116 136 84 132Z" fill="${AC.inj}" opacity=".35"/>`+MARKS.tearline("M82 118l6 6 5-7 6 7 5-7 6 7 5-6")+MARKS.glow(98,120,16)}
+});
+Object.assign(ANATFIG,{
+ hamstring:{fig:"thigh",z:[250,110,2.4],extra:`<path d="M232 92 270 92 268 132 234 132Z" fill="${AC.inj}" opacity=".35"/>`+MARKS.tearline("M234 110l6 6 5-7 6 7 5-7 6 7 4-6")+MARKS.glow(251,112,16)},
+ quad:{fig:"thigh",z:[79,140,2.4],extra:`<path d="M62 124 96 124 95 156 63 156Z" fill="${AC.inj}" opacity=".35"/>`+MARKS.tearline("M63 140l5 6 5-7 6 7 5-7 6 7 4-6")+MARKS.glow(79,140,16)},
+ lbp:{fig:"spine",z:[70,215,2.0],extra:`<circle cx="66" cy="214" r="34" fill="#F2A33D" opacity=".18"/><circle cx="66" cy="214" r="20" fill="#F2A33D" opacity=".25"/><path d="M20 190 44 196M18 214 44 214M20 238 44 232" stroke="#E07A2E" stroke-width="3" stroke-linecap="round"/>`},
+ sciatica:{fig:"spine",z:[118,212,2.6],extra:`<path d="M123 201 C108 202 106 214 123 213Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/><path d="M114 216C100 240 86 280 70 330" fill="none" stroke="${AC.inj}" stroke-width="5" stroke-linecap="round"/>`+MARKS.glow(114,212,13)},
+ spondy:{fig:"spine",z:[106,234,2.7],extra:MARKS.tearline("M104 222l-4 5 5 4-4 5 5 4")+MARKS.glow(105,232,12)}
 });
 let anatUid=0;
 function anatSVG(id){const a=ANATFIG[id];if(!a)return"";const F=FIGS[a.fig],u="an"+(++anatUid),[px,py,z]=a.z,R=78,cx=F.w+110,cy=F.h/2;
@@ -1896,6 +1928,38 @@ Object.assign(ANAT,{
   heal:"Muscle heals in weeks. Gentle early walking and calf raises help the new fibres line up strongly. Rushing back to sprinting is the main cause of re-tears.",
   muscles:[["calves","Rebuild both the bent-knee (soleus) and straight-knee (gastrocnemius) parts."],["hamstrings","Share push-off work in sprinting."],["glutes","Power for running so the calf takes less."],["feet","Better foot control reduces strain on the calf."]],
   stronger:["Warm up with skips and calf raises before sprinting.","Return to sprinting step by step: 60%, 80%, then 100%.","Keep 2 calf sessions a week, especially if you are over 35."]}
+});
+Object.assign(ANAT,{
+ hamstring:{part:"The hamstrings are three muscles at the back of the thigh. The outer one (biceps femoris) is torn most often, usually in its upper part where muscle joins tendon.",
+  how:"Sprinting at top speed — the muscle is stretched and working hard at the same moment as the leg swings forward. Also from high kicks or slipping into a split. Fatigue and a previous tear raise the risk.",
+  grades:[["Grade 1","Tight, can walk and jog. 1–3 weeks."],["Grade 2","Clear pain, limping, maybe bruising. 3–8 weeks."],["Grade 3","Large tear or tendon pulled off the bone (often with a pop near the buttock) — see a doctor first."]],
+  heal:"Muscle repairs in weeks, but strength and sprint speed take longer to return. Most re-injuries happen when players go back before full strength. The Nordic hamstring curl halves hamstring injuries.",
+  muscles:[["hamstrings","Rebuild strength at long muscle length — Nordics and single-leg deadlifts."],["glutes","Strong glutes do more of the sprint work, sparing the hamstrings."],["core","Pelvic control stops the hamstrings being over-stretched."],["calves","Share the work of push-off."]],
+  stronger:["Return to sprinting step by step: 60%, 80%, 90%, then full speed.","Keep Nordic curls once or twice a week all season.","Don't sprint at full speed when very tired at first."]},
+ quad:{part:"The quadriceps are four muscles at the front of the thigh. The rectus femoris — the long one down the middle — is the one usually torn, because it crosses both the hip and the knee.",
+  how:"Kicking hard (especially long balls) or sprinting, often in a cold or tired muscle.",
+  grades:[["Grade 1","Tight, can jog. 1–3 weeks."],["Grade 2","Painful walking fast, weak kick. 3–6 weeks."],["Grade 3","Large tear or dent in the muscle — medical assessment first."]],
+  heal:"The muscle heals in weeks when loaded gradually. Kicking returns last: short passes first, then long kicks.",
+  muscles:[["quads","Rebuild strength through knee extension and lunges, then speed."],["hipflex","Train the hip-flexing part of rectus femoris for kicking."],["glutes","Balance the front of the hip."],["core","Stabilises the pelvis when kicking."]],
+  stronger:["Warm up with gradual kicking before shooting or long passes.","Rebuild kicking: 10 m, 20 m, 30 m, then shooting.","Don't stretch hard into pain in the first week."]},
+ lbp:{part:"The lower back has five vertebrae, discs between them, small joints at the back, and layers of muscle. With most back pain no serious damage is found — muscles and joints are sensitive and protective, and the back is still strong.",
+  how:"Lifting, bending, a long day sitting, poor sleep or stress can all trigger it. Often there is no single cause.",
+  grades:[["Acute (under 6 weeks)","A recent flare-up — usually improves within weeks."],["Persistent (6–12 weeks)","Not settling on its own; active treatment helps."],["Chronic (over 3 months)","Long-term pain. Exercise, activity and good sleep are the best tools."]],
+  heal:"Most episodes improve within 2–6 weeks. Staying active beats bed rest; scans rarely change what helps. Exercise of almost any type you enjoy reduces pain and stops it coming back.",
+  muscles:[["core","Deep trunk muscles support the spine in everyday movements."],["glutes","Strong hips mean the back does less of the lifting."],["lowback","Back muscles need strength, not just rest."],["hamstrings","Better hip bending takes strain off the back."]],
+  stronger:["Keep moving: short walks every day during a flare-up.","Lift with your hips and legs, close to the body — but bending your back is normal and safe.","Get help urgently for numbness around the groin or bladder/bowel changes."]},
+ sciatica:{part:"Sciatica is pain from an irritated nerve root as it leaves the lower spine. Usually a bulging disc presses on or inflames the nerve, and pain travels down the buttock and leg along the nerve.",
+  how:"Often after lifting or bending, sometimes for no clear reason. Leg pain is usually worse than back pain, and may come with tingling or numbness.",
+  grades:[["Mild","Leg pain comes and goes; you can work and walk."],["Moderate","Constant leg pain; sitting and sleeping are hard."],["Severe","Numbness or weakness — get a medical review first."]],
+  heal:"Most people improve within 6–12 weeks; the disc bulge often shrinks by itself. Gentle movement and nerve-glide exercises help. Surgery is only for severe weakness or pain that does not improve.",
+  muscles:[["core","Supports the spine so the nerve is less irritated."],["glutes","Reduce strain on the back during walking and lifting."],["lowback","Gentle back extension often eases disc-type leg pain."],["hamstrings","Gentle mobility helps the nerve glide."]],
+  stronger:["Find positions that ease leg pain and use them often.","Walk regularly — short and frequent beats long and rare.","Go to hospital now for numbness around the groin or new bladder/bowel problems."]},
+ spondy:{part:"A stress fracture in a small bridge of bone at the back of a lower vertebra (the pars), most often L5. It is the most common cause of ongoing back pain in young athletes.",
+  how:"Repeated bending backwards and twisting — fast bowling, gymnastics, football kicking, wrestling — during growth.",
+  grades:[["Stress reaction","Caught early, before a full crack."],["Confirmed fracture","Crack seen on a scan — typical 3–4 month programme."],["Long-standing","Pain for over 6 months — slower return."]],
+  heal:"With a break from bending backwards and twisting, most heal or settle within 3–6 months. A gradual, supervised return keeps it from coming back.",
+  muscles:[["core","Holds the spine steady so the pars is protected."],["glutes","Power for kicking and bowling without arching the back."],["hamstrings","Tight hamstrings increase strain on the low back."],["hipflex","Tight hip flexors tilt the pelvis and arch the back."]],
+  stronger:["Avoid back-arching moves until your doctor clears you.","Build core endurance (planks, dead bugs) before sport.","Limit bowling or high-load repetitions during growth spurts."]}
 });
 const GROINTYPES=[["groin","Adductor-related"],["hipflexor","Iliopsoas-related"],["inguinal","Inguinal-related"],["pubic","Pubic-related"],["hiprelated","Hip-related"]];
 function anatBox(i){const a=ANAT[i.id];if(!a)return"";
