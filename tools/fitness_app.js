@@ -2,6 +2,7 @@
 const KEY="ikjon-fitness-v1";
 let S={lang:null,plan:null,hist:{}};
 try{const o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)S=Object.assign(S,o)}catch(e){}
+const NEWS_V=2;if(!S.tour&&S.consent){S.tour=1}else if(!S.consent){S.newsSeen=NEWS_V}
 if(!S.hist)S.hist={};if(S.voice==null)S.voice=true;if(S.sound==null)S.sound=true;if(!S.badges)S.badges=[];
 if(!S.lang){const n=(navigator.language||"en").slice(0,2).toLowerCase();S.lang=n==="uz"?"uz":n==="ru"?"ru":"en"}
 try{const q=new URLSearchParams(location.search).get("lang");if(["en","uz","ru"].includes(q))S.lang=q}catch(e){}
@@ -40,7 +41,25 @@ function careFor(p,n){const pl=planById(p.id),i=n-1;
  if(pl.care==="full")return CARE.map(([a,opts])=>opts[i%opts.length]);
  if(pl.care==="face"){const g=a=>CARE.find(c=>c[0]===a)[1];const f=g("face");return[f[i%f.length],f[(i+1)%f.length],g("eyes")[i%3],g("neck")[i%4],g("hair")[0]]}
  return[]}
-function workFor(p,n){const pl=planById(p.id),wid=pl.week[(n-1)%7];const w=WK[wid];return{id:wid,name:w[0],icon:w[1],list:scaleList(w[2],p,n),warm:wid!=="rest"&&wid!=="hairday"&&wid!=="active"}}
+/* equipment switch + "today only" options. First candidate not already in the list wins. */
+const EQ=["none","band","weights","all"];
+const SWAP={
+ none:{db_press:["bottle_press"],band_row:["backpack_row"],pull_apart:["scap_squeeze","prone_y"],monster_walk:["fire_hydrant","hip_abd"],kb_deadlift:["sl_rdl","bridge"],carry:["side_plank","plank"]},
+ band:{db_press:["band_press"],kb_deadlift:["sl_rdl","bridge"],carry:["side_plank","plank"]},
+ weights:{pull_apart:["scap_squeeze","prone_y"],monster_walk:["fire_hydrant","hip_abd"]},
+ quiet:{jumping_jack:["step_jack","march"],high_knees:["march","step_jack"],burpee:["slow_burpee"]}};
+const LOADTAG={weights:["squat","sumo_squat","reverse_lunge","split_squat","bulgarian","step_up","sl_rdl","calf_raise","bridge"],band:["squat","sumo_squat","bridge","sl_bridge","glute_kickback","clamshell"]};
+LOADTAG.all=[...new Set(LOADTAG.weights.concat(LOADTAG.band))];
+const isToday=(p,n)=>dayKey(dateOf(p,n))===dayKey(new Date());
+const todayOpt=(p,n)=>{const o=S.todayOpt;return o&&isToday(p,n)&&o.d===dayKey(new Date())?o:{}};
+function swapList(list,modes,eq){const out=[],used=new Set(list.map(x=>x.e));
+ for(const x of list){let e=x.e;for(const m of modes){const c=(SWAP[m]||{})[e];if(c){const pick=c.find(id=>!used.has(id))||c[0];used.add(pick);e=pick}}
+  const tag=eq&&(LOADTAG[eq]||[]).includes(e)?(eq==="band"?"tag_band":"tag_db"):"";out.push(e===x.e&&!tag?x:Object.assign({},x,{e,tag}))}
+ return out}
+function adaptModes(p,n){const o=todayOpt(p,n),eq=S.equip&&S.equip!=="all"?S.equip:null,m=[];
+ if(o.noeq)m.push("none");else if(eq)m.push(eq);if(o.quiet)m.push("quiet");return{m,eq:o.noeq?null:S.equip}}
+function adapt(list,p,n){const a=adaptModes(p,n);return swapList(list,a.m,a.eq)}
+function workFor(p,n){const pl=planById(p.id),wid=pl.week[(n-1)%7];const w=WK[wid];return{id:wid,name:w[0],icon:w[1],list:adapt(scaleList(w[2],p,n),p,n),warm:wid!=="rest"&&wid!=="hairday"&&wid!=="active"}}
 function habitsFor(p,n){const pl=planById(p.id),wd=(dateOf(p,n).getDay()+6)%7;
  return pl.habits.map(k=>["h:"+k,HAB[k]]).concat((WEEKLY[wd]||[]).map((s,j)=>["w:"+j,s]))}
 const dayRec=(p,n)=>{const k=dayKey(dateOf(p,n));return S.hist[k]||(S.hist[k]={})};
@@ -92,7 +111,11 @@ function premiumView(){return `<button class="back" data-go="today">${t("back")}
  <div class="box" style="margin-top:12px">${licBox()}</div>`}
 
 /* ---------- rendering helpers ---------- */
-function exRow(x){const e=fx(x.e);return `<li class="ex" data-ex="${x.e}" data-dose="${esc(doseTxt(x))}" tabindex="0" role="button">${visMini(x.e)}<div><b>${esc(tr(e.name))}</b><br><span class="dose">${esc(doseTxt(x))}</span><span class="note">${esc(tr(e.target))}</span></div></li>`}
+function exRow(x){const e=fx(x.e);return `<li class="ex" data-ex="${x.e}" data-dose="${esc(doseTxt(x))}" tabindex="0" role="button">${visMini(x.e)}<div><b>${esc(tr(e.name))}</b><br><span class="dose">${esc(doseTxt(x))}</span><span class="note">${esc(tr(e.target))}</span>${x.tag?`<span class="note eqtag">＋ ${esc(t(x.tag))}</span>`:""}</div></li>`}
+function eqSeg(attr){return `<div class="seg wrapseg" role="group" aria-label="${esc(t("eq_h"))}">${EQ.map(k=>`<button ${attr}="${k}" aria-pressed="${(S.equip||"all")===k}">${esc(t("eq_"+k))}</button>`).join("")}</div>`}
+function adaptBox(p,n){if(!isToday(p,n))return"";const o=todayOpt(p,n),on=[o.noeq&&t("adapt_noeq"),o.quiet&&t("adapt_quiet")].filter(Boolean);
+ return `<div class="adapt"><p class="small" style="margin:0"><b>${t("adapt_h")}</b> · <span class="muted">${t("adapt_p")}</span></p><div class="row" style="gap:6px;margin-top:6px">${[["noeq","adapt_noeq"],["quiet","adapt_quiet"]].map(([k,l])=>`<button class="chipbtn" data-adapt="${k}" aria-pressed="${!!o[k]}">${esc(t(l))}</button>`).join("")}</div>${on.length?`<p class="small" style="margin:6px 0 0;font-weight:700;color:var(--good)" role="status">${esc(t("adapt_on",{x:on.join(" + ")}))}</p>`:""}</div>`}
+function newsCard(){if(!S.consent||(S.newsSeen||0)>=NEWS_V)return"";return `<section class="box news" role="status"><h3>✨ ${t("new_h")}</h3><ul>${["new_1","new_2","new_3"].map(k=>`<li>${esc(t(k))}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm" id="newsOk">${t("new_ok")}</button><button class="btn alt sm" data-go="settings">${esc(t("eq_h"))}</button></div></section>`}
 function planCard(pl,active){const tag=pl.free?t("free"):premiumOn()?t("first_free",{n:FREE_DAYS}):"";
  return `<div class="card pl"><div class="plico">${iconSVG(pl.id==="men"?"arm":pl.id==="women"?"hip":pl.id==="hair"?"hair":pl.id==="face"?"face":"body",34)}</div>
  <span class="chip${pl.free?"":" o"}">${esc(tr(pl.tag))}</span><h3>${esc(tr(pl.name))}</h3><p class="muted">${esc(tr(pl.desc))}</p>
@@ -106,7 +129,7 @@ function dayPanel(p,n){if(n<1)return `<div class="box">${esc(t("not_started",{d:
   <ul class="exlist">${care.map(exRow).join("")}</ul><div class="row" style="margin-top:12px"><button class="btn" data-sess="care">${t("go_care")}</button></div></section>`:"";
  const workH=`<section class="box blk"><div class="bh">${iconSVG(ICONK[w.icon]||"core",24)}<div><h3>${t("work_h")}: ${esc(tr(w.name))}</h3><p class="muted small">${esc(t("mins",{m:estMin(w.list)+(w.warm?3:0)}))}</p></div>
   <label class="tick"><input type="checkbox" data-k="work" ${r.work?"checked":""}> ${t("done_work")}</label></div>
-  ${w.warm?`<p class="muted small" style="margin-top:8px">${t("warm")}</p>`:""}<ul class="exlist">${w.list.map(exRow).join("")}</ul>
+  ${w.list.length>2&&w.warm?adaptBox(p,n):""}${w.warm?`<p class="muted small" style="margin-top:8px">${t("warm")}</p>`:""}<ul class="exlist">${w.list.map(exRow).join("")}</ul>
   <div class="row" style="margin-top:12px"><button class="btn warm" data-sess="work">${t("go_work")}</button>${w.list.length>4?`<button class="btn alt sm" data-sess="quick">${t("quick")}</button>`:""}</div></section>`;
  const habH=`<section class="box blk"><div class="bh">${iconSVG("heart",24)}<h3>${t("habits_h")}</h3></div><ul class="tasks">${hab.map(([k,s])=>`<li><input type="checkbox" id="hb-${k}" data-k="${k}" ${r[k]?"checked":""}><label for="hb-${k}">${esc(tr(s))}</label></li>`).join("")}</ul></section>`;
  return careH+workH+habH}
@@ -123,7 +146,7 @@ function todayView(){const p=S.plan;
   <div class="pbar"><i style="width:${Math.round(done/tot*100)}%"></i></div>
   <div class="row"><span>${esc(t("of_month",{a:done,b:tot}))} · 🔥 ${t("streak")}: <b>${streak()}</b>${p.adj&&p.adj!==1?` · ${esc(t("intensity",{p:Math.round(p.adj*100)}))}`:""}</span><button class="btn alt sm" data-go="month">${t("seeplan")}</button></div></section>`;
  if(n>tot)return head+`<div class="row" style="margin-top:16px"><button class="btn warm" id="again">${t("again")}</button><button class="btn alt" data-go="plans">${t("t_plans")}</button></div>`;
- return head+(toast?`<div class="toast" id="toast" role="status">${esc(toast)}</div>`:"")+`<div class="daygrid">${dayPanel(p,n)}</div>`}
+ return head+newsCard()+(toast?`<div class="toast" id="toast" role="status">${esc(toast)}</div>`:"")+`<div class="daygrid">${dayPanel(p,n)}</div>`}
 function plansView(){const p=S.plan;return `<h1>${t("choose")}</h1><p class="muted" style="margin:6px 0 14px">${t("private")}</p>
  <div class="box"><b>${t("level")}</b><div class="seg" role="group" style="margin-top:8px">${LEVELS.map(l=>`<button data-lvl="${l[0]}" aria-pressed="${(S.lvlPick||"regular")===l[0]}">${esc(tr(l[1]))}</button>`).join("")}</div><p class="muted small" style="margin-top:6px">${t("lvl_help")}</p>${p?`<p class="muted small" style="margin-top:6px">${t("switch_warn")}</p>`:""}</div>
  <div class="grid" style="margin-top:14px">${PLANS.map(pl=>planCard(pl,p&&p.id===pl.id)).join("")}</div>`}
@@ -216,6 +239,7 @@ function progView(){const p=S.plan;if(!p)return `<h1>${t("t_prog")}</h1><p class
  <div class="row" style="margin-top:14px"><button class="btn warm" id="shareBtn">📤 ${t("share")}</button></div>${reminderBox()}`}
 function settingsView(){return `<button class="back" data-go="today">${t("back")}</button><h1>${t("settings")}</h1>
  <div class="box" style="margin-top:14px"><h3>${t("lang")}</h3><div class="seg" role="group" style="margin-top:8px">${[["en","English"],["uz","O‘zbekcha"],["ru","Русский"]].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}" lang="${k}">${n}</button>`).join("")}</div></div>
+ <div class="box" style="margin-top:12px"><h3>🏋️ ${t("eq_h")}</h3><p class="muted small">${t("eq_p")}</p>${eqSeg("data-eq")}${(S.equip||"all")==="none"?`<p class="muted small" style="margin-top:6px">${esc(t("eq_none_d"))}</p>`:""}</div>
  <div class="box" style="margin-top:12px"><h3>🔊 ${t("coach_h")}</h3><label class="gcheck"><input type="checkbox" id="optVoice" ${S.voice?"checked":""}> ${t("voice")}</label><label class="gcheck"><input type="checkbox" id="optSound" ${S.sound?"checked":""}> ${t("sound")}</label>${S.lang!=="en"&&"speechSynthesis" in window&&speechSynthesis.getVoices().length&&!voiceFor()?`<p class="muted small">${t("voice_none")}</p>`:""}</div>${reminderBox()}
  <div class="box" style="margin-top:12px"><span class="chip o">${t("prem")}</span><div style="margin-top:8px">${licBox()}</div><div class="row" style="margin-top:10px"><button class="btn alt sm" data-go="premium">${t("see_prem")}</button></div></div>
  <div class="box" style="margin-top:12px"><h3>${t("data_h")}</h3><p class="muted">${t("data_p")}</p><div class="row" style="margin-top:10px"><button class="btn alt sm" id="exp">${t("export")}</button>
@@ -227,7 +251,7 @@ function settingsView(){return `<button class="back" data-go="today">${t("back")
 /* ---------- guided session ---------- */
 function startSession(kind){const p=S.plan,n=view==="month"&&selDay?selDay:dayNum(p);
  if(kind==="quick"){const w=workFor(p,n);ses={kind:"work",n,list:w.list.slice(0,4).map(x=>Object.assign({},x,{s:Math.min(x.s,2)})),i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0);return}
- const list=kind==="care"?scaleList(careFor(p,n).map(x=>[x[0],x[1],x[2],x[3]]),p,n,true):(()=>{const w=workFor(p,n);return(w.warm?scaleList(WARM,p,n,true):[]).concat(w.list)})();
+ const list=kind==="care"?scaleList(careFor(p,n).map(x=>[x[0],x[1],x[2],x[3]]),p,n,true):(()=>{const w=workFor(p,n);return(w.warm?adapt(scaleList(WARM,p,n,true),p,n).map(x=>Object.assign({},x,{tag:""})):[]).concat(w.list)})();
  ses={kind,n,list,i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0)}
 function prep(){const x=ses.list[ses.i];ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true}
 function nextStep(){const x=ses.list[ses.i];if(ses.mode==="work"&&ses.set<x.s){ses.mode="rest";ses.left=30;ses.running=true;ses.say=true;render();return}
@@ -244,7 +268,7 @@ function sessionView(){if(ses.done)return `<div class="box" style="text-align:ce
  return `<div class="row" style="justify-content:space-between"><span class="muted">${esc(t("ex_of",{a:ses.i+1,b:ses.list.length}))}${x.s>1?" · "+esc(t("set_of",{a:ses.set,b:x.s})):""}</span><button class="btn alt sm" id="sesQuit">${t("quit")}</button></div>
  <div class="pbar" style="margin:10px 0 14px"><i style="width:${Math.round(ses.i/ses.list.length*100)}%"></i></div>
  ${ses.mode==="rest"?`<div class="box player" style="text-align:center"><p class="eyebrow">${t("rest")}</p><div class="big">${ses.left}</div><p class="muted">${esc(t("next_up",{x:tr(e.name)}))}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="sesNext">${t("skip")}</button></div></div>`:
- `<div class="box player"><h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${visBig(x.e)}
+ `<div class="box player"><h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${x.tag?`<p class="small eqtag" style="margin:0 0 6px">＋ ${esc(t(x.tag))}</p>`:""}${visBig(x.e)}
   <ol class="steps">${e.steps.map(s=>`<li>${esc(tr(s))}</li>`).join("")}</ol>${e.tip?`<p class="muted small"><b>${t("tip")}:</b> ${esc(tr(e.tip))}</p>`:""}
   ${x.t?`<div class="big" style="text-align:center">${ses.left}</div>`:""}
   <div class="row" style="justify-content:center;margin-top:12px">${x.t?`<button class="btn alt" id="sesPause">${ses.running?t("pause"):t("resume")}</button>`:""}<button class="btn warm" id="sesNext">${t("done_set")}</button><button class="btn alt" id="sesSkip">${t("skip")}</button></div>
@@ -260,7 +284,20 @@ function openEx(id,dose){const e=fx(id),d=document.getElementById("exDlg");
  if(d.showModal&&!d.open)d.showModal();mountAnims();document.getElementById("dlgClose").onclick=()=>d.close()}
 
 /* ---------- consent gate ---------- */
-function gate(){const g=document.getElementById("gate");if(S.consent){g.hidden=true;return}
+let tourStep=0;
+function tour(g){const N=2,dots=`<p class="muted small" style="margin:0;text-align:center">${esc(t("w_step",{a:tourStep+2,b:N+1}))}</p>`;
+ g.hidden=false;
+ if(tourStep===0)g.innerHTML=`<div class="gatecard" role="dialog" aria-modal="true" aria-labelledby="wH">${dots}<h2 id="wH">${t("w1_h")}</h2>
+  <div class="gpts">${["w1_a","w1_b","w1_c"].map((k,i)=>`<div class="gpt"><i>${i+1}</i><span>${esc(t(k))}</span></div>`).join("")}</div>
+  <p class="cue small" style="margin:0">${esc(t("w1_d"))}</p>
+  <div class="row" style="justify-content:space-between"><button class="btn alt sm" data-tour="skip">${t("w_skip")}</button><button class="btn warm" data-tour="next">${t("w_next")}</button></div></div>`;
+ else g.innerHTML=`<div class="gatecard" role="dialog" aria-modal="true" aria-labelledby="wH">${dots}<h2 id="wH">${t("eq_h")}</h2><p class="muted small" style="margin:0">${t("eq_p")}</p>
+  ${eqSeg("data-teq")}${(S.equip||"all")==="none"?`<p class="muted small" style="margin:0">${esc(t("eq_none_d"))}</p>`:""}
+  <div class="row" style="justify-content:space-between"><button class="btn alt sm" data-tour="all">${t("w_all")}</button><button class="btn warm" data-tour="find">${t("w_find")}</button></div></div>`;
+ g.querySelectorAll("[data-teq]").forEach(b=>b.onclick=()=>{S.equip=b.dataset.teq;save();tour(g)});
+ g.querySelectorAll("[data-tour]").forEach(b=>b.onclick=()=>{const a=b.dataset.tour;if(a==="next"){tourStep=1;tour(g);return}
+  S.tour=1;S.newsSeen=NEWS_V;save();g.hidden=true;g.innerHTML="";if(a==="find"){quiz={};go("quiz")}else if(a==="all")go("plans");else render()})}
+function gate(){const g=document.getElementById("gate");if(S.consent&&!S.tour){tour(g);return}if(S.consent){g.hidden=true;return}
  g.hidden=false;g.innerHTML=`<div class="gatecard"><div class="seg" role="group" style="margin-bottom:10px">${[["en","EN"],["uz","UZ"],["ru","RU"]].map(([k,n])=>`<button data-glang="${k}" aria-pressed="${S.lang===k}">${n}</button>`).join("")}</div>
  <h2>${t("gate_h")}</h2><p style="margin:10px 0">${esc(t("disc"))}</p>
  <label class="gcheck"><input type="checkbox" id="g1"> ${t("gate_age")}</label><label class="gcheck"><input type="checkbox" id="g2"> ${t("gate_ok")}</label>
@@ -304,6 +341,9 @@ function bind(){
  if($("wipeNo"))$("wipeNo").onclick=()=>{confirmWipe=false;render()};
  if($("wipeYes"))$("wipeYes").onclick=()=>{const lang=S.lang;if(S.pro&&S.pro.inst&&!S.pro.test)lsPost("deactivate",{license_key:S.pro.key,instance_id:S.pro.inst}).catch(()=>{});try{localStorage.removeItem(KEY)}catch(e){}S={lang,plan:null,hist:{}};save();confirmWipe=false;go("today");gate()};
  if($("sesNext"))$("sesNext").onclick=nextStep;
+ app.querySelectorAll("[data-eq]").forEach(b=>b.onclick=()=>{S.equip=b.dataset.eq;save();render()});
+ app.querySelectorAll("[data-adapt]").forEach(b=>b.onclick=()=>{const k=b.dataset.adapt,d=dayKey(new Date());if(!S.todayOpt||S.todayOpt.d!==d)S.todayOpt={d};S.todayOpt[k]=!S.todayOpt[k];save();render()});
+ if($("newsOk"))$("newsOk").onclick=()=>{S.newsSeen=NEWS_V;save();render()};
  app.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>{const k=b.dataset.fb,p=S.plan;p.adj=Math.min(1.5,Math.max(.7,(p.adj||1)*(k==="easy"?1.08:k==="hard"?.9:1)));const r=dayRec(p,ses.n);r.fb=k;ses.fb=k;save();render()});
  app.querySelectorAll("[data-qk]").forEach(b=>b.onclick=()=>{quiz[b.dataset.qk]=b.dataset.qv;render();scrollTo(0,0)});
  if($("qReset"))$("qReset").onclick=()=>{quiz={};render()};

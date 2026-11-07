@@ -311,6 +311,37 @@ NEWEX = {
     L("Optional: measure your waist at the belly button.", "Ixtiyoriy: belingizni kindik darajasida o‘lchang.", "По желанию: измерьте талию на уровне пупка."),
     L("Compare month to month, not day to day.", "Kunma-kun emas, oyma-oy solishtiring.", "Сравнивайте по месяцам, а не по дням.")],
    L("Photos stay in your own phone gallery — the app never sees them.", "Suratlar faqat telefoningiz galereyasida qoladi — ilova ularni ko‘rmaydi.", "Фото остаются в галерее вашего телефона — приложение их не видит."), "Care", "skin"),
+ # --- swaps for the equipment switch and the "quiet / no equipment today" options
+ "bottle_press": (L("Water-bottle shoulder press", "Suv idishi bilan yelkadan itarish", "Жим бутылок с водой над головой"), "upper",
+   L("Shoulders, arms", "Yelkalar, qo‘llar", "Плечи, руки"),
+   [L("Hold two filled water bottles (or a light backpack) at shoulder height.", "Ikkita to‘la suv idishini (yoki yengil ryukzakni) yelka balandligida ushlang.", "Возьмите две полные бутылки с водой (или лёгкий рюкзак) на уровне плеч."),
+    L("Brace your stomach and press them straight up.", "Qorinni tarang qilib, ularni to‘g‘ri yuqoriga itaring.", "Напрягите живот и выжмите их прямо вверх."),
+    L("Lower slowly back to the shoulders.", "Sekin yelkalarga qaytarib tushiring.", "Медленно опустите обратно к плечам.")],
+   L("Don't arch the lower back — ribs stay down.", "Belni egmang — qovurg‘alar pastda qolsin.", "Не прогибайте поясницу — рёбра опущены."), "Strength", "arm"),
+ "backpack_row": (L("Backpack row", "Ryukzak bilan tortish", "Тяга рюкзака"), "back",
+   L("Upper back, shoulder blades", "Yuqori orqa, kurak suyaklari", "Верх спины, лопатки"),
+   [L("Put books or water bottles in a backpack and hold it by the top handle.", "Ryukzakka kitob yoki suv idishlari soling va uni tepa tutqichidan ushlang.", "Положите в рюкзак книги или бутылки с водой и возьмитесь за верхнюю ручку."),
+    L("Hinge forward with a flat back, the other hand on a chair.", "Orqani tekis tutib oldinga egiling, ikkinchi qo‘l stulda.", "Наклонитесь вперёд с ровной спиной, другая рука на стуле."),
+    L("Pull the elbow back towards the hip, then lower slowly.", "Tirsakni songa qarab orqaga torting, so‘ng sekin tushiring.", "Тяните локоть назад к бедру, затем медленно опустите.")],
+   L("Squeeze the shoulder blade at the top. Do both sides.", "Yuqorida kurakni siqing. Ikkala tomonni bajaring.", "Сводите лопатку вверху. Выполните обе стороны."), "Strength", "back"),
+ "band_press": (L("Band shoulder press", "Rezina bilan yelkadan itarish", "Жим резины над головой"), "upper",
+   L("Shoulders, arms", "Yelkalar, qo‘llar", "Плечи, руки"),
+   [L("Stand on the middle of a band, ends in your hands at shoulder height.", "Rezina o‘rtasiga turing, uchlari qo‘lingizda yelka balandligida.", "Встаньте на середину резины, концы в руках на уровне плеч."),
+    L("Press both hands straight up.", "Ikkala qo‘lni to‘g‘ri yuqoriga itaring.", "Выжмите обе руки прямо вверх."),
+    L("Lower slowly against the band.", "Rezinaga qarshi sekin tushiring.", "Медленно опустите, сопротивляясь резине.")],
+   L("Stand with feet wider for more tension.", "Ko‘proq taranglik uchun oyoqlarni kengroq qo‘ying.", "Поставьте ноги шире для большего натяжения."), "Strength", "arm"),
+ "step_jack": (L("Step jacks (no jumping)", "Qadamli yulduzcha (sakrashsiz)", "Шаги «звёздочка» (без прыжков)"), "heart",
+   L("Heart rate, quietly", "Yurak urishi, shovqinsiz", "Пульс, без шума"),
+   [L("Stand tall, arms by your sides.", "Tik turing, qo‘llar yon tomonda.", "Встаньте прямо, руки вдоль тела."),
+    L("Step one foot out to the side while raising both arms overhead.", "Ikkala qo‘lni yuqoriga ko‘targan holda bir oyoqni yon tomonga qo‘ying.", "Отставьте одну ногу в сторону, поднимая обе руки над головой."),
+    L("Step back in and repeat on the other side. Keep a quick rhythm.", "Qaytib, ikkinchi tomonga takrorlang. Tez ritmni saqlang.", "Вернитесь и повторите в другую сторону. Держите быстрый ритм.")],
+   L("Good for flats — no noise for the neighbours.", "Kvartira uchun qulay — qo‘shnilarga shovqin yo‘q.", "Подходит для квартиры — соседям не шумно."), "Cardio", "heart"),
+ "slow_burpee": (L("Step-back burpee (no jump)", "Qadamli berpi (sakrashsiz)", "Бёрпи шагом (без прыжка)"), "heart",
+   L("Whole body, heart rate", "Butun tana, yurak urishi", "Всё тело, пульс"),
+   [L("Squat down and put your hands on the floor.", "Cho‘kkalab, qo‘llaringizni polga qo‘ying.", "Присядьте и поставьте руки на пол."),
+    L("Step one foot back, then the other, into a plank.", "Avval bir oyoqni, so‘ng ikkinchisini orqaga qo‘yib, plankaga o‘ting.", "Отставьте назад одну ногу, затем другую, в планку."),
+    L("Step the feet back in and stand up tall.", "Oyoqlarni qaytarib, tik turing.", "Верните ноги шагом и встаньте прямо.")],
+   L("Move steadily — quiet but still hard work.", "Bir maromda harakatlaning — shovqinsiz, lekin baribir jiddiy mashq.", "Двигайтесь ровно — тихо, но всё равно нагрузка."), "Cardio", "heart"),
 }
 
 # Which head-to-toe area each reused Rehab exercise belongs to
@@ -325,6 +356,7 @@ REUSED = {
  "calf_raise": "legs", "ham_stretch": "legs", "quad_stretch": "legs", "calf_stretch": "legs",
  "toe_yoga": "feet", "towel_scrunch": "feet", "ball_roll": "feet", "ankle_abc": "feet", "sl_balance": "feet",
  "jumping_jack": "heart", "mountain_climber": "heart", "march": "heart", "walk": "heart", "jog": "heart", "skipping": "heart",
+ "scap_squeeze": "back",
 }
 
 # Translations for reused exercises the injury guides didn't include

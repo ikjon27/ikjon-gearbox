@@ -153,6 +153,12 @@ EXTRA_CSS = """
 .badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px}
 .badge{border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;opacity:.55;display:flex;flex-direction:column;gap:2px}
 .badge.on{opacity:1;border-color:var(--orange);background:var(--orange-tint)}.badge span{font-size:1.6rem}.badge b{font-size:.9rem}.badge small{font-size:.75rem;color:var(--muted)}
+.wrapseg{flex-wrap:wrap;border-radius:16px}
+.adapt{margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:12px}
+.chipbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.85rem;cursor:pointer}
+.chipbtn[aria-pressed="true"]{background:var(--teal);border-color:var(--teal);color:#fff}
+.eqtag{display:block;color:var(--teal);font-weight:600}
+.news{margin-top:14px;border-color:var(--orange)}.news ul{margin:6px 0 0;padding-left:20px}
 .qgrid{display:grid;gap:10px;margin-top:12px}.qopt{text-align:left;font-weight:700;font-size:1.05rem;cursor:pointer;color:var(--ink)}.qopt:hover{border-color:var(--teal)}
 """
 
