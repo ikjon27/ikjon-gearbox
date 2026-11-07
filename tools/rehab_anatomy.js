@@ -47,6 +47,22 @@ const FIGS={
  labels:[["Pelvis",150,26,"m"],["Hip flexor (iliopsoas)",32,60,"l"],["Inguinal ligament",8,132,"l"],["Hip joint & labrum",20,252,"l"],["Pubic joint",250,232,"r"],["Adductors (inner thigh)",150,336,"m"]],
  sides:["",""]}
 };
+FIGS.kneeSide={w:300,h:330,draw(){const B=AC;return `
+ <path d="M96 0H228C236 60 238 120 232 170 242 210 236 240 218 262L210 330H112L106 262C92 236 90 200 100 170 92 110 90 50 96 0Z" fill="#FBE6D8"/>
+ <path d="M104 0H134L130 214 116 214C108 150 104 80 104 0Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".9"/>
+ <path d="M176 0H222C226 50 224 100 214 140L204 152 190 150C186 100 180 50 176 0Z" fill="${B.mus}" stroke="${B.musE}" stroke-width="2" opacity=".9"/>
+ <g stroke="${B.boneE}" stroke-width="5" stroke-linejoin="round"><path d="M136 0H178L184 164H132Z"/><ellipse cx="160" cy="188" rx="42" ry="32"/>
+  <path d="M118 212H208L214 236 200 252 194 330H140L134 252 118 236Z"/><ellipse cx="122" cy="240" rx="12" ry="14"/><rect x="114" y="244" width="13" height="86" rx="5"/></g>
+ <g fill="${B.bone}"><path d="M136 0H178L184 164H132Z"/><ellipse cx="160" cy="188" rx="42" ry="32"/>
+  <path d="M118 212H208L214 236 200 252 194 330H140L134 252 118 236Z"/><ellipse cx="122" cy="240" rx="12" ry="14"/><rect x="114" y="244" width="13" height="86" rx="5"/></g>
+ <path d="M200 152Q210 178 204 206" fill="none" stroke="${B.cartE}" stroke-width="4" id="pfcart"/>
+ <ellipse cx="212" cy="178" rx="12" ry="24" fill="${B.bone}" stroke="${B.boneE}" stroke-width="3"/>
+ <path d="M196 140 206 156 218 156 214 140Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/>
+ <path d="M206 200 218 200 214 250 202 250Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="2"/><path d="M210 204 208 246" stroke="${B.ligE}" stroke-width="1" opacity=".6"/>
+ <ellipse cx="206" cy="252" rx="8" ry="6" fill="${B.boneS}"/>
+ <path d="M152 0H162L192 226 186 230 172 186Z" fill="${B.lig}" stroke="${B.ligE}" stroke-width="1.5" opacity=".6"/>`},
+ labels:[["Quadriceps",232,40,"r"],["Hamstrings",8,90,"l"],["IT band",132,120,"r"],["Kneecap",230,166,"l"],["Patellar tendon",224,236,"l"],["Shin bone (tibia)",166,318,"m"],["Thigh bone",157,112,"m"]],
+ sides:["Back of knee","Front of knee"]};
 /* injury marks drawn on top of a figure; z = zoom centre & factor */
 const MARKS={
  tearline:(d)=>`<path d="${d}" fill="none" stroke="${AC.inj}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`,
@@ -62,6 +78,13 @@ const ANATFIG={
  pubic:{fig:"pelvis",z:[150,206,2.7],extra:MARKS.glow(150,207,20)+`<rect x="145" y="196" width="10" height="22" rx="4" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/><path d="M134 200l-8-4M134 212l-9 2M166 200l8-4M166 212l9 2" stroke="${AC.inj}" stroke-width="2.5" stroke-linecap="round"/>`},
  hiprelated:{fig:"pelvis",z:[84,160,2.6],extra:`<path d="M62 160 A25 25 0 0 1 106 160" fill="none" stroke="${AC.inj}" stroke-width="5"/>`+MARKS.tearline("M74 146l4 6 4-7 4 7 4-6")+MARKS.glow(84,152,13)}
 };
+Object.assign(ANATFIG,{
+ pfps:{fig:"kneeSide",z:[202,178,2.6],extra:`<path d="M200 152Q210 178 204 206" fill="none" stroke="${AC.inj}" stroke-width="5"/>`+MARKS.glow(204,178,15)+`<ellipse cx="212" cy="178" rx="12" ry="24" fill="${AC.bone}" stroke="${AC.boneE}" stroke-width="3" opacity=".9"/>`},
+ patellar:{fig:"kneeSide",z:[210,210,2.6],extra:`<path d="M206 200 218 200 217 222 204 222Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/>`+MARKS.glow(211,208,12)},
+ osgood:{fig:"kneeSide",z:[206,250,2.5],extra:MARKS.glow(206,251,15)+`<ellipse cx="208" cy="252" rx="10" ry="8" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="2.5"/><path d="M202 232 214 232 214 246 202 246Z" fill="#F6C9C4" opacity=".7"/>`},
+ itbs:{fig:"kneeSide",z:[178,190,2.4],extra:`<path d="M168 168 176 166 186 210 178 214Z" fill="${AC.inj}" opacity=".45"/>`+MARKS.glow(178,190,16)},
+ "knee-oa":{fig:"knee",z:[196,200,2.5],extra:`<path d="M160 197Q200 192 236 200L236 205Q200 198 160 202Z" fill="#F6C9C4" stroke="${AC.inj}" stroke-width="1.5"/><path d="M240 196l8 4-8 4ZM236 212l8 3-8 4ZM158 188l-5 5 6 2Z" fill="${AC.boneE}"/>`+MARKS.tearline("M170 202l4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3 4-3 4 3")+MARKS.glow(200,200,14)}
+});
 let anatUid=0;
 function anatSVG(id){const a=ANATFIG[id];if(!a)return"";const F=FIGS[a.fig],u="an"+(++anatUid),[px,py,z]=a.z,R=78,cx=F.w+110,cy=F.h/2;
  let base=F.draw();(a.hide||[]).forEach(h=>{base=base.replace(new RegExp(`<g id="${h}">[\\s\\S]*?</g>`),"")});
@@ -149,6 +172,38 @@ const ANAT={
   muscles:[["gmed","Controls the hip so the ball doesn't drift into the pinching position."],["glutes","Strong glutes take load away from the front of the hip."],["core","Pelvic control changes the hip angle in sport."],["adductors","Balance the inner thigh with the side hip."]],
   stronger:["Avoid very deep squats and long sitting with knees above hips while it is sore.","Choose a slightly wider stance and turned-out toes for squats.","A specialist should check hips that keep locking or catching."]}
 };
+Object.assign(ANAT,{
+ pfps:{part:"The kneecap glides in a groove at the front of the thigh bone. Smooth cartilage lines the back of the kneecap. In runner's knee the joint behind the kneecap is overloaded and irritated — nothing is torn.",
+  how:"Load rising faster than the knee can handle: more running or jumping, hills, stairs, or deep squats. Weak hips and thigh muscles let the knee drift inward, adding stress behind the kneecap.",
+  grades:[["Mild","Ache only after running or jumping; daily life normal."],["Moderate","Stairs, squatting and long sitting hurt."],["Long-standing","Pain for over 3 months. Still very treatable with exercise; it just takes longer."]],
+  heal:"Because nothing is damaged, the pain settles when load and strength are balanced again. Combined hip and knee strengthening is the best-proven treatment, with results in 6–12 weeks.",
+  muscles:[["quads","Hold the kneecap in its groove and absorb force."],["gmed","Stops the knee drifting inward — a key cause of kneecap pain."],["glutes","Take load away from the knee on stairs and landings."],["calves","Absorb impact when running so the knee doesn't have to."]],
+  stronger:["Cut back (don't stop) running while you strengthen — about 50–70% of normal.","Shorten your stride slightly or increase cadence by 5–10%.","Keep hip exercises twice a week to stop it returning."]},
+ patellar:{part:"The patellar tendon joins the kneecap to the shin bone. Every jump and landing pulls on it. In jumper's knee the tendon fibres just below the kneecap are overloaded and become thicker and sore.",
+  how:"Lots of jumping, landing and sprinting, especially after a sudden increase in training or a new hard surface.",
+  grades:[["Mild","Pain after sport only."],["Moderate","Pain during jumping limits performance."],["Severe / long-standing","Pain on stairs and in daily life; can take 3–6 months."]],
+  heal:"Tendons get stronger with heavy, slow loading — not rest. Total rest makes them weaker and the pain returns when you jump again. Expect 12 weeks of steady progress.",
+  muscles:[["quads","The muscle that pulls on the tendon — slow heavy squats rebuild the whole unit."],["glutes","Share landing forces so the tendon takes less."],["calves","Absorb landings with springy ankles."],["hamstrings","Balance the knee and help control landings."]],
+  stronger:["Pain up to 3/10 during loading is OK if it settles by the next morning.","Add jumping back in steps: 2–3 days a week, not daily.","Keep one heavy leg session a week in the season."]},
+ itbs:{part:"The IT band is a thick strip of tissue running down the outside of the thigh from the hip to just below the knee. In IT band syndrome the tissue where it crosses the outer knee becomes irritated.",
+  how:"Repeated knee bending in running or cycling — usually after a jump in distance, lots of downhill running, or weak hip muscles letting the knee drop inward.",
+  grades:[["Mild","Pain only after 5+ km."],["Moderate","Pain within the first 1–2 km or on stairs."],["Persistent","Pain stops running completely. Seek a physio assessment."]],
+  heal:"It settles when running load is reduced and the hips get stronger. Foam rolling and stretching may feel good but do not fix it on their own.",
+  muscles:[["gmed","Keeps the pelvis level and the knee from dropping inward when you run."],["glutes","Control hip rotation and share the load."],["quads","Support the knee on downhill running."],["core","Keeps your pelvis stable on every stride."]],
+  stronger:["Reduce distance and avoid downhill running until pain-free.","Run on alternating sides of a sloped road, or on flat ground.","Increase weekly distance by about 10% at a time."]},
+ "knee-oa":{part:"In knee osteoarthritis the smooth cartilage that covers the ends of the bones slowly thins, the joint space narrows and small bone spurs can form at the edges. The knee keeps adapting and repairing — it is not simply 'worn out'.",
+  how:"Age, an old knee injury (for example ACL or meniscus), extra body weight and genetics all play a part. It develops over years.",
+  grades:[["Mild","Daily life is fine; long walks or sport hurt."],["Moderate","Pain most days on stairs or standing up."],["Severe","Pain at rest or at night. Still keep exercising; also talk to your doctor about other options."]],
+  heal:"Exercise is the main, most-recommended treatment: strength and activity reduce pain about as much as common painkillers. Cartilage loves movement — joints are nourished when they are loaded.",
+  muscles:[["quads","The most important — stronger quads mean less knee pain and better walking."],["glutes","Make standing up and stairs easier."],["gmed","Reduces the inward knee load that hurts the inner joint."],["calves","Help with walking and balance."]],
+  stronger:["Mild pain (3–4/10) during exercise is fine if it settles within 24 hours.","Walk most days; use a cycle or pool on flare-up days.","If overweight, losing 5–10% of body weight clearly reduces knee pain."]},
+ osgood:{part:"In growing children, the patellar tendon attaches to a growth area at the top of the shin bone (the tibial tuberosity). In Osgood-Schlatter this growth area is pulled and irritated, making a tender bump below the kneecap.",
+  how:"Growth spurts plus lots of running, jumping and kicking. The bones grow fast and the muscles become tight and pull harder on the growth area.",
+  grades:[["Mild","Can play; sore afterwards."],["Moderate","Pain limits running and jumping."],["Severe","Stairs and kneeling hurt in daily life."]],
+  heal:"It is not dangerous and settles when growth finishes (usually by 14–16). The bump may stay but stops hurting. Managing load — not total rest — keeps young players active.",
+  muscles:[["quads","Gentle strength (and later stretching) reduces the pull on the growth area."],["glutes","Help with landing so the knee takes less."],["hamstrings","Balance the front and back of the thigh."],["calves","Absorb running and jumping forces."]],
+  stronger:["Use the pain ladder: keep sport pain at 2/10 or less.","Use knee pads for kneeling and goalkeeping.","Talk to the coach about fewer jumping and sprint drills during growth spurts."]}
+});
 const GROINTYPES=[["groin","Adductor-related"],["hipflexor","Iliopsoas-related"],["inguinal","Inguinal-related"],["pubic","Pubic-related"],["hiprelated","Hip-related"]];
 function anatBox(i){const a=ANAT[i.id];if(!a)return"";
  const groinIntro=GROINTYPES.some(g=>g[0]===i.id)?`<div class="box gtypes"><b>Groin pain has 5 main types.</b> Doctors group it by where it comes from (Doha agreement). Pick the one that matches where it hurts:<div class="gtrow">${GROINTYPES.map(([id,n])=>`<button class="chipbtn${id===i.id?" on":""}" data-inj="${id}">${esc(n)}</button>`).join("")}</div></div>`:"";
