@@ -315,6 +315,16 @@
         "link": "/rehab/guides/"
       },
       {
+        "en": "Workout plans",
+        "uz": "Mashq rejalari",
+        "link": "/plans/"
+      },
+      {
+        "en": "Exercise library",
+        "uz": "Mashqlar kutubxonasi",
+        "link": "/exercises/"
+      },
+      {
         "en": "IKJON Fitness",
         "uz": "IKJON Fitness",
         "link": "/fitness/"
@@ -406,6 +416,66 @@
       },
       {
         "name": {
+          "en": "Free workout plans",
+          "uz": "Bepul mashq rejalari"
+        },
+        "text": {
+          "en": "Home workout plans for men and women, a 20-minute daily routine, posture and hair-care plans — every day and every exercise written out.",
+          "uz": "Erkaklar va ayollar uchun uyda mashq rejalari, har kuni 20 daqiqalik mashq, qomat va soch parvarishi rejalari — har bir kun va har bir mashq yozib berilgan."
+        },
+        "points": [
+          {
+            "en": "5 plans, from 30 days to 3 months",
+            "uz": "30 kundan 3 oygacha 5 ta reja"
+          },
+          {
+            "en": "Weekly schedule with sets and reps",
+            "uz": "Setlar va takrorlar bilan haftalik jadval"
+          },
+          {
+            "en": "Uzbek, Russian and English",
+            "uz": "O'zbek, rus va ingliz tillarida"
+          }
+        ],
+        "button": {
+          "en": "See the plans",
+          "uz": "Rejalarni ko'rish",
+          "link": "/plans/"
+        },
+        "image": "/brand/goals/women.svg"
+      },
+      {
+        "name": {
+          "en": "Exercise library",
+          "uz": "Mashqlar kutubxonasi"
+        },
+        "text": {
+          "en": "Step-by-step instructions for every exercise in our plans, with illustrations and coaching tips.",
+          "uz": "Rejalarimizdagi har bir mashq uchun rasmli bosqichma-bosqich yo'riqnoma va maslahatlar."
+        },
+        "points": [
+          {
+            "en": "142 exercises",
+            "uz": "142 ta mashq"
+          },
+          {
+            "en": "Start and finish positions shown",
+            "uz": "Boshlanish va yakuniy holat ko'rsatilgan"
+          },
+          {
+            "en": "Links to the plans that use each one",
+            "uz": "Har bir mashq bor rejalarga havolalar"
+          }
+        ],
+        "button": {
+          "en": "Open the library",
+          "uz": "Kutubxonani ochish",
+          "link": "/exercises/"
+        },
+        "image": "/brand/goals/men.svg"
+      },
+      {
+        "name": {
           "en": "IKJON Fitness",
           "uz": "IKJON Fitness"
         },
@@ -432,7 +502,7 @@
           "uz": "IKJON Fitness'ni ochish",
           "link": "/fitness/"
         },
-        "image": "/brand/goals/men.svg"
+        "image": "/brand/goals/daily.svg"
       },
       {
         "name": {

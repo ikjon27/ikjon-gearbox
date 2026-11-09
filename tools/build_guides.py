@@ -8,7 +8,9 @@ Output: rehab/guides/                   English hub + one page per injury
         sitemap.xml                     guide URLs refreshed
 Run:    python3 tools/build_guides.py
 """
-import json, os, html, datetime, re
+import json, os, html, datetime, re, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from sitekit import trust_box, share_bar, EXTRA_CSS, ex_slug, ex_base, CARDS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = "https://www.ikjon-gearbox.com"
@@ -18,6 +20,10 @@ TR = {"en": {}}
 for _L in ("uz", "ru"):
     TR[_L] = json.load(open(os.path.join(ROOT, "tools", "i18n", f"{_L}.json"), encoding="utf-8"))
 TODAY = datetime.date.today()
+LAST_CHECKED = datetime.date(2026, 11, 9)   # change only when the content is actually re-checked
+FAQX = {}
+for _f in ("faq1.json", "faq2.json"):
+    FAQX.update(json.load(open(os.path.join(ROOT, "tools", "i18n", _f), encoding="utf-8")))
 LANGS = ["en", "uz", "ru"]
 
 # Search-friendly address (shared by all languages) and English title per injury.
@@ -260,12 +266,13 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 .g5{display:flex;flex-wrap:wrap;gap:8px}.g5b{border:1.5px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.88rem;text-decoration:none}.g5b.on{background:var(--band);color:#fff;border-color:var(--band)}
 @media (max-width:600px){.musg{grid-template-columns:1fr}.musg svg{max-width:240px;margin:0 auto}}
 footer{color:var(--mut);font-size:.85rem;text-align:center;padding:0 16px 32px;max-width:860px;margin:0 auto}footer a{color:inherit}
+""" + EXTRA_CSS + """
 @media (max-width:480px){ol.exs>li{grid-template-columns:88px minmax(0,1fr)}ol.exs>li.nophoto{grid-template-columns:minmax(0,1fr)}ol.exs>li>img{width:88px;height:64px}.top-cta{font-size:.8rem;padding:6px 11px}}"""
 
 CSP = "default-src 'self'; style-src 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
 OG_LOCALE = {"en": "en_GB", "uz": "uz_UZ", "ru": "ru_RU"}
 
-def page(L, title, desc, slug, body, ld):
+def page(L, title, desc, slug, body, ld, img=None):
     u = UI[L]
     canon = url(L, slug)
     alts = "".join(f'<link rel="alternate" hreflang="{x}" href="{url(x, slug)}">' for x in LANGS) + f'<link rel="alternate" hreflang="x-default" href="{url("en", slug)}">'
@@ -277,7 +284,7 @@ def page(L, title, desc, slug, body, ld):
 <meta http-equiv="Content-Security-Policy" content="{CSP}"><meta name="referrer" content="strict-origin-when-cross-origin">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{canon}">{alts}<meta name="robots" content="index, follow, max-image-preview:large">
-<meta property="og:type" content="article"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:site_name" content="IKJON"><meta property="og:locale" content="{OG_LOCALE[L]}">
+<meta property="og:type" content="article"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}"><meta property="og:site_name" content="IKJON"><meta property="og:locale" content="{OG_LOCALE[L]}">{f'<meta property="og:image" content="{SITE}{img}"><meta name="twitter:card" content="summary_large_image">' if img else ""}
 <link rel="icon" href="/rehab/icons/favicon-48.png"><link rel="apple-touch-icon" href="/rehab/icons/apple-touch-icon.png">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")}</script>
 <style>{CSS}</style></head>
@@ -286,6 +293,7 @@ def page(L, title, desc, slug, body, ld):
 <footer><p><a href="{base(L)}">{u['f_all']}</a> · <a href="/rehab/">{u['f_app']}</a> · <a href="/rehab/privacy.html">{u['f_priv']}</a> · <a href="/rehab/terms.html">{u['f_terms']}</a></p>
 <p>{u['f_edu']}</p>{trans}
 <p>{u['f_copy']}</p></footer>
+<script src="/assets/share.js" defer></script>
 </body></html>
 """
 
@@ -335,13 +343,14 @@ def injury_page(i, L):
     desc = u["desc"].format(short=sh if L != "en" else sh_en.lower(), stages=len(i["phases"]), nex=nex)
     if len(desc) > 160:
         desc = desc[:157].rsplit(" ", 1)[0] + "…"
-    month = f"{MONTHS[L][TODAY.month - 1]} {TODAY.year}"
+    month = f"{MONTHS[L][LAST_CHECKED.month - 1]} {LAST_CHECKED.year}"
     app = f"/rehab/#injury={i['id']}"
     applang = f' <span class="muted small">{u["app_lang"]}</span>' if u["app_lang"] else ""
     b = [f'<nav class="crumbs" aria-label="Breadcrumb"><a href="/">IKJON</a> › <a href="{base(L)}">{u["crumbs"]}</a> › {e(region)}</nav>',
          f"<h1>{u['h1'].format(name=e(name))}</h1>",
          f'<p class="lede">{e(t(i["what"], L))}</p>',
          f'<p class="muted small">{u["meta"].format(sport=e(t(i["sport"], L)), region=e(region), month=month)}</p>' if i.get("sport") else "",
+         trust_box(L, LAST_CHECKED, len((EVID.get(i["id"]) or {}).get("refs", [])) or None),
          f'<p class="note">{u["edu"]}</p>',
          anat_section(i, L),
          f'<div class="cta"><p>{u["cta1"]}{applang}</p><a class="btn" href="{app}">{u["cta1btn"].format(short=e(sh))}</a></div>']
@@ -364,7 +373,7 @@ def injury_page(i, L):
             steps = "".join(f"<li>{e(t(s, L))}</li>" for s in a["steps"])
             tip = f'<p class="small muted" style="margin:6px 0 0">{u["tip"]} {e(t(a["tip"], L))}</p>' if a.get("tip") else ""
             note = " · " + e(t(x["n"], L)) if x.get("n") else ""
-            items.append(f'<li class="{"" if ph else "nophoto"}">{ph}<div><h3>{e(nm)}<span class="dose">{e(dose(x, L))}</span></h3>'
+            items.append(f'<li class="{"" if ph else "nophoto"}">{ph}<div><h3><a class="exl" href="{ex_base(L)}{ex_slug(a["name"])}/">{e(nm)}</a><span class="dose">{e(dose(x, L))}</span></h3>'
                          f'<span class="muted small">{e(t(a["type"], L))} · {e(t(a["target"], L))}{note}</span>'
                          f'<ol class="steps">{steps}</ol>{tip}</div></li>')
         exit_ = (f"<p class='exit'><b>{u['moveon']}</b></p><ul class='exit'>" + "".join(f"<li>{e(t(c, L))}</li>" for c in p.get("exit", [])) + "</ul>") if p.get("exit") else ""
@@ -374,7 +383,7 @@ def injury_page(i, L):
         b.append(f'<p class="note"><b>{u["important"]}</b> {e(t(i["note"], L))}</p>')
     ev = EVID.get(i["id"])
     if ev:
-        b.append(f"<h2>{u['research']}</h2><p class='muted small'>{u['evid']} <b>{e(t(ev.get('lvl', ''), L))}</b></p><ul>" +
+        b.append(f"<h2 id='research'>{u['research']}</h2><p class='muted small'>{u['evid']} <b>{e(t(ev.get('lvl', ''), L))}</b></p><ul>" +
                  "".join(f"<li>{e(t(x, L))}</li>" for x in ev.get("pts", [])) + "</ul>" +
                  (f"<p class='small muted'><b>{u['sources']}</b> " + "; ".join(e(r) for r in ev.get("refs", [])) + "</p>" if ev.get("refs") else ""))
     sev_list = " ".join(u["a1item"].format(l=t(s["l"], L), d=s["days"], w=span(s["days"], L)) for s in i["sev"])
@@ -382,7 +391,14 @@ def injury_page(i, L):
     faq = [(u["q1"].format(short=q1_name), u["a1"].format(list=sev_list)),
            (u["q2"], u["a2f"].format(flags="; ".join(t(f, L) for f in i["flags"])) if i.get("flags") else u["a2"]),
            (u["q3"], u["a3"])]
-    b.append(f"<h2>{u['faq']}</h2>" + "".join(f"<details><summary>{e(q)}</summary><p>{e(a)}</p></details>" for q, a in faq))
+    if any(x["en"][0].startswith("How long") for x in FAQX.get(i["id"], [])):
+        faq = faq[1:]   # the specific question already covers healing time
+    faq = [tuple(x[L]) for x in FAQX.get(i["id"], [])] + faq
+    b.append(f"<h2 id='questions'>{u['faq']}</h2><div class='qa'>" + "".join(f"<h3>{e(q)}</h3><p>{e(a)}</p>" for q, a in faq) + "</div>")
+    card = f"/cards/guides/{L}/{slug}.jpg"
+    b.append(share_bar(L, url(L, slug), name, card))
+    CARDS.append({"out": card, "kind": "guide", "lang": L, "title": name, "sub": u["card"], "svg": tr_svg(SVG.get(i["id"], ""), L, i),
+                  "lines": [t(s_, L) for s_ in (i.get("signs") or [])[:3]], "url": url(L, slug).replace("https://www.", "")})
     b.append(f'<div class="cta"><p>{u["cta2"]}{applang}</p><a class="btn" href="{app}">{u["cta2btn"]}</a></div>')
     rel = [j for j in INJ if j["region"] == i["region"] and j["id"] != i["id"]][:6]
     if rel:
@@ -390,16 +406,14 @@ def injury_page(i, L):
                  "".join(f'<a class="card" href="{base(L)}{SEO[j["id"]][0]}/"><b>{e(t(j["name"], L))}</b><span>{u["card"]}</span></a>' for j in rel) + "</div>")
     canon = url(L, slug)
     ld = [{"@context": "https://schema.org", "@type": "MedicalWebPage", "name": title, "headline": html.unescape(u["h1"].format(name=name)),
-           "description": desc, "url": canon, "inLanguage": L, "dateModified": TODAY.isoformat(), "lastReviewed": TODAY.isoformat(),
+           "description": desc, "url": canon, "inLanguage": L, "dateModified": LAST_CHECKED.isoformat(),
            "about": {"@type": "MedicalCondition", "name": name}, "audience": {"@type": "Patient"},
            "publisher": {"@type": "Organization", "name": "IKJON Consulting & Education Centre", "url": SITE + "/", "logo": SITE + "/brand/lockup-navy.png"}},
           {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
               {"@type": "ListItem", "position": 1, "name": "IKJON", "item": SITE + "/"},
               {"@type": "ListItem", "position": 2, "name": html.unescape(u["crumbs"]), "item": url(L)},
-              {"@type": "ListItem", "position": 3, "name": name, "item": canon}]},
-          {"@context": "https://schema.org", "@type": "FAQPage", "inLanguage": L, "mainEntity": [
-              {"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}]
-    return slug, page(L, title, desc, slug, "".join(b), ld)
+              {"@type": "ListItem", "position": 3, "name": name, "item": canon}]}]
+    return slug, page(L, title, desc, slug, "".join(b), ld, card)
 
 def hub(L):
     u = UI[L]
@@ -419,6 +433,7 @@ def hub(L):
         b.append(f"<h2>{e(t(REG[r], L))}</h2><div class='grid'>" +
                  "".join(f'<a class="card" href="{SEO[i["id"]][0]}/"><b>{e(t(i["name"], L))}</b><span>{e(SEO[i["id"]][1]) if L == "en" else u["card"]}</span></a>' for i in groups[r]) + "</div>")
     b.append(f'<p class="note" style="margin-top:28px">{u["hub_edu"]}</p>')
+    b.append(f'<p class="chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:18px"><a class="sb" href="{ex_base(L)}">{ {"en":"Exercise library","uz":"Mashqlar kutubxonasi","ru":"Библиотека упражнений"}[L]} →</a><a class="sb" href="{"/plans/" if L=="en" else "/plans/"+L+"/"}">{ {"en":"Free workout plans","uz":"Bepul mashq rejalari","ru":"Бесплатные планы тренировок"}[L]} →</a></p>')
     ld = [{"@context": "https://schema.org", "@type": "CollectionPage", "name": title, "description": desc, "url": url(L), "inLanguage": L,
            "publisher": {"@type": "Organization", "name": "IKJON Consulting & Education Centre", "url": SITE + "/"},
            "hasPart": [{"@type": "MedicalWebPage", "name": t(i["name"], L), "url": url(L, SEO[i["id"]][0])} for i in INJ]}]
