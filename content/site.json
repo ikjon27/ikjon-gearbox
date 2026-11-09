@@ -7,614 +7,267 @@
     "logo_footer": "/brand/lockup-white.png",
     "logo_mark": "/brand/mark-navy.png"
   },
-  "sections": {
-    "facts": false,
-    "areas": false,
-    "logo": false,
-    "apps": true,
-    "principles": true,
-    "goals": true
-  },
   "hero": {
     "label": {
-      "en": "IKJON · From Uzbekistan to the world",
-      "uz": "IKJON · O'zbekistondan dunyoga"
-    },
-    "title_start": {
-      "en": "Build. Improve.",
-      "uz": "Build. Improve."
-    },
-    "title_accent": {
-      "en": "Grow.",
-      "uz": "Grow."
-    },
-    "text": {
-      "en": "Free apps and guides that help you recover from injury, get fit from head to toe, and grow every day. Built in Uzbekistan, made for everyone.",
-      "uz": "Jarohatdan tiklanish, boshdan-oyoqqacha sog'lom bo'lish va har kuni o'sishga yordam beradigan bepul ilovalar va qo'llanmalar. O'zbekistonda yaratilgan, hamma uchun."
-    },
-    "button_main": {
-      "en": "Find what you need",
-      "uz": "Kerakli narsani toping",
-      "link": "#start"
-    },
-    "button_second": {
-      "en": "Contact us",
-      "uz": "Biz bilan bog'laning",
-      "link": "#contact"
-    },
-    "badges": [
-      {
-        "en": "100% free to start",
-        "uz": "Boshlash 100% bepul"
-      },
-      {
-        "en": "No account needed",
-        "uz": "Ro'yxatdan o'tish shart emas"
-      },
-      {
-        "en": "English · O'zbekcha · Русский",
-        "uz": "English · O'zbekcha · Русский"
-      }
-    ],
-    "phones": [
-      "/brand/fitness-screen.png",
-      "/brand/rehab-screen.png"
-    ],
-    "floats": [
-      {
-        "en": "🔥 5-day streak",
-        "uz": "🔥 5 kun ketma-ket"
-      },
-      {
-        "en": "🩹 24 recovery plans",
-        "uz": "🩹 24 ta tiklanish rejasi"
-      },
-      {
-        "en": "🎧 Voice coach",
-        "uz": "🎧 Ovozli murabbiy"
-      }
-    ]
-  },
-  "goals_intro": {
-    "label": {
-      "en": "Start here",
-      "uz": "Shu yerdan boshlang"
+      "en": "IKJON Consulting & Education Centre · Uzbekistan",
+      "uz": "IKJON Consulting & Education Centre · O'zbekiston"
     },
     "title": {
-      "en": "What are you looking for?",
-      "uz": "Nimani izlayapsiz?"
+      "en": "Preparing people for university, work and a healthy life.",
+      "uz": "Odamlarni universitet, ish va sog'lom hayotga tayyorlaymiz."
     },
     "text": {
-      "en": "Pick what you need today and we'll open the right free app, ready on the right plan. No account needed.",
-      "uz": "Bugun sizga nima kerakligini tanlang — biz kerakli bepul ilovani mos reja bilan ochamiz. Ro'yxatdan o'tish shart emas."
+      "en": "We teach English and Ona tili, prepare students for the certificates they need, and build free tools for training and injury recovery.",
+      "uz": "Ingliz tili va ona tilini o'qitamiz, talabalarni kerakli sertifikatlarga tayyorlaymiz hamda mashg'ulot va jarohatdan tiklanish uchun bepul vositalar yaratamiz."
+    },
+    "button_main": {
+      "en": "Fitness & Sport",
+      "uz": "Fitnes va sport",
+      "link": "/sport/"
+    },
+    "button_second": {
+      "en": "Education Portal",
+      "uz": "Ta'lim portali",
+      "link": "#services"
     }
   },
-  "goals": [
+  "services_intro": {
+    "label": {
+      "en": "Our services",
+      "uz": "Xizmatlarimiz"
+    },
+    "title": {
+      "en": "Two places to start",
+      "uz": "Ikki yo'nalish"
+    },
+    "text": {
+      "en": "Our sport and health tools are open to everyone. The Education Portal for our students and teachers is being prepared.",
+      "uz": "Sport va sog'liq vositalarimiz hamma uchun ochiq. O'quvchi va o'qituvchilarimiz uchun Ta'lim portali tayyorlanmoqda."
+    }
+  },
+  "services": [
     {
-      "icon": "🩹",
-      "title": {
-        "en": "I'm injured or in pain",
-        "uz": "Jarohat oldim yoki og'riq bor"
+      "name": {
+        "en": "Fitness & Sport",
+        "uz": "Fitnes va sport"
       },
       "text": {
-        "en": "Day-by-day recovery plans for knee, ankle, back, shoulder and 20 more injuries.",
-        "uz": "Tizza, to'piq, bel, yelka va yana 20 ta jarohat uchun kunma-kun tiklanish rejalari."
+        "en": "Free apps and guides for football training, everyday fitness and recovering from injury.",
+        "uz": "Futbol mashg'ulotlari, kundalik fitnes va jarohatdan tiklanish uchun bepul ilovalar va qo'llanmalar."
       },
-      "button": {
-        "en": "Find my recovery plan",
-        "uz": "Tiklanish rejamni topish",
-        "link": "/rehab/#find"
-      },
+      "points": [
+        {
+          "en": "Joint Rehab — recovery plans for 28 injuries",
+          "uz": "Joint Rehab — 28 ta jarohat uchun tiklanish rejalari"
+        },
+        {
+          "en": "Injury guides in English, Uzbek and Russian",
+          "uz": "Ingliz, o'zbek va rus tillarida jarohat qo'llanmalari"
+        },
+        {
+          "en": "IKJON Fitness — daily plans for men and women",
+          "uz": "IKJON Fitness — erkak va ayollar uchun kundalik rejalar"
+        },
+        {
+          "en": "Football Training — programmes by position and level",
+          "uz": "Football Training — pozitsiya va darajaga mos dasturlar"
+        }
+      ],
       "status": "live",
-      "more": {
-        "en": "Read the injury guides",
-        "uz": "Jarohat qo'llanmalarini o'qish",
-        "link": "/rehab/guides/"
+      "button": {
+        "en": "Open Fitness & Sport",
+        "uz": "Fitnes va sportni ochish",
+        "link": "/sport/"
       },
-      "image": "/brand/goals/injury.svg"
+      "image": "/brand/goals/sport.svg"
     },
     {
-      "icon": "💪",
-      "title": {
-        "en": "Stronger, fitter body — men",
-        "uz": "Kuchli va chiroyli tana — erkaklar"
+      "name": {
+        "en": "Education Portal",
+        "uz": "Ta'lim portali"
       },
       "text": {
-        "en": "3-month home plan for shoulders, chest, back, legs and a firm waist.",
-        "uz": "Yelka, ko'krak, orqa, oyoq va mustahkam bel uchun 3 oylik uy rejasi."
+        "en": "Courses, learning apps and student progress in one place, for IKJON students and teachers.",
+        "uz": "IKJON o'quvchi va o'qituvchilari uchun kurslar, o'quv ilovalari va o'quvchi natijalari bir joyda."
       },
-      "button": {
-        "en": "Start men's plan",
-        "uz": "Erkaklar rejasi",
-        "link": "/fitness/#plan=men"
-      },
-      "status": "live",
-      "image": "/brand/goals/men.svg"
-    },
-    {
-      "icon": "✨",
-      "title": {
-        "en": "Toned, strong body — women",
-        "uz": "Tarang va kuchli tana — ayollar"
-      },
-      "text": {
-        "en": "3-month home plan for glutes, legs, waist, arms and upright posture.",
-        "uz": "Dumba, oyoq, bel, qo'llar va tik qomat uchun 3 oylik uy rejasi."
-      },
-      "button": {
-        "en": "Start women's plan",
-        "uz": "Ayollar rejasi",
-        "link": "/fitness/#plan=women"
-      },
-      "status": "live",
-      "image": "/brand/goals/women.svg"
-    },
-    {
-      "icon": "💇",
-      "title": {
-        "en": "Hair & scalp care",
-        "uz": "Soch va bosh terisi parvarishi"
-      },
-      "text": {
-        "en": "Daily scalp massage, stress care and food habits that support healthy hair.",
-        "uz": "Har kuni bosh terisini uqalash, stressni kamaytirish va sog'lom soch uchun ovqatlanish odatlari."
-      },
-      "button": {
-        "en": "Start hair plan",
-        "uz": "Soch rejasi",
-        "link": "/fitness/#plan=hair"
-      },
-      "status": "live",
-      "image": "/brand/goals/hair.svg"
-    },
-    {
-      "icon": "🙂",
-      "title": {
-        "en": "Face, neck & posture",
-        "uz": "Yuz, bo'yin va qomat"
-      },
-      "text": {
-        "en": "Stand taller and look fresher: face, eye and upper-back exercises.",
-        "uz": "Tikroq turing va tetikroq ko'rining: yuz, ko'z va yuqori orqa mashqlari."
-      },
-      "button": {
-        "en": "Start posture plan",
-        "uz": "Qomat rejasi",
-        "link": "/fitness/#plan=face"
-      },
-      "status": "live",
-      "image": "/brand/goals/face.svg"
-    },
-    {
-      "icon": "🌿",
-      "title": {
-        "en": "Stay healthy every day",
-        "uz": "Har kuni sog'lom bo'lish"
-      },
-      "text": {
-        "en": "A free 20-minute head-to-toe routine: hair, face, eyes, body, feet and habits.",
-        "uz": "Bepul 20 daqiqalik boshdan-oyoqqacha tartib: soch, yuz, ko'z, tana, oyoq va odatlar."
-      },
-      "button": {
-        "en": "Start daily plan",
-        "uz": "Kundalik reja",
-        "link": "/fitness/#plan=daily"
-      },
-      "status": "live",
-      "image": "/brand/goals/daily.svg"
-    },
-    {
-      "icon": "📚",
-      "title": {
-        "en": "Learn English & IELTS",
-        "uz": "Ingliz tili va IELTS"
-      },
-      "text": {
-        "en": "Courses from beginner to C2, IELTS preparation and Kids English.",
-        "uz": "Boshlang'ichdan C2 gacha kurslar, IELTS tayyorlov va bolalar ingliz tili."
-      },
-      "button": {
-        "en": "Ask about courses",
-        "uz": "Kurslar haqida so'rash",
-        "link": "#contact"
-      },
+      "points": [
+        {
+          "en": "English courses and exam preparation",
+          "uz": "Ingliz tili kurslari va imtihonlarga tayyorgarlik"
+        },
+        {
+          "en": "Ona tili lessons",
+          "uz": "Ona tili darslari"
+        },
+        {
+          "en": "Learning apps for grammar, vocabulary and IELTS",
+          "uz": "Grammatika, lug'at va IELTS uchun o'quv ilovalari"
+        }
+      ],
       "status": "soon",
-      "image": "/brand/goals/english.svg"
-    },
-    {
-      "icon": "⚽",
-      "title": {
-        "en": "Football training",
-        "uz": "Futbol mashg'ulotlari"
-      },
-      "text": {
-        "en": "16 thirty-day programmes, quick guided sessions and weekly challenges for players.",
-        "uz": "O'yinchilar uchun 16 ta 30 kunlik dastur, qisqa mashg'ulotlar va haftalik challenjlar."
-      },
       "button": {
-        "en": "Start training",
-        "uz": "Mashg'ulotni boshlash",
-        "link": "/football/"
+        "en": "Coming soon",
+        "uz": "Tez kunda",
+        "link": ""
       },
-      "status": "live",
-      "image": "/brand/goals/football.svg"
+      "image": "/brand/goals/english.svg"
     }
   ],
-  "facts": [
-    {
-      "number": "4",
-      "label": {
-        "en": "areas of work",
-        "uz": "faoliyat yo'nalishi"
-      }
-    },
-    {
-      "number": "6",
-      "label": {
-        "en": "education programmes",
-        "uz": "ta'lim dasturi"
-      }
-    },
-    {
-      "number": "24",
-      "label": {
-        "en": "injury recovery plans in Joint Rehab",
-        "uz": "jarohat uchun tiklanish rejasi"
-      }
-    },
-    {
-      "number": "113",
-      "label": {
-        "en": "guided exercises, free to use",
-        "uz": "ko'rsatmali mashq"
-      }
-    }
-  ],
-  "areas_intro": {
+  "about_intro": {
     "label": {
       "en": "What we do",
       "uz": "Faoliyatimiz"
     },
     "title": {
-      "en": "One brand, four connected areas",
-      "uz": "Bitta brend, bir-biriga ulangan to'rt yo'nalish"
+      "en": "Teaching, preparation and practical tools",
+      "uz": "Ta'lim, tayyorgarlik va amaliy vositalar"
     },
     "text": {
-      "en": "Each area works like one gear in our logo: they turn together. New services are added here step by step as they are ready.",
-      "uz": "Har bir yo'nalish bitta tishli g'ildirakdek: ular birgalikda aylanadi. Yangi xizmatlar shu yerga bosqichma-bosqich qo'shiladi."
+      "en": "IKJON is an education and consulting centre. Our main focus is getting students ready for university or work.",
+      "uz": "IKJON — ta'lim va konsalting markazi. Asosiy maqsadimiz — o'quvchilarni universitet yoki ishga tayyorlash."
     }
   },
-  "areas": [
+  "about": [
     {
-      "name": {
-        "en": "Education",
-        "uz": "Ta'lim"
+      "title": {
+        "en": "English and Ona tili",
+        "uz": "Ingliz tili va ona tili"
       },
       "text": {
-        "en": "IKJON Education & Consulting Centre prepares students for university and work with the knowledge and certificates they need.",
-        "uz": "IKJON Education & Consulting Centre talabalarni universitet va ishga kerakli bilim va sertifikatlar bilan tayyorlaydi."
-      },
-      "items": [
-        {
-          "name": {
-            "en": "General English (A1–B2)",
-            "uz": "Umumiy ingliz tili (A1–B2)"
-          },
-          "status": "open",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "IELTS & CEFR preparation (B1–C1)",
-            "uz": "IELTS va CEFR tayyorlov (B1–C1)"
-          },
-          "status": "open",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "Kids English",
-            "uz": "Bolalar uchun ingliz tili"
-          },
-          "status": "open",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "Speaking Club and Digital Literacy",
-            "uz": "Speaking Club va raqamli savodxonlik"
-          },
-          "status": "open",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "Study & career guidance",
-            "uz": "O'qish va karyera bo'yicha maslahat"
-          },
-          "status": "open",
-          "link": ""
-        }
-      ],
-      "button": {
-        "en": "",
-        "uz": "",
-        "link": ""
+        "en": "General English from beginner to advanced level, Kids English, and Ona tili lessons.",
+        "uz": "Boshlang'ichdan yuqori darajagacha umumiy ingliz tili, bolalar uchun ingliz tili va ona tili darslari."
       }
     },
     {
-      "name": {
-        "en": "Sport & community",
-        "uz": "Sport va hamjamiyat"
+      "title": {
+        "en": "Certificates and guidance",
+        "uz": "Sertifikat va maslahat"
       },
       "text": {
-        "en": "We bring young people together through football tournaments and competitions. Our GearBox_23 channel shares football training.",
-        "uz": "Futbol turnirlari va tanlovlar orqali yoshlarni birlashtiramiz. GearBox_23 kanali futbol mashg'ulotlarini ulashadi."
-      },
-      "items": [
-        {
-          "name": {
-            "en": "Football tournaments",
-            "uz": "Futbol turnirlari"
-          },
-          "status": "active",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "Speech, debate and spelling contests",
-            "uz": "Nutq, munozara va imlo tanlovlari"
-          },
-          "status": "active",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "IKJON Football Training app",
-            "uz": "IKJON Football Training ilovasi"
-          },
-          "status": "soon",
-          "link": ""
-        }
-      ],
-      "button": {
-        "en": "",
-        "uz": "",
-        "link": ""
+        "en": "IELTS and CEFR preparation, plus advice on choosing a university or a career path.",
+        "uz": "IELTS va CEFR tayyorgarligi hamda universitet yoki kasb tanlash bo'yicha maslahat."
       }
     },
     {
-      "name": {
-        "en": "Health",
-        "uz": "Sog'liq"
+      "title": {
+        "en": "Sport and health tools",
+        "uz": "Sport va sog'liq vositalari"
       },
       "text": {
-        "en": "Free, research-based apps for injury recovery, joint health and daily head-to-toe fitness for men and women. Private by design: no account and no tracking.",
-        "uz": "Tadqiqotlarga asoslangan bepul ilovalar: jarohatdan tiklanish, bo'g'imlar salomatligi hamda erkak va ayollar uchun boshdan-oyoqqacha kundalik fitnes."
-      },
-      "items": [
-        {
-          "name": {
-            "en": "IKJON Joint Rehab",
-            "uz": "IKJON Joint Rehab"
-          },
-          "status": "live",
-          "link": "rehab/"
-        },
-        {
-          "name": {
-            "en": "IKJON Fitness app",
-            "uz": "IKJON Fitness ilovasi"
-          },
-          "status": "live",
-          "link": "fitness/"
-        }
-      ],
-      "button": {
-        "en": "Open Joint Rehab →",
-        "uz": "Joint Rehab ilovasini ochish →",
-        "link": "rehab/"
-      }
-    },
-    {
-      "name": {
-        "en": "Digital tools",
-        "uz": "Raqamli vositalar"
-      },
-      "text": {
-        "en": "We build the tools we use ourselves, then make them ready for other learning centres and teams.",
-        "uz": "O'zimiz ishlatadigan vositalarni boshqa o'quv markazlari va jamoalar uchun ham tayyorlaymiz."
-      },
-      "items": [
-        {
-          "name": {
-            "en": "IKJON learning app (grammar, IELTS, vocabulary)",
-            "uz": "IKJON o'quv ilovasi (grammatika, IELTS, lug'at)"
-          },
-          "status": "soon",
-          "link": ""
-        },
-        {
-          "name": {
-            "en": "IKJON CRM for learning centres",
-            "uz": "O'quv markazlari uchun IKJON CRM"
-          },
-          "status": "dev",
-          "link": ""
-        }
-      ],
-      "button": {
-        "en": "",
-        "uz": "",
-        "link": ""
+        "en": "Free apps and guides for football training, daily fitness and injury recovery, based on published research.",
+        "uz": "E'lon qilingan tadqiqotlarga asoslangan futbol mashg'ulotlari, kundalik fitnes va jarohatdan tiklanish uchun bepul ilovalar va qo'llanmalar."
       }
     }
   ],
-  "logo_section": {
+  "values_intro": {
     "label": {
-      "en": "Our logo, explained",
-      "uz": "Logotipimiz"
+      "en": "What we value",
+      "uz": "Qadriyatlarimiz"
     },
     "title": {
-      "en": "Every part has a job",
-      "uz": "Har bir detal o'z ma'nosiga ega"
-    },
-    "text": {
-      "en": "Gears only turn together. That is how IKJON is built: education, sport and health as one working system, pushing in one direction.",
-      "uz": "Tishli g'ildiraklar bir-birisiz aylanmaydi. Shuning uchun IKJON ta'lim, sport va sog'liqni bitta tizim sifatida quradi."
-    },
-    "parts": [
-      {
-        "title": {
-          "en": "Small gear — action",
-          "uz": "Kichik g'ildirak — harakat"
-        },
-        "text": {
-          "en": "Daily progress: one lesson, one training session, one exercise.",
-          "uz": "Har kungi qadamlar: dars, mashg'ulot, bitta mashq."
-        }
-      },
-      {
-        "title": {
-          "en": "Main gear — impact",
-          "uz": "Asosiy g'ildirak — natija"
-        },
-        "text": {
-          "en": "Real results: a certificate, a new skill, a recovered knee.",
-          "uz": "Haqiqiy natija: sertifikat, yangi ko'nikma, tiklangan sog'liq."
-        }
-      },
-      {
-        "title": {
-          "en": "Medium gear — strategy",
-          "uz": "O'rta g'ildirak — strategiya"
-        },
-        "text": {
-          "en": "Balance and planning: the right programme and the right tool at the right time.",
-          "uz": "Muvozanat va reja: to'g'ri dastur, to'g'ri vosita, to'g'ri vaqtda."
-        }
-      },
-      {
-        "title": {
-          "en": "Growth arrow — progress",
-          "uz": "O'sish strelkasi — rivojlanish"
-        },
-        "text": {
-          "en": "Never a straight line, but always upward, for our people and for the brand.",
-          "uz": "Tekis chiziq emas, lekin doim yuqoriga: odamlar uchun ham, brend uchun ham."
-        }
-      }
-    ]
-  },
-  "apps_intro": {
-    "label": {
-      "en": "Apps",
-      "uz": "Ilovalar"
-    },
-    "title": {
-      "en": "Free apps that work anywhere",
-      "uz": "Hamma joyda ishlaydigan bepul ilovalar"
-    },
-    "text": {
-      "en": "Our apps open in any phone or computer browser, install like a normal app and keep working offline.",
-      "uz": "Ilovalarimiz telefon yoki kompyuter brauzerida ochiladi, o'rnatiladi va internetsiz ham ishlaydi."
-    }
-  },
-  "coming_label": {
-    "en": "Coming next",
-    "uz": "Keyingi bosqichlar"
-  },
-  "coming": [
-    {
-      "name": {
-        "en": "Injury rehab guides",
-        "uz": "Jarohatdan tiklanish qo'llanmalari"
-      },
-      "text": {
-        "en": "24 free guides in English, O'zbekcha and Русский",
-        "uz": "Ingliz, o'zbek va rus tillarida 24 ta bepul qo'llanma"
-      },
-      "status": "live",
-      "link": "rehab/guides/"
-    },
-    {
-      "name": {
-        "en": "IKJON learning app",
-        "uz": "IKJON o'quv ilovasi"
-      },
-      "text": {
-        "en": "Grammar, IELTS preparation, vocabulary and Kids English",
-        "uz": "Grammatika, IELTS tayyorlov, lug'at va bolalar ingliz tili"
-      },
-      "status": "soon",
-      "link": ""
-    },
-    {
-      "name": {
-        "en": "IKJON CRM",
-        "uz": "IKJON CRM"
-      },
-      "text": {
-        "en": "Students, payments and attendance for learning centres",
-        "uz": "O'quv markazlari uchun talabalar, to'lovlar va davomat"
-      },
-      "status": "dev",
-      "link": ""
-    }
-  ],
-  "principles_intro": {
-    "label": {
       "en": "How we work",
       "uz": "Qanday ishlaymiz"
     },
-    "title": {
-      "en": "Trust is built step by step",
-      "uz": "Ishonch bosqichma-bosqich quriladi"
-    },
     "text": {
-      "en": "Four rules we follow in everything we make.",
-      "uz": "Har bir loyihamizda to'rtta qoidaga amal qilamiz."
+      "en": "",
+      "uz": ""
     }
   },
-  "principles": [
+  "values": [
     {
       "title": {
         "en": "Evidence first",
         "uz": "Avval dalil"
       },
       "text": {
-        "en": "Our health plans follow published research and show the studies behind them.",
-        "uz": "Sog'liq ilovalarimiz e'lon qilingan tadqiqotlarga asoslanadi va har bir reja manbasini ko'rsatadi."
+        "en": "Our lessons and health plans follow recognised standards and published research.",
+        "uz": "Darslarimiz va sog'liq rejalarimiz tan olingan standartlar va e'lon qilingan tadqiqotlarga asoslanadi."
       }
     },
     {
       "title": {
-        "en": "Privacy by design",
-        "uz": "Maxfiylik"
-      },
-      "text": {
-        "en": "No account needed and no tracking. Your data stays on your own device.",
-        "uz": "Hisob shart emas, kuzatuv yo'q. Ma'lumotlaringiz o'z qurilmangizda qoladi."
-      }
-    },
-    {
-      "title": {
-        "en": "Honest about limits",
+        "en": "Honesty",
         "uz": "Halollik"
       },
       "text": {
-        "en": "Our apps never replace a doctor or a teacher, and they say so clearly.",
-        "uz": "Ilovalarimiz shifokor o'rnini bosmaydi va buni ochiq aytadi."
+        "en": "We are clear about what our tools can do. They do not replace a teacher, doctor or physiotherapist.",
+        "uz": "Vositalarimiz nimaga qodir ekanini ochiq aytamiz. Ular o'qituvchi, shifokor yoki fizioterapevt o'rnini bosmaydi."
       }
     },
     {
       "title": {
-        "en": "Always improving",
-        "uz": "Doimiy rivojlanish"
+        "en": "Privacy",
+        "uz": "Maxfiylik"
       },
       "text": {
-        "en": "Every service is tested in our own centre first, then opened to everyone.",
-        "uz": "Har bir xizmat avval o'zimizda sinovdan o'tadi, so'ng hammaga ochiladi."
+        "en": "Our free apps need no account and do not track you. Your data stays on your device.",
+        "uz": "Bepul ilovalarimiz hisob talab qilmaydi va sizni kuzatmaydi. Ma'lumotlaringiz qurilmangizda qoladi."
+      }
+    },
+    {
+      "title": {
+        "en": "Open to everyone",
+        "uz": "Hamma uchun ochiq"
+      },
+      "text": {
+        "en": "Our sport and health tools are free and available in Uzbek, Russian and English.",
+        "uz": "Sport va sog'liq vositalarimiz bepul va o'zbek, rus hamda ingliz tillarida mavjud."
+      }
+    }
+  ],
+  "goals_intro": {
+    "label": {
+      "en": "Our goals",
+      "uz": "Maqsadlarimiz"
+    },
+    "title": {
+      "en": "Where we are heading",
+      "uz": "Qayerga intilamiz"
+    },
+    "text": {
+      "en": "",
+      "uz": ""
+    }
+  },
+  "goals": [
+    {
+      "title": {
+        "en": "Ready for university and work",
+        "uz": "Universitet va ishga tayyor"
+      },
+      "text": {
+        "en": "Every student leaves with the knowledge and certificates they need for their next step.",
+        "uz": "Har bir o'quvchi keyingi qadami uchun kerakli bilim va sertifikatlar bilan chiqadi."
+      }
+    },
+    {
+      "title": {
+        "en": "One place for learning",
+        "uz": "O'qish uchun yagona joy"
+      },
+      "text": {
+        "en": "Open the Education Portal so courses, homework and progress are in one place.",
+        "uz": "Kurslar, uy vazifalari va natijalar bir joyda bo'lishi uchun Ta'lim portalini ochish."
+      }
+    },
+    {
+      "title": {
+        "en": "Consistent quality",
+        "uz": "Barqaror sifat"
+      },
+      "text": {
+        "en": "The same teaching standard across all our teachers and future branches.",
+        "uz": "Barcha o'qituvchilarimiz va kelajakdagi filiallarimizda bir xil ta'lim sifati."
+      }
+    },
+    {
+      "title": {
+        "en": "Reliable free tools",
+        "uz": "Ishonchli bepul vositalar"
+      },
+      "text": {
+        "en": "Keep our fitness and recovery apps accurate, free and up to date.",
+        "uz": "Fitnes va tiklanish ilovalarimizni aniq, bepul va dolzarb holda saqlash."
       }
     }
   ],
@@ -624,12 +277,12 @@
       "uz": "Aloqa"
     },
     "title": {
-      "en": "Talk to IKJON",
+      "en": "Get in touch",
       "uz": "Biz bilan bog'laning"
     },
     "text": {
-      "en": "For courses, events, partnerships or questions about our apps, email us at ikjongearbox@gmail.com.",
-      "uz": "Kurslar, tadbirlar, hamkorlik yoki ilovalar bo'yicha savollar uchun bizga ikjongearbox@gmail.com manziliga yozing."
+      "en": "For courses, partnerships or questions about our apps, email ikjongearbox@gmail.com.",
+      "uz": "Kurslar, hamkorlik yoki ilovalarimiz bo'yicha savollar uchun ikjongearbox@gmail.com manziliga yozing."
     },
     "links": [
       {
@@ -647,23 +300,28 @@
   "footer": {
     "links": [
       {
-        "en": "Injury rehab guides",
-        "uz": "Jarohatdan keyingi mashqlar",
-        "link": "/rehab/guides/"
+        "en": "Fitness & Sport",
+        "uz": "Fitnes va sport",
+        "link": "/sport/"
       },
       {
-        "en": "Joint Rehab app",
-        "uz": "Joint Rehab ilovasi",
+        "en": "Joint Rehab",
+        "uz": "Joint Rehab",
         "link": "/rehab/"
       },
       {
-        "en": "IKJON Fitness app",
-        "uz": "IKJON Fitness ilovasi",
+        "en": "Injury guides",
+        "uz": "Jarohat qo'llanmalari",
+        "link": "/rehab/guides/"
+      },
+      {
+        "en": "IKJON Fitness",
+        "uz": "IKJON Fitness",
         "link": "/fitness/"
       },
       {
-        "en": "IKJON Football Training",
-        "uz": "IKJON Football Training",
+        "en": "Football Training",
+        "uz": "Football Training",
         "link": "/football/"
       }
     ],
@@ -672,99 +330,144 @@
       "uz": "© 2026 IKJON Consulting & Education Centre, O'zbekiston. Barcha huquqlar himoyalangan. IKJON™ va IKJON logotipi IKJON Consulting & Education Centre savdo belgilaridir. Bu sayt cookie yoki kuzatuv vositalaridan foydalanmaydi."
     }
   },
-  "featured_apps": [
-    {
-      "label": {
-        "en": "Available now",
-        "uz": "Hozir mavjud"
-      },
-      "name": "IKJON Joint Rehab",
-      "text": {
-        "en": "Day-by-day plans to recover from sports injuries and keep every joint healthy.",
-        "uz": "Sport jarohatlaridan tiklanish va bo'g'imlar salomatligi uchun kunma-kun rejalar."
-      },
-      "points": [
-        {
-          "en": "24 injuries, 30 to 270-day plans by severity",
-          "uz": "24 ta jarohat uchun 30–270 kunlik rejalar"
-        },
-        {
-          "en": "113 exercises with photo and animated demos",
-          "uz": "113 ta mashq, foto va animatsiya bilan"
-        },
-        {
-          "en": "No account, no ads, no tracking",
-          "uz": "Hisob yo'q, reklama yo'q, kuzatuv yo'q"
-        }
-      ],
-      "button": {
-        "en": "Open Joint Rehab",
-        "uz": "Joint Rehab'ni ochish",
-        "link": "rehab/"
-      },
-      "image": "/brand/rehab-screen.png"
+  "sport": {
+    "label": {
+      "en": "Fitness & Sport",
+      "uz": "Fitnes va sport"
     },
-    {
-      "label": {
-        "en": "Available now",
-        "uz": "Hozir mavjud"
-      },
-      "name": "IKJON Fitness",
-      "text": {
-        "en": "Daily head-to-toe health plans for men and women, from hair to toenails.",
-        "uz": "Erkak va ayollar uchun sochdan oyoq tirnoqlarigacha kundalik salomatlik rejalari."
-      },
-      "points": [
-        {
-          "en": "Men's & women's 3-month plans, hair, face & posture plans",
-          "uz": "Erkak va ayollar uchun 3 oylik rejalar, soch, yuz va qomat rejalari"
-        },
-        {
-          "en": "Voice coach, adaptive workouts, streaks & achievements",
-          "uz": "Ovozli murabbiy, moslashuvchan mashg'ulotlar, ketma-ketlik va yutuqlar"
-        },
-        {
-          "en": "English, O'zbekcha, Русский · no account, no tracking",
-          "uz": "English, O'zbekcha, Русский · hisob yo'q, kuzatuv yo'q"
-        }
-      ],
-      "button": {
-        "en": "Open IKJON Fitness",
-        "uz": "IKJON Fitness'ni ochish",
-        "link": "fitness/"
-      },
-      "image": "/brand/fitness-screen.png"
+    "title": {
+      "en": "Train, stay healthy and recover from injury",
+      "uz": "Mashq qiling, sog'lom bo'ling va jarohatdan tiklaning"
     },
-    {
-      "label": {
-        "en": "Available now",
-        "uz": "Hozir mavjud"
-      },
-      "name": "IKJON Football Training",
-      "text": {
-        "en": "Daily football skill training for players of every position and level.",
-        "uz": "Har qanday pozitsiya va darajadagi o'yinchilar uchun kundalik futbol mashg'ulotlari."
-      },
-      "points": [
-        {
-          "en": "16 thirty-day programmes picked for your position and level",
-          "uz": "Pozitsiya va darajangizga mos 16 ta 30 kunlik dastur"
+    "text": {
+      "en": "Free apps and guides from IKJON. They open in any browser, can be installed on your phone and keep working offline. No account needed.",
+      "uz": "IKJON'ning bepul ilovalari va qo'llanmalari. Ular istalgan brauzerda ochiladi, telefonga o'rnatiladi va internetsiz ham ishlaydi. Hisob shart emas."
+    },
+    "apps": [
+      {
+        "name": {
+          "en": "IKJON Joint Rehab",
+          "uz": "IKJON Joint Rehab"
         },
-        {
-          "en": "Quick timed sessions, weekly challenges and share cards",
-          "uz": "Qisqa vaqtli mashg'ulotlar, haftalik challenjlar va ulashish kartalari"
+        "text": {
+          "en": "Step-by-step recovery plans after a sports injury, with exercises matched to how severe it is.",
+          "uz": "Sport jarohatidan keyin og'irligiga mos mashqlar bilan bosqichma-bosqich tiklanish rejalari."
         },
-        {
-          "en": "English, O'zbekcha, Русский · no account needed",
-          "uz": "English, O'zbekcha, Русский · hisob shart emas"
-        }
-      ],
-      "button": {
-        "en": "Open Football Training",
-        "uz": "Football Training'ni ochish",
-        "link": "football/"
+        "points": [
+          {
+            "en": "28 injuries, including 5 types of groin pain",
+            "uz": "28 ta jarohat, shu jumladan chov og'rig'ining 5 turi"
+          },
+          {
+            "en": "Illustrations showing the injured area",
+            "uz": "Shikastlangan joyni ko'rsatuvchi rasmlar"
+          },
+          {
+            "en": "Plans from 30 to 270 days",
+            "uz": "30 kundan 270 kungacha rejalar"
+          }
+        ],
+        "button": {
+          "en": "Open Joint Rehab",
+          "uz": "Joint Rehab'ni ochish",
+          "link": "/rehab/"
+        },
+        "image": "/brand/goals/injury.svg"
       },
-      "image": "/brand/football-screen.png"
+      {
+        "name": {
+          "en": "Injury guides",
+          "uz": "Jarohat qo'llanmalari"
+        },
+        "text": {
+          "en": "Clear explanations of common sports injuries: what is injured, how it heals and which exercises help.",
+          "uz": "Keng tarqalgan sport jarohatlari haqida aniq tushuntirishlar: nima shikastlangan, qanday bitadi va qaysi mashqlar yordam beradi."
+        },
+        "points": [
+          {
+            "en": "28 guides with anatomy illustrations",
+            "uz": "Anatomik rasmlar bilan 28 ta qo'llanma"
+          },
+          {
+            "en": "English, Uzbek and Russian",
+            "uz": "Ingliz, o'zbek va rus tillarida"
+          },
+          {
+            "en": "Free to read, no app needed",
+            "uz": "Bepul, ilova shart emas"
+          }
+        ],
+        "button": {
+          "en": "Read the guides",
+          "uz": "Qo'llanmalarni o'qish",
+          "link": "/rehab/guides/"
+        },
+        "image": "/brand/goals/guides.svg"
+      },
+      {
+        "name": {
+          "en": "IKJON Fitness",
+          "uz": "IKJON Fitness"
+        },
+        "text": {
+          "en": "Daily health and fitness plans for men and women, from a 20-minute routine to 3-month programmes.",
+          "uz": "Erkak va ayollar uchun kundalik salomatlik va fitnes rejalari: 20 daqiqalik mashg'ulotdan 3 oylik dasturlargacha."
+        },
+        "points": [
+          {
+            "en": "Men's and women's 3-month plans",
+            "uz": "Erkaklar va ayollar uchun 3 oylik rejalar"
+          },
+          {
+            "en": "Posture, hair and scalp care routines",
+            "uz": "Qomat, soch va bosh terisi parvarishi"
+          },
+          {
+            "en": "Voice guidance and progress tracking",
+            "uz": "Ovozli yo'riqnoma va natijalarni kuzatish"
+          }
+        ],
+        "button": {
+          "en": "Open IKJON Fitness",
+          "uz": "IKJON Fitness'ni ochish",
+          "link": "/fitness/"
+        },
+        "image": "/brand/goals/men.svg"
+      },
+      {
+        "name": {
+          "en": "IKJON Football Training",
+          "uz": "IKJON Football Training"
+        },
+        "text": {
+          "en": "Skill training for footballers of every position and level.",
+          "uz": "Har qanday pozitsiya va darajadagi futbolchilar uchun mahorat mashg'ulotlari."
+        },
+        "points": [
+          {
+            "en": "16 thirty-day programmes",
+            "uz": "16 ta 30 kunlik dastur"
+          },
+          {
+            "en": "Short timed sessions",
+            "uz": "Qisqa vaqtli mashg'ulotlar"
+          },
+          {
+            "en": "Weekly challenges",
+            "uz": "Haftalik vazifalar"
+          }
+        ],
+        "button": {
+          "en": "Open Football Training",
+          "uz": "Football Training'ni ochish",
+          "link": "/football/"
+        },
+        "image": "/brand/goals/football.svg"
+      }
+    ],
+    "note": {
+      "en": "Our health apps give general guidance. If you are injured, get a diagnosis from a doctor or physiotherapist first.",
+      "uz": "Sog'liq ilovalarimiz umumiy yo'riqnoma beradi. Jarohat olgan bo'lsangiz, avval shifokor yoki fizioterapevtdan tashxis oling."
     }
-  ]
+  }
 }
