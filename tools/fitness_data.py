@@ -357,6 +357,7 @@ REUSED = {
  "toe_yoga": "feet", "towel_scrunch": "feet", "ball_roll": "feet", "ankle_abc": "feet", "sl_balance": "feet",
  "jumping_jack": "heart", "mountain_climber": "heart", "march": "heart", "walk": "heart", "jog": "heart", "skipping": "heart",
  "scap_squeeze": "back",
+ "wall_pushup": "upper", "sit_to_stand": "legs",  # used by the challenges
 }
 
 # Translations for reused exercises the injury guides didn't include

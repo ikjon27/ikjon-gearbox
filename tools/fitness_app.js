@@ -2,7 +2,7 @@
 const KEY="ikjon-fitness-v1";
 let S={lang:null,plan:null,hist:{}};
 try{const o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)S=Object.assign(S,o)}catch(e){}
-const NEWS_V=2;if(!S.tour&&S.consent){S.tour=1}else if(!S.consent){S.newsSeen=NEWS_V}
+const NEWS_V=3;if(!S.tour&&S.consent){S.tour=1}else if(!S.consent){S.newsSeen=NEWS_V}
 if(!S.hist)S.hist={};if(S.voice==null)S.voice=true;if(S.sound==null)S.sound=true;if(!S.badges)S.badges=[];
 if(!S.lang){const n=(navigator.language||"en").slice(0,2).toLowerCase();S.lang=n==="uz"?"uz":n==="ru"?"ru":"en"}
 try{const q=new URLSearchParams(location.search).get("lang");if(["en","uz","ru"].includes(q))S.lang=q}catch(e){}
@@ -22,7 +22,7 @@ const visMini=id=>FX[id]?iconTile(FX[id][6],"mini"):thumb(id,"mini");
 const visBig=id=>FX[id]?iconTile(FX[id][6],"demo"):demoBlock(id);
 const fmtT=s=>s>=60?(s%60?`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")} ${t("min")}`:`${s/60} ${t("min")}`):`${s} ${t("sec")}`;
 const ONE_SIDED=new Set(["reverse_lunge","sl_rdl","bulgarian","split_squat","step_up","side_lunge","sl_bridge","clamshell","hip_abd","fire_hydrant","glute_kickback","side_plank","bird_dog","hip_circles","hip_flexor_stretch","ham_stretch","quad_stretch","calf_stretch","knee_to_chest","open_book","sl_balance","carry"]);
-const doseTxt=x=>!x.t&&!x.r?"":(x.s>1?x.s+" × ":"")+(x.t?fmtT(x.t):x.r)+(ONE_SIDED.has(x.e)?" "+t("each"):"");
+const doseTxt=x=>x.max?t("ch_max"):!x.t&&!x.r?"":(x.s>1?x.s+" × ":"")+(x.t?fmtT(x.t):x.r)+(ONE_SIDED.has(x.e)?" "+t("each"):"");
 const estMin=list=>Math.max(1,Math.round(list.reduce((a,x)=>a+x.s*((x.t||x.r*3.5)*(ONE_SIDED.has(x.e)?2:1))+(x.s-1)*30+15,0)/60));
 
 /* ---------- plans & days ---------- */
@@ -115,7 +115,7 @@ function exRow(x){const e=fx(x.e);return `<li class="ex" data-ex="${x.e}" data-d
 function eqSeg(attr){return `<div class="seg wrapseg" role="group" aria-label="${esc(t("eq_h"))}">${EQ.map(k=>`<button ${attr}="${k}" aria-pressed="${(S.equip||"all")===k}">${esc(t("eq_"+k))}</button>`).join("")}</div>`}
 function adaptBox(p,n){if(!isToday(p,n))return"";const o=todayOpt(p,n),on=[o.noeq&&t("adapt_noeq"),o.quiet&&t("adapt_quiet")].filter(Boolean);
  return `<div class="adapt"><p class="small" style="margin:0"><b>${t("adapt_h")}</b> · <span class="muted">${t("adapt_p")}</span></p><div class="row" style="gap:6px;margin-top:6px">${[["noeq","adapt_noeq"],["quiet","adapt_quiet"]].map(([k,l])=>`<button class="chipbtn" data-adapt="${k}" aria-pressed="${!!o[k]}">${esc(t(l))}</button>`).join("")}</div>${on.length?`<p class="small" style="margin:6px 0 0;font-weight:700;color:var(--good)" role="status">${esc(t("adapt_on",{x:on.join(" + ")}))}</p>`:""}</div>`}
-function newsCard(){if(!S.consent||(S.newsSeen||0)>=NEWS_V)return"";return `<section class="box news" role="status"><h3>✨ ${t("new_h")}</h3><ul>${["new_1","new_2","new_3"].map(k=>`<li>${esc(t(k))}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm" id="newsOk">${t("new_ok")}</button><button class="btn alt sm" data-go="settings">${esc(t("eq_h"))}</button></div></section>`}
+function newsCard(){if(!S.consent||(S.newsSeen||0)>=NEWS_V)return"";return `<section class="box news" role="status"><h3>✨ ${t("new_h")}</h3><ul>${["new_1","new_2","new_3"].map(k=>`<li>${esc(t(k))}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm" id="newsOk">${t("new_ok")}</button><button class="btn alt sm" data-go="chal">${esc(t("ch_see"))}</button></div></section>`}
 function planCard(pl,active){const tag=pl.free?t("free"):premiumOn()?t("first_free",{n:FREE_DAYS}):"";
  return `<div class="card pl"><div class="plico">${iconSVG(pl.id==="men"?"arm":pl.id==="women"?"hip":pl.id==="hair"?"hair":pl.id==="face"?"face":"body",34)}</div>
  <span class="chip${pl.free?"":" o"}">${esc(tr(pl.tag))}</span><h3>${esc(tr(pl.name))}</h3><p class="muted">${esc(tr(pl.desc))}</p>
@@ -136,7 +136,7 @@ function dayPanel(p,n){if(n<1)return `<div class="box">${esc(t("not_started",{d:
 
 /* ---------- views ---------- */
 function todayView(){const p=S.plan;
- if(!p)return `<section class="hero1"><p class="eyebrow">${t("hero_eye")}</p><h1>${t("hero_h")}</h1><p class="lede">${t("hero_p")}</p><p class="muted small" style="margin-top:8px">${t("private")}</p><div class="row" style="margin-top:14px"><button class="btn warm" data-go="quiz">${t("quiz_btn")}</button></div></section>
+ if(!p)return `<section class="hero1"><p class="eyebrow">${t("hero_eye")}</p><h1>${t("hero_h")}</h1><p class="lede">${t("hero_p")}</p><p class="muted small" style="margin-top:8px">${t("private")}</p><div class="row" style="margin-top:14px"><button class="btn warm" data-go="quiz">${t("quiz_btn")}</button><button class="btn alt" data-go="chal">${t("ch_see")}</button></div></section>
   <section class="section"><h2>${t("choose")}</h2><div class="grid" style="margin-top:12px">${PLANS.map(pl=>planCard(pl,false)).join("")}</div></section>`;
  const pl=planById(p.id),tot=totalDays(p),n=Math.min(dayNum(p),tot+1),mi=Math.max(0,Math.min(pl.months-1,Math.floor((Math.max(n,1)-1)/30)));
  const done=Array.from({length:Math.min(Math.max(n,0),tot)},(_,i)=>dayDone(p,i+1)).filter(Boolean).length;
@@ -146,7 +146,7 @@ function todayView(){const p=S.plan;
   <div class="pbar"><i style="width:${Math.round(done/tot*100)}%"></i></div>
   <div class="row"><span>${esc(t("of_month",{a:done,b:tot}))} · 🔥 ${t("streak")}: <b>${streak()}</b>${p.adj&&p.adj!==1?` · ${esc(t("intensity",{p:Math.round(p.adj*100)}))}`:""}</span><button class="btn alt sm" data-go="month">${t("seeplan")}</button></div></section>`;
  if(n>tot)return head+`<div class="row" style="margin-top:16px"><button class="btn warm" id="again">${t("again")}</button><button class="btn alt" data-go="plans">${t("t_plans")}</button></div>`;
- return head+newsCard()+(toast?`<div class="toast" id="toast" role="status">${esc(toast)}</div>`:"")+`<div class="daygrid">${dayPanel(p,n)}</div>`}
+ return head+newsCard()+(toast?`<div class="toast" id="toast" role="status">${esc(toast)}</div>`:"")+`<div class="daygrid">${dayPanel(p,n)}${dayLocked(p,n)?"":chalCard()}</div>`}
 function plansView(){const p=S.plan;return `<h1>${t("choose")}</h1><p class="muted" style="margin:6px 0 14px">${t("private")}</p>
  <div class="box"><b>${t("level")}</b><div class="seg" role="group" style="margin-top:8px">${LEVELS.map(l=>`<button data-lvl="${l[0]}" aria-pressed="${(S.lvlPick||"regular")===l[0]}">${esc(tr(l[1]))}</button>`).join("")}</div><p class="muted small" style="margin-top:6px">${t("lvl_help")}</p>${p?`<p class="muted small" style="margin-top:6px">${t("switch_warn")}</p>`:""}</div>
  <div class="grid" style="margin-top:14px">${PLANS.map(pl=>planCard(pl,p&&p.id===pl.id)).join("")}</div>`}
@@ -182,7 +182,8 @@ function totals(){let ses=0,care=0,perfect=false;for(const k in S.hist){const r=
 function monthBest(){const p=S.plan;if(!p)return 0;const tot=Math.min(dayNum(p),totalDays(p));let best=0;for(let b=0;b*30<tot;b++){let c=0;for(let n=b*30+1;n<=Math.min(tot,b*30+30);n++)if(dayDone(p,n))c++;best=Math.max(best,c)}return best}
 const BADGES=[["first","👟",()=>totals().ses>=1,"b_first_d"],["s3","🔥",()=>(S.bestStreak||0)>=3,"b_streak_d",3],["s7","🔥",()=>(S.bestStreak||0)>=7,"b_streak_d",7],["s14","⚡",()=>(S.bestStreak||0)>=14,"b_streak_d",14],["s30","🏆",()=>(S.bestStreak||0)>=30,"b_streak_d",30],
  ["n10","💪",()=>totals().ses>=10,"b_n_d",10],["n25","💪",()=>totals().ses>=25,"b_n_d",25],["n50","🥇",()=>totals().ses>=50,"b_n_d",50],["n100","👑",()=>totals().ses>=100,"b_n_d",100],
- ["care30","✨",()=>totals().care>=30,"b_care30_d"],["habits","🌟",()=>totals().perfect,"b_habits_d"],["month","📅",()=>monthBest()>=25,"b_month_d"]];
+ ["care30","✨",()=>totals().care>=30,"b_care30_d"],["habits","🌟",()=>totals().perfect,"b_habits_d"],["month","📅",()=>monthBest()>=25,"b_month_d"],
+ ["c_push","💪",()=>(S.chDone||[]).includes("push"),"b_c_d"],["c_glutes","🦵",()=>(S.chDone||[]).includes("glutes"),"b_c_d"],["c_starter","🌱",()=>(S.chDone||[]).includes("starter"),"b_c_d"]];
 function checkBadges(){S.bestStreak=Math.max(S.bestStreak||0,streak());const nw=[];BADGES.forEach(b=>{if(!S.badges.includes(b[0])&&b[2]()){S.badges.push(b[0]);nw.push(b)}});save();
  if(nw.length){toast=t("new_badge",{x:nw.map(b=>b[1]+" "+t("b_"+b[0])).join(", ")});setTimeout(()=>{toast="";const el=document.getElementById("toast");if(el)el.remove()},5000)}}
 function badgesBox(){return `<div class="box" style="margin-top:14px"><h3>${t("badges")}</h3><div class="badges">${BADGES.map(b=>{const on=S.badges.includes(b[0]);return `<div class="badge${on?" on":""}" title="${esc(t(b[3],{n:b[4]}))}"><span>${on?b[1]:"🔒"}</span><b>${esc(t("b_"+b[0]))}</b><small>${esc(t(b[3],{n:b[4]}))}</small></div>`}).join("")}</div></div>`}
@@ -224,7 +225,7 @@ let actx=null;function beep(f){if(!S.sound)return;try{actx=actx||new (window.Aud
 function buzz(ms){if(!S.sound)return;try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
 function announce(){if(!ses||ses.done)return;const x=ses.list[ses.i],e=fx(x.e);
  if(ses.mode==="rest"){say(t("say_rest",{x:tr(e.name)}));return}
- say(tr(e.name)+". "+(x.t?fmtT(x.t).replace(t("sec"),"").trim()+(x.t>=60?"":" "+(S.lang==="en"?"seconds":S.lang==="ru"?"секунд":"soniya")):t("say_reps",{n:x.r})))}
+ say(tr(e.name)+". "+(x.max?t("ch_max"):x.t?fmtT(x.t).replace(t("sec"),"").trim()+(x.t>=60?"":" "+(S.lang==="en"?"seconds":S.lang==="ru"?"секунд":"soniya")):t("say_reps",{n:x.r})))}
 function lockOn(){try{navigator.wakeLock&&navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}catch(e){}}
 function lockOff(){try{wake&&wake.release();wake=null}catch(e){}}
 function progView(){const p=S.plan;if(!p)return `<h1>${t("t_prog")}</h1><p class="muted" style="margin:8px 0 14px">${t("no_plan")}</p><button class="btn" data-go="plans">${t("t_plans")}</button>`;
@@ -235,7 +236,7 @@ function progView(){const p=S.plan;if(!p)return `<h1>${t("t_prog")}</h1><p class
  return `<h1>${t("t_prog")}</h1><p class="muted" style="margin:6px 0 14px">${esc(tr(planById(p.id).name))}</p>
  <div class="stats"><div class="stat box"><b>${done}/${tot}</b><span>${t("days_done")}</span></div><div class="stat box"><b>${streak()}</b><span>${t("streak")}</span></div><div class="stat box"><b>${ht?Math.round(hs/ht*100):0}%</b><span>${t("habit_rate")}</span></div></div>
  ${(()=>{let d=0,sc=0,hs2=0,ht2=0;for(let n=Math.max(1,now-6);n<=now;n++){if(dayDone(p,n))d++;const r=peekRec(p,n);if(r.work)sc++;if(r.care)sc++;habitsFor(p,n).forEach(([k])=>{ht2++;if(r[k])hs2++})}return `<div class="box" style="margin-top:14px"><h3>${t("week_h")}</h3><p>${esc(t("week_sum",{d,s:sc,h:ht2?Math.round(hs2/ht2*100):0}))}</p><p class="muted small" style="margin-top:6px">🎟️ ${esc(t("passes",{n:PASSES-streakInfo().used}))} — ${esc(t("passes_help"))}</p></div>`})()}
- <div class="box" style="margin-top:14px"><h3>${t("last14")}</h3><div class="bars">${bars}</div></div>${badgesBox()}
+ <div class="box" style="margin-top:14px"><h3>${t("last14")}</h3><div class="bars">${bars}</div></div><div style="margin-top:14px">${chalCard()}</div>${badgesBox()}
  <div class="row" style="margin-top:14px"><button class="btn warm" id="shareBtn">📤 ${t("share")}</button></div>${reminderBox()}`}
 function settingsView(){return `<button class="back" data-go="today">${t("back")}</button><h1>${t("settings")}</h1>
  <div class="box" style="margin-top:14px"><h3>${t("lang")}</h3><div class="seg" role="group" style="margin-top:8px">${[["en","English"],["uz","O‘zbekcha"],["ru","Русский"]].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}" lang="${k}">${n}</button>`).join("")}</div></div>
@@ -248,6 +249,77 @@ function settingsView(){return `<button class="back" data-go="today">${t("back")
  <div class="box" style="margin-top:12px"><h3>${t("legal_h")}</h3><p class="muted">${t("legal_note")}</p><div class="row" style="margin-top:8px"><a class="btn alt sm" href="/rehab/privacy.html" target="_blank" rel="noopener">${t("privacy")}</a><a class="btn alt sm" href="/rehab/terms.html" target="_blank" rel="noopener">${t("terms")}</a></div><p class="muted small" style="margin-top:10px">${esc(t("contact"))}</p></div>
  <div class="box" style="margin-top:12px"><h3>${t("other_apps")}</h3><a href="/rehab/">${t("rehab_link")}</a></div>`}
 
+/* ---------- challenges: 7 or 30 days, one day per calendar date, rest every 4th day; a missed day pauses, never resets ---------- */
+const PUSHV={wall:["wall_pushup",8,20],knee:["knee_pushup",5,15],full:["pushup",3,12]};
+const GPAIRS=[["bridge","fire_hydrant"],["sumo_squat","clamshell"],["sl_bridge","glute_kickback"]];
+const CHAL={push:{days:30,ico:"💪",icon:"arm"},glutes:{days:30,ico:"🦵",icon:"hip"},starter:{days:7,ico:"🌱",icon:"body"}};
+const CH_IDS=Object.keys(CHAL),MIL=[[25,"🥉"],[50,"🥈"],[75,"🥇"],[100,"🏆"]];
+if(!S.chal)S.chal={};
+const chSt=id=>S.chal[id]||(S.chal[id]={n:0,last:null,v:"knee",mil:[]});
+const chRest=(id,d)=>id==="starter"?d===4:d%4===0;
+const chK=d=>d-Math.floor(d/4)-1;                       /* training days before day d */
+function chList(id,d){const st=chSt(id),k=chK(d),lerp=(a,b,K)=>Math.round(a+(b-a)*Math.min(1,k/K));
+ if(id==="push"){const [e,a,b]=PUSHV[st.v]||PUSHV.knee;if(d===CHAL.push.days)return[{e,s:1,r:0,t:0,max:true,tag:"ch_max_tip"}];return[{e,s:3,r:lerp(a,b,21),t:0}]}
+ if(id==="glutes"){const [a,b]=GPAIRS[k%3];return[{e:a,s:2,r:lerp(10,20,22),t:0},{e:b,s:2,r:lerp(8,15,22),t:0}]}
+ return[{e:"march",s:1,r:0,t:60},{e:"sit_to_stand",s:2,r:8+k,t:0},{e:"wall_pushup",s:2,r:8+k,t:0},{e:"bridge",s:2,r:10+k,t:0},{e:"plank",s:1,r:0,t:15+5*k}]}
+const chNext=id=>Math.min(chSt(id).n+1,CHAL[id].days);
+const chDoneToday=id=>chSt(id).last===dayKey(new Date());
+const chFinished=id=>chSt(id).n>=CHAL[id].days;
+const chPaused=id=>{const l=chSt(id).last;if(!l||chFinished(id))return false;const [y,m,d]=l.split("-").map(Number);return(Date.now()-new Date(y,m-1,d).getTime())/864e5>=2};
+function chAdvance(id){const st=chSt(id),days=CHAL[id].days;st.n=Math.min(days,st.n+1);st.last=dayKey(new Date());
+ const pct=Math.floor(st.n/days*100),hit=MIL.filter(([p])=>pct>=p&&!st.mil.includes(p));hit.forEach(([p])=>st.mil.push(p));
+ if(st.n>=days){S.chDone=S.chDone||[];if(!S.chDone.includes(id))S.chDone.push(id)}save();
+ if(hit.length){const [p,ic]=hit[hit.length-1];toast=ic+" "+t("ch_mil",{p});setTimeout(()=>{toast="";const el=document.getElementById("toast");if(el)el.remove()},6000)}
+ checkBadges();return hit.length>0}
+function chMedals(id){const st=chSt(id);return `<div class="chmed" aria-label="${esc(t("badges"))}">${MIL.map(([p,ic])=>`<span class="${st.mil.includes(p)?"on":""}" title="${p}%">${st.mil.includes(p)?ic:"○"}<small>${p}%</small></span>`).join("")}</div>`}
+function chToday(id,compact){const st=chSt(id),c=CHAL[id],d=chNext(id),pct=Math.round(st.n/c.days*100);
+ let body;
+ if(chFinished(id))body=`<p style="margin:8px 0 0;font-weight:700">${t("ch_finished")}${id==="push"&&st.best?" · "+esc(t("ch_best",{n:st.best})):""}</p>${compact?"":`<div class="row" style="margin-top:10px"><button class="btn alt sm" data-chagain="${id}">${t("ch_again")}</button></div>`}`;
+ else if(chDoneToday(id))body=`<p style="margin:8px 0 0;font-weight:700;color:var(--good)">${t("ch_done_today")}</p>`;
+ else if(chRest(id,d))body=`<p class="muted" style="margin:8px 0 0">${esc(t("ch_day",{n:d,d:c.days}))} · ${t("ch_rest")}</p><div class="row" style="margin-top:10px"><button class="btn sm" data-chrest="${id}">${t("ch_rest_btn")}</button></div>`;
+ else{const list=chList(id,d);body=(chPaused(id)?`<p class="cue small" style="margin:8px 0 0">${t("ch_paused")}</p>`:"")+(compact?"":`<ul class="exlist">${list.map(exRow).join("")}</ul>`)+
+  `<div class="row" style="margin-top:10px"><button class="btn warm" data-chgo="${id}">${esc(t("ch_go",{n:d}))} · ${esc(t("mins",{m:estMin(list)}))}</button>${compact?`<button class="btn alt sm" data-go="chal">${t("ch_open")}</button>`:""}</div>`}
+ return `<div class="row" style="justify-content:space-between;gap:8px"><span><b>${esc(t("ch_day",{n:Math.min(st.n+(chDoneToday(id)||chFinished(id)?0:1),c.days),d:c.days}))}</b> · ${pct}%</span>${chMedals(id)}</div><div class="pbar" style="margin-top:6px"><i style="width:${pct}%"></i></div>${body}`}
+function chalCard(){const id=S.chAct;
+ if(!id||!CHAL[id])return `<section class="box blk"><div class="bh">${iconSVG("heart",24)}<div><h3>${t("ch_try")}</h3><p class="muted small">${t("ch_try_p")}</p></div><button class="btn alt sm" data-go="chal">${t("ch_see")}</button></div></section>`;
+ return `<section class="box blk"><div class="bh">${iconSVG(CHAL[id].icon,24)}<h3>${CHAL[id].ico} ${t("c_"+id)}</h3></div>${chToday(id,true)}</section>`}
+function chalView(){return `<button class="back" data-go="today">${t("back")}</button><h1>${t("ch_h")}</h1><p class="muted" style="margin:6px 0 14px">${t("ch_p")}</p>
+ <div class="daygrid">${CH_IDS.map(id=>{const st=chSt(id),act=S.chAct===id,c=CHAL[id];
+  return `<section class="box blk${act?" chact":""}"><div class="bh">${iconSVG(c.icon,28)}<div><h3>${c.ico} ${t("c_"+id)}</h3><p class="muted small">${esc(t("ch_len",{d:c.days}))}</p></div></div>
+  <p style="margin-top:8px">${esc(t("c_"+id+"_d"))}</p>
+  ${id==="push"&&(act||!st.n)?`<p style="margin:10px 0 4px"><b>${t("ch_var")}</b></p><div class="seg wrapseg" role="group" aria-label="${esc(t("ch_var"))}">${Object.keys(PUSHV).map(k=>`<button data-chv="${k}" aria-pressed="${st.v===k}">${t("ch_v_"+k)}</button>`).join("")}</div><p class="muted small" style="margin-top:4px">${t("ch_v_help")}</p>`:""}
+  ${act?`<div style="margin-top:10px">${chToday(id,false)}</div>`:`<div class="row" style="margin-top:10px">${st.n?chMedals(id):""}<button class="btn sm" data-chpick="${id}">${st.n&&!chFinished(id)?esc(t("ch_cont",{n:chNext(id)})):t("ch_pick")}</button></div>`}
+  ${st.n?`<div class="row" style="margin-top:10px"><button class="btn alt sm" data-chshare="${id}">📤 ${t("ch_share")}</button></div>`:""}</section>`}).join("")}</div>
+ <div class="box" style="margin-top:14px"><p class="small" style="margin:0">⚠️ ${esc(t("ch_safe"))}</p></div>`}
+function startChal(id){const d=chNext(id),list=chList(id,d);ses={kind:"chal",cid:id,n:d,list,i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0)}
+function chShare(id){const st=chSt(id),c=CHAL[id],cv=document.createElement("canvas");cv.width=1080;cv.height=1350;const g=cv.getContext("2d");
+ const grd=g.createLinearGradient(0,0,0,1350);grd.addColorStop(0,"#1A4264");grd.addColorStop(1,"#0E2A40");g.fillStyle=grd;g.fillRect(0,0,1080,1350);
+ g.fillStyle="#0097B2";g.fillRect(0,0,1080,14);g.fillStyle="#fff";g.font="700 64px Georgia, serif";g.textAlign="center";g.fillText("I K J O N",540,170);
+ g.font="600 34px system-ui, sans-serif";g.fillStyle="#9CD6E2";g.fillText("FITNESS · BUILD • IMPROVE • GROW",540,225);
+ g.fillStyle="#fff";g.font="700 52px system-ui, sans-serif";g.fillText((c.ico+" "+t("c_"+id)).slice(0,34),540,345);
+ g.fillStyle="#D9711F";g.beginPath();g.arc(540,620,230,0,Math.PI*2);g.fill();g.fillStyle="#fff";g.font="800 170px system-ui, sans-serif";g.fillText(`${st.n}/${c.days}`,540,680);
+ g.font="600 46px system-ui, sans-serif";g.fillText(chFinished(id)?t("ch_finished"):t("ch_mil",{p:Math.floor(st.n/c.days*100)}),540,940);
+ if(id==="push"&&st.best){g.fillStyle="#cfe3ec";g.font="500 40px system-ui, sans-serif";g.fillText(t("ch_best",{n:st.best}),540,1010)}
+ g.fillStyle="#fff";g.font="700 80px system-ui, sans-serif";g.fillText(MIL.filter(([p])=>st.mil.includes(p)).map(m=>m[1]).join("  "),540,1130);
+ g.fillStyle="#9CD6E2";g.font="600 38px system-ui, sans-serif";g.fillText("ikjon-gearbox.com/fitness",540,1260);
+ cv.toBlob(b=>{const f=new File([b],"ikjon-challenge.png",{type:"image/png"});
+  if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"IKJON Fitness"}).catch(()=>{});
+  else{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="ikjon-challenge.png";a.click()}},"image/png")}
+function chDoneBlock(){const id=ses.cid,st=chSt(id),max=ses.list[0]&&ses.list[0].max;
+ return `${max&&!st.best?`<h3>${t("ch_rec")}</h3><div class="row" style="justify-content:center;margin:8px 0 14px"><input type="number" id="chRec" class="search" min="0" max="500" inputmode="numeric" style="width:110px"><button class="btn sm" id="chRecGo">${t("ch_rec_save")}</button></div>`:""}
+ ${max&&st.best?`<p style="font-weight:700;margin-bottom:12px">${esc(t("ch_best",{n:st.best}))}</p>`:""}
+ ${ses.rep?`<p style="font-weight:700;color:var(--good);margin-bottom:12px">${esc(t("ch_repeated",{n:ses.n}))}</p>`:!max&&ses.n<CHAL[id].days?`<p style="margin-bottom:12px"><button class="btn alt sm" id="chRep">${t("ch_repeat")}</button></p>`:""}
+ <div class="row" style="justify-content:center;margin-bottom:12px"><button class="btn alt sm" data-chshare="${id}">📤 ${t("ch_share")}</button></div>`}
+function bindChal(){const $=id=>document.getElementById(id);
+ app.querySelectorAll("[data-chpick]").forEach(b=>b.onclick=()=>{S.chAct=b.dataset.chpick;chSt(S.chAct);save();render()});
+ app.querySelectorAll("[data-chv]").forEach(b=>b.onclick=()=>{chSt("push").v=b.dataset.chv;save();render()});
+ app.querySelectorAll("[data-chgo]").forEach(b=>b.onclick=()=>startChal(b.dataset.chgo));
+ app.querySelectorAll("[data-chrest]").forEach(b=>b.onclick=()=>{chAdvance(b.dataset.chrest);render()});
+ app.querySelectorAll("[data-chagain]").forEach(b=>b.onclick=()=>{const st=chSt(b.dataset.chagain);st.n=0;st.last=null;st.mil=[];delete st.best;save();render()});
+ app.querySelectorAll("[data-chshare]").forEach(b=>b.onclick=()=>chShare(b.dataset.chshare));
+ if($("chRep"))$("chRep").onclick=()=>{const st=chSt(ses.cid);st.n=Math.max(0,st.n-1);ses.rep=true;save();render()};
+ if($("chRecGo"))$("chRecGo").onclick=()=>{const v=parseInt($("chRec").value,10);if(v>=0&&v<=500){chSt("push").best=v;save();render()}}}
+
 /* ---------- guided session ---------- */
 function startSession(kind){const p=S.plan,n=view==="month"&&selDay?selDay:dayNum(p);
  if(kind==="quick"){const w=workFor(p,n);ses={kind:"work",n,list:w.list.slice(0,4).map(x=>Object.assign({},x,{s:Math.min(x.s,2)})),i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0);return}
@@ -257,18 +329,19 @@ function prep(){const x=ses.list[ses.i];ses.mode="work";ses.left=x.t||0;ses.runn
 function nextStep(){const x=ses.list[ses.i];if(ses.mode==="work"&&ses.set<x.s){ses.mode="rest";ses.left=30;ses.running=true;ses.say=true;render();return}
  if(ses.mode==="rest"){ses.set++;ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true;render();return}
  ses.i++;ses.set=1;if(ses.i>=ses.list.length){finishSession();return}prep();render()}
-function finishSession(){ses.done=true;stopTick();lockOff();const r=dayRec(S.plan,ses.n);r[ses.kind]=true;save();say(t("say_done"));beep(1046);checkBadges();render()}
+function finishSession(){ses.done=true;stopTick();lockOff();if(ses.kind==="chal"){chAdvance(ses.cid);say(t("say_done"));beep(1046);render();return}const r=dayRec(S.plan,ses.n);r[ses.kind]=true;save();say(t("say_done"));beep(1046);checkBadges();render()}
 function stopTick(){if(tick){clearInterval(tick);tick=null}}
-function sessionView(){if(ses.done)return `<div class="box" style="text-align:center;padding:28px"><div style="font-size:3rem">🎉</div><h1>${t("well_done")}</h1><p class="muted" style="margin:8px 0 16px">${t("saved")}</p>
+function sessionView(){if(ses.done)return `<div class="box" style="text-align:center;padding:28px"><div style="font-size:3rem">🎉</div><h1>${t("well_done")}</h1><p class="muted" style="margin:8px 0 16px">${ses.kind==="chal"?t("ch_done_today"):t("saved")}</p>
   ${toast?`<p class="toast" role="status">${esc(toast)}</p>`:""}
+  ${ses.kind==="chal"?chDoneBlock():""}
   ${ses.kind==="work"&&!ses.fb?`<h3>${t("fb_q")}</h3><p class="muted small">${t("fb_p")}</p><div class="seg" role="group" style="margin:10px auto 16px;justify-content:center">${[["easy","fb_easy"],["ok","fb_ok"],["hard","fb_hard"]].map(([k,l])=>`<button data-fb="${k}">${t(l)}</button>`).join("")}</div>`:""}
   ${ses.fb?`<p style="margin-bottom:14px;font-weight:700;color:var(--good)">${t(ses.fb==="easy"?"fb_saved_up":ses.fb==="hard"?"fb_saved_down":"fb_saved_ok")}</p>`:""}
-  <button class="btn" id="sesHome">${t("home")}</button></div>`;
+  <button class="btn" id="sesHome">${ses.kind==="chal"?t("ch_h"):t("home")}</button></div>`;
  const x=ses.list[ses.i],e=fx(x.e),nx=ses.list[ses.i+1];
  return `<div class="row" style="justify-content:space-between"><span class="muted">${esc(t("ex_of",{a:ses.i+1,b:ses.list.length}))}${x.s>1?" · "+esc(t("set_of",{a:ses.set,b:x.s})):""}</span><button class="btn alt sm" id="sesQuit">${t("quit")}</button></div>
  <div class="pbar" style="margin:10px 0 14px"><i style="width:${Math.round(ses.i/ses.list.length*100)}%"></i></div>
  ${ses.mode==="rest"?`<div class="box player" style="text-align:center"><p class="eyebrow">${t("rest")}</p><div class="big">${ses.left}</div><p class="muted">${esc(t("next_up",{x:tr(e.name)}))}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="sesNext">${t("skip")}</button></div></div>`:
- `<div class="box player"><h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${x.tag?`<p class="small eqtag" style="margin:0 0 6px">＋ ${esc(t(x.tag))}</p>`:""}${visBig(x.e)}
+ `<div class="box player"><h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.max?t("ch_max"):x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${x.tag?`<p class="small eqtag" style="margin:0 0 6px">＋ ${esc(t(x.tag))}</p>`:""}${visBig(x.e)}
   <ol class="steps">${e.steps.map(s=>`<li>${esc(tr(s))}</li>`).join("")}</ol>${e.tip?`<p class="muted small"><b>${t("tip")}:</b> ${esc(tr(e.tip))}</p>`:""}
   ${x.t?`<div class="big" style="text-align:center">${ses.left}</div>`:""}
   <div class="row" style="justify-content:center;margin-top:12px">${x.t?`<button class="btn alt" id="sesPause">${ses.running?t("pause"):t("resume")}</button>`:""}<button class="btn warm" id="sesNext">${t("done_set")}</button><button class="btn alt" id="sesSkip">${t("skip")}</button></div>
@@ -312,11 +385,12 @@ function gate(){const g=document.getElementById("gate");if(S.consent&&!S.tour){t
 function go(v,arg){view=v;cur=arg??null;confirmWipe=false;lic.confirmOff=false;if(v!=="session"){stopTick()}render();scrollTo(0,0)}
 function render(){document.documentElement.lang=S.lang;
  document.querySelectorAll("[data-t]").forEach(el=>el.textContent=t(el.dataset.t));
- const tabV=["session","premium","settings","quiz"].includes(view)?null:view;
+ const tabV=["session","premium","settings","quiz"].includes(view)?null:view==="chal"?"prog":view;
  document.querySelectorAll(".tab").forEach(b=>{if(b.dataset.v===tabV)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
- app.innerHTML=({today:todayView,plans:plansView,month:monthView,body:bodyView,lib:libView,prog:progView,settings:settingsView,premium:premiumView,session:sessionView,quiz:quizView}[view]||todayView)();
+ app.innerHTML=({today:todayView,plans:plansView,month:monthView,body:bodyView,lib:libView,prog:progView,settings:settingsView,premium:premiumView,session:sessionView,quiz:quizView,chal:chalView}[view]||todayView)();
  mountAnims();bind();if(view==="session")runTick()}
 function bind(){
+ bindChal();
  app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
  app.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{S.plan={id:b.dataset.pick,lvl:S.lvlPick||"regular",start:dayKey(new Date()),cycle:0};save();selDay=null;monthPage=null;go("today")});
  app.querySelectorAll("[data-lvl]").forEach(b=>b.onclick=()=>{S.lvlPick=b.dataset.lvl;save();render()});
@@ -354,7 +428,7 @@ function bind(){
  if($("sesSkip"))$("sesSkip").onclick=()=>{ses.set=ses.list[ses.i].s;ses.mode="work";nextStep()};
  if($("sesPause"))$("sesPause").onclick=()=>{ses.running=!ses.running;render()};
  if($("sesQuit"))$("sesQuit").onclick=()=>{ses=null;lockOff();try{speechSynthesis.cancel()}catch(e){}go("today")};
- if($("sesHome"))$("sesHome").onclick=()=>{ses=null;go(selDay&&S.plan&&selDay!==dayNum(S.plan)?"month":"today")};
+ if($("sesHome"))$("sesHome").onclick=()=>{if(ses&&ses.kind==="chal"){ses=null;go("chal");return}ses=null;go(selDay&&S.plan&&selDay!==dayNum(S.plan)?"month":"today")};
 }
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{if(b.dataset.v==="body")cur=null;if(b.dataset.v==="month")selDay=null;go(b.dataset.v,b.dataset.v==="body"?null:undefined)});
 document.getElementById("homeBtn").onclick=()=>go("today");
@@ -366,5 +440,5 @@ try{speechSynthesis.onvoiceschanged=()=>{}}catch(e){}
 /* deep link from the website: /fitness/#plan=men|women|hair|face|daily → asks one question, then shows that plan */
 (function(){const m=/^plan=(men|women|hair|face|daily)$/.exec(location.hash.slice(1));if(!m)return;const id=m[1];
  quiz=id==="men"?{who:"m",goal:"body"}:id==="women"?{who:"w",goal:"body"}:{who:"m",goal:id};view="quiz";history.replaceState(null,"",location.pathname+location.search)})();
-const hv=location.hash.slice(1);if(["quiz","plans","month","body","lib","prog","premium","settings"].includes(hv))view=hv;
+const hv=location.hash.slice(1);if(["quiz","chal","plans","month","body","lib","prog","premium","settings"].includes(hv))view=hv;
 render();gate();recheckKey();
