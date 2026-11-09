@@ -1,18 +1,17 @@
-/* IKJON website renderer.
+/* IKJON website renderer (home page and the Fitness & Sport page).
    All words, logos, links and statuses live in content/site.json (edited safely in /admin).
    Every piece of text is escaped, and only safe links and images are allowed, so content
    typed in the admin panel can never inject code into the page. */
 (function (root) {
   var STATUS = {
-    open:   {cls: "open", en: "Open",           uz: "Ochiq"},
-    active: {cls: "open", en: "Active",         uz: "Faol"},
-    live:   {cls: "live", en: "Live",           uz: "Ishlamoqda"},
-    soon:   {cls: "soon", en: "Coming soon",    uz: "Tez kunda"},
-    dev:    {cls: "soon", en: "In development", uz: "Ishlab chiqilmoqda"}
+    live: {cls: "live", en: "Available now", uz: "Hozir mavjud"},
+    soon: {cls: "soon", en: "Coming soon", uz: "Tez kunda"}
   };
-  var NAV = [["goals", "#start", {en: "Start here", uz: "Boshlash"}], ["areas", "#what", {en: "What we do", uz: "Faoliyat"}], ["logo", "#logo", {en: "Our logo", uz: "Logotip"}], ["apps", "#apps", {en: "Apps", uz: "Ilovalar"}], ["principles", "#how", {en: "How we work", uz: "Qanday ishlaymiz"}], ["contact", "#contact", {en: "Contact", uz: "Aloqa"}]];
-  // A section is shown only when it is switched on in the editor (Sections to show).
-  function on(d, key) { if (key === "contact") return true; var s = d.sections; return !s || s[key] !== false; }
+  var NAV = {
+    home: [["#services", {en: "Services", uz: "Xizmatlar"}], ["#about", {en: "What we do", uz: "Faoliyat"}], ["#values", {en: "Values", uz: "Qadriyatlar"}], ["#goals", {en: "Goals", uz: "Maqsadlar"}], ["#contact", {en: "Contact", uz: "Aloqa"}]],
+    sport: [["/", {en: "Home", uz: "Bosh sahifa"}], ["#apps", {en: "Apps", uz: "Ilovalar"}], ["/#contact", {en: "Contact", uz: "Aloqa"}]]
+  };
+  var ARROW = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
@@ -30,94 +29,87 @@
     u = String(u || "").trim();
     if (!u) return "";
     if (/^https:\/\//i.test(u) || /^#[\w-]*$/.test(u)) return esc(u);
-    if (/^(\/|\.\/)?[\w\-./]*(#[\w=\-]*)?$/.test(u) && u.indexOf("//") === -1 && u.indexOf("..") === -1) return esc(u.replace(/^\//, ""));
+    if (/^\/?[\w\-./]*(#[\w=\-]*)?$/.test(u) && u.indexOf("//") === -1 && u.indexOf("..") === -1) return esc(u.charAt(0) === "/" ? u : "/" + u);
     return "";
   }
   // Allow only images stored on our own site.
   function safeImg(u) {
     u = String(u || "").trim().replace(/^\//, "");
-    return /^[\w\-./]+\.(png|jpe?g|webp|svg|gif)$/i.test(u) && u.indexOf("..") === -1 ? esc(u) : "";
+    return /^[\w\-./]+\.(png|jpe?g|webp|svg|gif)$/i.test(u) && u.indexOf("..") === -1 ? "/" + esc(u) : "";
   }
   function ext(u) { return /^https:/i.test(u) ? ' target="_blank" rel="noopener"' : ""; }
   function list(a) { return Array.isArray(a) ? a : []; }
   function chip(st, lang) { var s = STATUS[st] || STATUS.soon; return '<span class="chip ' + s.cls + '">' + esc(s[lang] || s.en) + "</span>"; }
-  function head(sec, lang) {
-    return '<div class="head"><div><p class="label">' + t(sec.label, lang) + "</p><h2>" + t(sec.title, lang) + "</h2></div><p>" + t(sec.text, lang) + "</p></div>";
+  function head(sec, lang, id) {
+    var p = t(sec.text, lang);
+    return '<div class="head"><p class="label">' + t(sec.label, lang) + '</p><h2' + (id ? ' id="' + id + '"' : "") + ">" + t(sec.title, lang) + "</h2>" + (p ? '<p class="intro">' + p + "</p>" : "") + "</div>";
   }
-  function btn(b, cls, lang) {
+  function points(a, lang) {
+    a = list(a); return a.length ? '<ul class="ticks">' + a.map(function (p) { return "<li>" + t(p, lang) + "</li>"; }).join("") + "</ul>" : "";
+  }
+  function action(b, live, lang, cls) {
     var href = safeLink(b && b.link), label = t(b, lang);
-    return href && label ? '<a class="btn ' + cls + '" href="' + href + '"' + ext(href) + ">" + label + "</a>" : "";
+    if (!label) return "";
+    if (live && href) return '<a class="' + cls + '" href="' + href + '"' + ext(href) + "><span>" + label + "</span>" + ARROW + "</a>";
+    return '<span class="' + cls + ' off" aria-disabled="true">' + label + "</span>";
   }
-  function pad2(n) { return n < 9 ? "0" + (n + 1) : String(n + 1); }
 
-  function renderHeader(d, lang) {
+  function renderHeader(d, lang, page) {
     var b = d.brand || {};
-    return '<a class="brand" href="#top" aria-label="' + t(b.name, lang) + ' home">' +
-      (safeImg(b.logo_header) ? '<img src="' + safeImg(b.logo_header) + '" alt="">' : "") +
+    return '<a class="brand" href="/" aria-label="' + t(b.name, lang) + ' home">' +
+      (safeImg(b.logo_header) ? '<img src="' + safeImg(b.logo_header) + '" alt="" width="54" height="40">' : "") +
       "<span>" + t(b.name, lang) + "</span></a>" +
-      '<nav class="nav" aria-label="Main">' + NAV.filter(function (n) { return on(d, n[0]); }).map(function (n) { return '<a href="' + n[1] + '">' + esc(n[2][lang]) + "</a>"; }).join("") + "</nav>" +
+      '<nav class="nav" aria-label="Main">' + (NAV[page] || NAV.home).map(function (n) { return '<a href="' + n[0] + '">' + esc(n[1][lang]) + "</a>"; }).join("") + "</nav>" +
       '<div class="lang" role="group" aria-label="Language"><button id="lang-en" aria-pressed="' + (lang === "en") + '">EN</button><button id="lang-uz" aria-pressed="' + (lang === "uz") + '">UZ</button></div>' +
-      '<a class="signin" href="portal/"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + (lang === "uz" ? "Kirish" : "Sign in") + "</a>";
+      '<a class="signin" href="/portal/"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + (lang === "uz" ? "Kirish" : "Sign in") + "</a>";
   }
 
-  function renderMain(d, lang) {
+  function card(x, lang, live, level) {
+    var img = safeImg(x.image), h = level || "h3";
+    return '<article class="card' + (live ? "" : " later") + '">' +
+      (img ? '<div class="cimg"><img src="' + img + '" alt="" width="400" height="240" loading="lazy"></div>' : "") +
+      '<div class="cbody"><div class="ctop"><' + h + ">" + t(x.name, lang) + "</" + h + ">" + (x.status ? chip(x.status, lang) : "") + "</div>" +
+      "<p>" + t(x.text, lang) + "</p>" + points(x.points, lang) +
+      '<div class="cact">' + action(x.button, live, lang, "cbtn") + "</div></div></article>";
+  }
+
+  function renderHome(d, lang) {
     var b = d.brand || {}, h = d.hero || {}, out = [];
-    var phones = list(h.phones).map(safeImg).filter(Boolean).slice(0, 2), floats = list(h.floats), badges = list(h.badges);
-    var visual = phones.length ? '<div class="hero-vis" aria-hidden="true"><span class="glow"></span>' +
-        phones.map(function (src, i) { return '<img class="phone p' + (i + 1) + '" src="' + src + '" alt="" width="540" height="960"' + (i ? ' loading="lazy"' : "") + ">"; }).join("") +
-        floats.slice(0, 3).map(function (f, i) { return '<span class="float f' + (i + 1) + '">' + t(f, lang) + "</span>"; }).join("") + "</div>"
-      : (safeImg(b.logo_main) ? '<img class="hero-logo" src="' + safeImg(b.logo_main) + '" alt="' + t(b.name, lang) + ' logo" width="715" height="716">' : "");
-    out.push('<section class="hero"><div class="hero-bg" aria-hidden="true">' + (safeImg(b.logo_mark) ? '<img src="' + safeImg(b.logo_mark) + '" alt="">' : "") + '</div><div class="wrap"><div class="hero-copy"><p class="pill">' + t(h.label, lang) + "</p><h1>" + t(h.title_start, lang) +
-      " <em>" + t(h.title_accent, lang) + '</em></h1><p class="lede">' + t(h.text, lang) + '</p><div class="cta">' +
-      btn(h.button_main, "solid", lang) + btn(h.button_second, "ghost", lang) + "</div>" +
-      (badges.length ? '<ul class="trust">' + badges.map(function (x) { return "<li>" + t(x, lang) + "</li>"; }).join("") + "</ul>" : "") +
-      "</div>" + visual + "</div></section>");
-    if (on(d, "goals") && list(d.goals).length) out.push('<section class="block goals" id="start"><div class="wrap">' + head(d.goals_intro || {}, lang) + '<div class="goalgrid">' +
-      list(d.goals).map(function (g) {
-        var live = g.status !== "soon" && g.status !== "dev", href = safeLink(g.button && g.button.link), label = t(g.button, lang), more = safeLink(g.more && g.more.link), img = safeImg(g.image);
-        return '<article class="goal' + (live ? "" : " later") + '"><div class="gimg">' + (img ? '<img src="' + img + '" alt="" width="400" height="240" loading="lazy">' : '<span class="gico" aria-hidden="true">' + t(g.icon, lang) + "</span>") +
-          (live ? "" : chip(g.status, lang)) + '</div><div class="gbody"><h3>' + t(g.title, lang) + "</h3><p>" + t(g.text, lang) + "</p>" +
-          (more && t(g.more, lang) ? '<a class="gmore" href="' + more + '"' + ext(more) + ">" + t(g.more, lang) + " →</a>" : "") +
-          '<div class="gact">' + (href && label ? '<a class="gbtn' + (live ? "" : " ghost") + '" href="' + href + '"' + ext(href) + "><span>" + label + '</span><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>' : "") + "</div>" + "</div></article>";
-      }).join("") + "</div></div></section>");
-    if (on(d, "facts") && list(d.facts).length) out.push('<div class="facts"><div class="wrap">' + list(d.facts).map(function (f) {
-      return '<div class="fact"><b>' + t(f.number, lang) + "</b><span>" + t(f.label, lang) + "</span></div>";
-    }).join("") + "</div></div>");
-    if (on(d, "areas")) out.push('<section class="block" id="what"><div class="wrap">' + head(d.areas_intro || {}, lang) + '<div class="divs">' +
-      list(d.areas).map(function (a, i) {
-        var items = list(a.items).map(function (it) {
-          var href = safeLink(it.link), name = t(it.name, lang);
-          return "<li><span>" + (href ? '<a href="' + href + '"' + ext(href) + ">" + name + "</a>" : name) + "</span>" + chip(it.status, lang) + "</li>";
-        }).join("");
-        var more = a.button && safeLink(a.button.link) && t(a.button, lang) ? '<a class="more" href="' + safeLink(a.button.link) + '"' + ext(safeLink(a.button.link)) + ">" + t(a.button, lang) + "</a>" : "";
-        return '<article class="div"><span class="num">' + pad2(i) + "</span><h3>" + t(a.name, lang) + "</h3><p>" + t(a.text, lang) + "</p>" + (items ? "<ul>" + items + "</ul>" : "") + more + "</article>";
-      }).join("") + "</div></div></section>");
-    var ls = d.logo_section || {}, pins = [[16, 78], [50, 66], [83, 44], [52, 22]];
-    if (on(d, "logo")) out.push('<section class="block" id="logo"><div class="wrap">' + head(ls, lang) + '<div class="explain"><div class="markbox"><div class="inner">' +
-      (safeImg(b.logo_mark) ? '<img src="' + safeImg(b.logo_mark) + '" alt="The ' + t(b.name, lang) + ' mark" width="680" height="498">' : "") +
-      list(ls.parts).slice(0, 4).map(function (p, i) { return '<span class="pin" style="left:' + pins[i][0] + "%;top:" + pins[i][1] + '%" aria-hidden="true">' + (i + 1) + "</span>"; }).join("") +
-      '</div></div><ol class="parts">' + list(ls.parts).map(function (p, i) {
-        return '<li><span class="n">' + (i + 1) + "</span><div><b>" + t(p.title, lang) + "</b><span>" + t(p.text, lang) + "</span></div></li>";
-      }).join("") + "</ol></div></div></section>");
-    var fas = list(d.featured_apps).length ? list(d.featured_apps) : (d.featured_app ? [d.featured_app] : []);
-    if (on(d, "apps")) out.push('<section class="block" id="apps"><div class="wrap">' + head(d.apps_intro || {}, lang) + '<div class="apps"><div class="feats">' + fas.filter(function (fa) { return t(fa.name, lang); }).map(function (fa) { return '<article class="feature"><div><p class="label">' + t(fa.label, lang) +
-      "</p><h3>" + t(fa.name, lang) + "</h3><p>" + t(fa.text, lang) + "</p><ul>" + list(fa.points).map(function (p) { return "<li>" + t(p, lang) + "</li>"; }).join("") + "</ul>" +
-      btn(fa.button, "solid", lang) + "</div>" + (safeImg(fa.image) ? '<img src="' + safeImg(fa.image) + '" alt="' + t(fa.name, lang) + ' on a phone" width="540" height="960" loading="lazy">' : "") +
-      '</article>'; }).join("") + '</div><div class="roadmap"><p class="label">' + t(d.coming_label, lang) + "</p>" + list(d.coming).map(function (c) {
-        var href = safeLink(c.link), name = t(c.name, lang);
-        return '<div class="rm"><div><b>' + (href ? '<a href="' + href + '"' + ext(href) + ">" + name + "</a>" : name) + '</b><span class="d">' + t(c.text, lang) + "</span></div>" + chip(c.status, lang) + "</div>";
-      }).join("") + "</div></div></div></section>");
-    if (on(d, "principles")) out.push('<section class="block" id="how"><div class="wrap">' + head(d.principles_intro || {}, lang) + '<div class="principles">' + list(d.principles).map(function (p) {
-      return '<div class="pr"><h3>' + t(p.title, lang) + "</h3><p>" + t(p.text, lang) + "</p></div>";
-    }).join("") + "</div></div></section>");
-    var c = d.contact || {};
-    out.push('<section class="block last" id="contact"><div class="wrap"><div class="contact"><div><p class="label">' + t(c.label, lang) + '</p><h2 class="ch">' + t(c.title, lang) +
-      '</h2><p class="ct">' + t(c.text, lang) + '</p></div><div class="links">' + list(c.links).map(function (l) {
-        var href = safeLink(l.url);
-        return href ? '<a href="' + href + '"' + ext(href) + "><div><b>" + t(l.name, lang) + "</b><span>" + t(l.handle, lang) + '</span></div><i aria-hidden="true">→</i></a>' : "";
-      }).join("") + "</div></div></div></section>");
+    var svc = list(d.services), edu = svc.filter(function (s) { return s.status === "soon"; })[0];
+    var second = h.button_second && t(h.button_second, lang) ? '<a class="btn ghost" href="' + (safeLink(h.button_second.link) || "#services") + '">' + t(h.button_second, lang) + (edu ? ' <small>· ' + esc(STATUS.soon[lang] || STATUS.soon.en) + "</small>" : "") + "</a>" : "";
+    out.push('<section class="hero"><div class="wrap"><div class="hero-copy"><p class="kicker">' + t(h.label, lang) + "</p><h1>" + t(h.title, lang) + '</h1><p class="lede">' + t(h.text, lang) + '</p><div class="cta">' +
+      action(h.button_main, true, lang, "btn solid") + second + "</div></div>" +
+      (safeImg(b.logo_footer) ? '<img class="hero-mark" src="' + safeImg(b.logo_footer) + '" alt="' + t(b.name, lang) + ' logo" width="715" height="716">' : "") + "</div></section>");
+    out.push('<section class="block" id="services" aria-labelledby="h-services"><div class="wrap">' + head(d.services_intro || {}, lang, "h-services") + '<div class="cards two">' +
+      svc.map(function (s) { return card(s, lang, s.status !== "soon"); }).join("") + "</div></div></section>");
+    out.push('<section class="block tint" id="about" aria-labelledby="h-about"><div class="wrap">' + head(d.about_intro || {}, lang, "h-about") + '<div class="cols three">' +
+      list(d.about).map(function (a, i) { return '<div class="col"><span class="num">0' + (i + 1) + "</span><h3>" + t(a.title, lang) + "</h3><p>" + t(a.text, lang) + "</p></div>"; }).join("") + "</div></div></section>");
+    out.push('<section class="block" id="values" aria-labelledby="h-values"><div class="wrap">' + head(d.values_intro || {}, lang, "h-values") + '<div class="cols four">' +
+      list(d.values).map(function (a) { return '<div class="col rule"><h3>' + t(a.title, lang) + "</h3><p>" + t(a.text, lang) + "</p></div>"; }).join("") + "</div></div></section>");
+    out.push('<section class="block navy" id="goals" aria-labelledby="h-goals"><div class="wrap">' + head(d.goals_intro || {}, lang, "h-goals") + '<ol class="goals">' +
+      list(d.goals).map(function (a, i) { return '<li><span class="gn">' + (i + 1) + "</span><div><h3>" + t(a.title, lang) + "</h3><p>" + t(a.text, lang) + "</p></div></li>"; }).join("") + "</ol></div></section>");
+    out.push(renderContact(d, lang));
     return out.join("\n");
   }
+
+  function renderContact(d, lang) {
+    var c = d.contact || {};
+    return '<section class="block last" id="contact" aria-labelledby="h-contact"><div class="wrap"><div class="contact"><div><p class="label">' + t(c.label, lang) + '</p><h2 id="h-contact">' + t(c.title, lang) +
+      '</h2><p class="intro">' + t(c.text, lang) + '</p></div><div class="links">' + list(c.links).map(function (l) {
+        var href = safeLink(l.url);
+        return href ? '<a href="' + href + '"' + ext(href) + "><div><b>" + t(l.name, lang) + "</b><span>" + t(l.handle, lang) + '</span></div><i aria-hidden="true">→</i></a>' : "";
+      }).join("") + "</div></div></div></section>";
+  }
+
+  function renderSport(d, lang) {
+    var s = d.sport || {};
+    return '<section class="hero small"><div class="wrap"><div class="hero-copy"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">' + (lang === "uz" ? "Bosh sahifa" : "Home") + "</a> / <span>" + t(s.label, lang) + "</span></nav><h1>" + t(s.title, lang) + '</h1><p class="lede">' + t(s.text, lang) + "</p></div></div></section>" +
+      '<section class="block last" id="apps"><div class="wrap"><h2 class="sr">' + (lang === "uz" ? "Ilovalar" : "Apps") + '</h2><div class="cards two">' +
+      list(s.apps).map(function (a) { return card(a, lang, true); }).join("") + "</div>" +
+      (t(s.note, lang) ? '<p class="note">' + t(s.note, lang) + "</p>" : "") + "</div></section>";
+  }
+
+  function renderMain(d, lang, page) { return page === "sport" ? renderSport(d, lang) : renderHome(d, lang); }
 
   function renderFooter(d, lang) {
     var b = d.brand || {}, f = d.footer || {};
@@ -131,21 +123,25 @@
   if (typeof module !== "undefined") module.exports = api;
 
   if (typeof document !== "undefined") {
-    var data = null, lang = "en";
+    var data = null, lang = "en", page = document.body.getAttribute("data-page") || "home";
     try { if (localStorage.getItem("ikjon-lang") === "uz") lang = "uz"; } catch (e) {}
+    function bind() {
+      var le = document.getElementById("lang-en"), lu = document.getElementById("lang-uz");
+      if (le) le.onclick = function () { setLang("en"); };
+      if (lu) lu.onclick = function () { setLang("uz"); };
+    }
     function paint() {
       if (!data) return;
-      document.getElementById("hdr").innerHTML = renderHeader(data, lang);
-      document.getElementById("top").innerHTML = renderMain(data, lang);
+      document.getElementById("hdr").innerHTML = renderHeader(data, lang, page);
+      document.getElementById("top").innerHTML = renderMain(data, lang, page);
       document.getElementById("ftr").innerHTML = renderFooter(data, lang);
       document.documentElement.lang = lang;
-      document.getElementById("lang-en").onclick = function () { setLang("en"); };
-      document.getElementById("lang-uz").onclick = function () { setLang("uz"); };
+      bind();
     }
     function setLang(l) { lang = l; try { localStorage.setItem("ikjon-lang", l); } catch (e) {} paint(); }
     // Show the built-in copy immediately, then load the latest saved content.
     try { data = JSON.parse(document.getElementById("site-data").textContent); } catch (e) {}
-    if (lang !== "en") paint(); else { var le = document.getElementById("lang-en"), lu = document.getElementById("lang-uz"); if (le) le.onclick = function () { setLang("en"); }; if (lu) lu.onclick = function () { setLang("uz"); }; }
-    fetch("content/site.json", {cache: "no-cache"}).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j) { data = j; paint(); } }).catch(function () {});
+    if (lang !== "en") paint(); else bind();
+    fetch("/content/site.json", {cache: "no-cache"}).then(function (r) { return r.ok ? r.json() : null; }).then(function (j) { if (j) { data = j; paint(); } }).catch(function () {});
   }
 })(this);

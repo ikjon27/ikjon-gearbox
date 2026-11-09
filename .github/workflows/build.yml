@@ -23,9 +23,9 @@ jobs:
       - run: node tools/build.js
       - name: Save the rebuilt page
         run: |
-          if git diff --quiet index.html; then echo "No change"; exit 0; fi
+          if git diff --quiet -- index.html sport/index.html && [ -z "$(git ls-files --others --exclude-standard sport/index.html)" ]; then echo "No change"; exit 0; fi
           git config user.name "ikjon-website-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add index.html
+          git add index.html sport/index.html
           git commit -m "Rebuild home page from content"
           git push
