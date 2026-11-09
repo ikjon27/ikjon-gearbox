@@ -2,7 +2,7 @@
 const KEY="ikjon-fitness-v1";
 let S={lang:null,plan:null,hist:{}};
 try{const o=JSON.parse(localStorage.getItem(KEY)||"null");if(o)S=Object.assign(S,o)}catch(e){}
-const NEWS_V=3;if(!S.tour&&S.consent){S.tour=1}else if(!S.consent){S.newsSeen=NEWS_V}
+const NEWS_V=4;if(!S.tour&&S.consent){S.tour=1}else if(!S.consent){S.newsSeen=NEWS_V}
 if(!S.hist)S.hist={};if(S.voice==null)S.voice=true;if(S.sound==null)S.sound=true;if(!S.badges)S.badges=[];
 if(!S.lang){const n=(navigator.language||"en").slice(0,2).toLowerCase();S.lang=n==="uz"?"uz":n==="ru"?"ru":"en"}
 try{const q=new URLSearchParams(location.search).get("lang");if(["en","uz","ru"].includes(q))S.lang=q}catch(e){}
@@ -115,7 +115,7 @@ function exRow(x){const e=fx(x.e);return `<li class="ex" data-ex="${x.e}" data-d
 function eqSeg(attr){return `<div class="seg wrapseg" role="group" aria-label="${esc(t("eq_h"))}">${EQ.map(k=>`<button ${attr}="${k}" aria-pressed="${(S.equip||"all")===k}">${esc(t("eq_"+k))}</button>`).join("")}</div>`}
 function adaptBox(p,n){if(!isToday(p,n))return"";const o=todayOpt(p,n),on=[o.noeq&&t("adapt_noeq"),o.quiet&&t("adapt_quiet")].filter(Boolean);
  return `<div class="adapt"><p class="small" style="margin:0"><b>${t("adapt_h")}</b> · <span class="muted">${t("adapt_p")}</span></p><div class="row" style="gap:6px;margin-top:6px">${[["noeq","adapt_noeq"],["quiet","adapt_quiet"]].map(([k,l])=>`<button class="chipbtn" data-adapt="${k}" aria-pressed="${!!o[k]}">${esc(t(l))}</button>`).join("")}</div>${on.length?`<p class="small" style="margin:6px 0 0;font-weight:700;color:var(--good)" role="status">${esc(t("adapt_on",{x:on.join(" + ")}))}</p>`:""}</div>`}
-function newsCard(){if(!S.consent||(S.newsSeen||0)>=NEWS_V)return"";return `<section class="box news" role="status"><h3>✨ ${t("new_h")}</h3><ul>${["new_1","new_2","new_3"].map(k=>`<li>${esc(t(k))}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm" id="newsOk">${t("new_ok")}</button><button class="btn alt sm" data-go="chal">${esc(t("ch_see"))}</button></div></section>`}
+function newsCard(){if(!S.consent||(S.newsSeen||0)>=NEWS_V)return"";return `<section class="box news" role="status"><h3>✨ ${t("new_h")}</h3><ul>${["new_4","new_1","new_2","new_3"].map(k=>`<li>${esc(t(k))}</li>`).join("")}</ul><div class="row" style="margin-top:8px"><button class="btn sm" id="newsOk">${t("new_ok")}</button><button class="btn alt sm" data-go="chal">${esc(t("ch_see"))}</button></div></section>`}
 function planCard(pl,active){const tag=pl.free?t("free"):premiumOn()?t("first_free",{n:FREE_DAYS}):"";
  return `<div class="card pl"><div class="plico">${iconSVG(pl.id==="men"?"arm":pl.id==="women"?"hip":pl.id==="hair"?"hair":pl.id==="face"?"face":"body",34)}</div>
  <span class="chip${pl.free?"":" o"}">${esc(tr(pl.tag))}</span><h3>${esc(tr(pl.name))}</h3><p class="muted">${esc(tr(pl.desc))}</p>
@@ -223,9 +223,10 @@ function voiceFor(){try{const vs=speechSynthesis.getVoices(),L=S.lang;return vs.
 function say(txt){if(!S.voice||!("speechSynthesis" in window))return;const v=voiceFor();if(!v&&S.lang!=="en")return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);if(v){u.voice=v;u.lang=v.lang}u.rate=1;speechSynthesis.speak(u)}catch(e){}}
 let actx=null;function beep(f){if(!S.sound)return;try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),gn=actx.createGain();o.frequency.value=f||880;gn.gain.value=.15;o.connect(gn);gn.connect(actx.destination);o.start();o.stop(actx.currentTime+.15)}catch(e){}}
 function buzz(ms){if(!S.sound)return;try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
-function announce(){if(!ses||ses.done)return;const x=ses.list[ses.i],e=fx(x.e);
+function announce(){if(!ses||ses.done)return;const x=ses.list[ses.i],e=fx(x.e),sd=curSide();
+ if(ses.mode==="switch"){say(t("say_sw"+sd));return}
  if(ses.mode==="rest"){say(t("say_rest",{x:tr(e.name)}));return}
- say(tr(e.name)+". "+(x.max?t("ch_max"):x.t?fmtT(x.t).replace(t("sec"),"").trim()+(x.t>=60?"":" "+(S.lang==="en"?"seconds":S.lang==="ru"?"секунд":"soniya")):t("say_reps",{n:x.r})))}
+ say(tr(e.name)+". "+(sd&&ses.mode!=="rest"?t("side_"+sd)+". ":"")+(x.max?t("ch_max"):x.t?fmtT(x.t).replace(t("sec"),"").trim()+(x.t>=60?"":" "+(S.lang==="en"?"seconds":S.lang==="ru"?"секунд":"soniya")):t("say_reps",{n:x.r})))}
 function lockOn(){try{navigator.wakeLock&&navigator.wakeLock.request("screen").then(w=>wake=w).catch(()=>{})}catch(e){}}
 function lockOff(){try{wake&&wake.release();wake=null}catch(e){}}
 function progView(){const p=S.plan;if(!p)return `<h1>${t("t_prog")}</h1><p class="muted" style="margin:8px 0 14px">${t("no_plan")}</p><button class="btn" data-go="plans">${t("t_plans")}</button>`;
@@ -240,7 +241,8 @@ function progView(){const p=S.plan;if(!p)return `<h1>${t("t_prog")}</h1><p class
  <div class="row" style="margin-top:14px"><button class="btn warm" id="shareBtn">📤 ${t("share")}</button></div>${reminderBox()}`}
 function settingsView(){return `<button class="back" data-go="today">${t("back")}</button><h1>${t("settings")}</h1>
  <div class="box" style="margin-top:14px"><h3>${t("lang")}</h3><div class="seg" role="group" style="margin-top:8px">${[["en","English"],["uz","O‘zbekcha"],["ru","Русский"]].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}" lang="${k}">${n}</button>`).join("")}</div></div>
- <div class="box" style="margin-top:12px"><h3>🏋️ ${t("eq_h")}</h3><p class="muted small">${t("eq_p")}</p>${eqSeg("data-eq")}${(S.equip||"all")==="none"?`<p class="muted small" style="margin-top:6px">${esc(t("eq_none_d"))}</p>`:""}</div>
+ <div class="box" style="margin-top:12px"><h3>↔️ ${t("side_set_h")}</h3><p class="muted small">${t("side_set_p")}</p><div class="row" style="gap:6px;margin-top:8px"><small class="muted">${t("start_side")}:</small>${["L","R"].map(k=>`<button class="chipbtn" data-s1="${k}" aria-pressed="${(S.side1||"L")===k}">${t("s"+k)}</button>`).join("")}</div></div>
+  <div class="box" style="margin-top:12px"><h3>🏋️ ${t("eq_h")}</h3><p class="muted small">${t("eq_p")}</p>${eqSeg("data-eq")}${(S.equip||"all")==="none"?`<p class="muted small" style="margin-top:6px">${esc(t("eq_none_d"))}</p>`:""}</div>
  <div class="box" style="margin-top:12px"><h3>🔊 ${t("coach_h")}</h3><label class="gcheck"><input type="checkbox" id="optVoice" ${S.voice?"checked":""}> ${t("voice")}</label><label class="gcheck"><input type="checkbox" id="optSound" ${S.sound?"checked":""}> ${t("sound")}</label>${S.lang!=="en"&&"speechSynthesis" in window&&speechSynthesis.getVoices().length&&!voiceFor()?`<p class="muted small">${t("voice_none")}</p>`:""}</div>${reminderBox()}
  <div class="box" style="margin-top:12px"><span class="chip o">${t("prem")}</span><div style="margin-top:8px">${licBox()}</div><div class="row" style="margin-top:10px"><button class="btn alt sm" data-go="premium">${t("see_prem")}</button></div></div>
  <div class="box" style="margin-top:12px"><h3>${t("data_h")}</h3><p class="muted">${t("data_p")}</p><div class="row" style="margin-top:10px"><button class="btn alt sm" id="exp">${t("export")}</button>
@@ -325,9 +327,15 @@ function startSession(kind){const p=S.plan,n=view==="month"&&selDay?selDay:dayNu
  if(kind==="quick"){const w=workFor(p,n);ses={kind:"work",n,list:w.list.slice(0,4).map(x=>Object.assign({},x,{s:Math.min(x.s,2)})),i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0);return}
  const list=kind==="care"?scaleList(careFor(p,n).map(x=>[x[0],x[1],x[2],x[3]]),p,n,true):(()=>{const w=workFor(p,n);return(w.warm?adapt(scaleList(WARM,p,n,true),p,n).map(x=>Object.assign({},x,{tag:""})):[]).concat(w.list)})();
  ses={kind,n,list,i:0,set:1,mode:"work",left:0,running:false,done:false};prep();view="session";lockOn();render();scrollTo(0,0)}
-function prep(){const x=ses.list[ses.i];ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true}
-function nextStep(){const x=ses.list[ses.i];if(ses.mode==="work"&&ses.set<x.s){ses.mode="rest";ses.left=30;ses.running=true;ses.say=true;render();return}
- if(ses.mode==="rest"){ses.set++;ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true;render();return}
+/* left/right: a one-sided move runs first side → 10 s switch → other side, every set, equal reps/time */
+const sidesFor=e=>ONE_SIDED.has(e)?(S.side1==="R"?["R","L"]:["L","R"]):[null];
+const curSide=()=>ses&&ses.sides?ses.sides[ses.si||0]:null;
+function prep(){const x=ses.list[ses.i];ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true;ses.sides=sidesFor(x.e);ses.si=0;ses.ask=false}
+function nextStep(){const x=ses.list[ses.i];ses.ask=false;
+ if(ses.mode==="work"&&ses.si<ses.sides.length-1){ses.si++;ses.mode="switch";ses.left=10;ses.running=true;ses.say=true;render();return}
+ if(ses.mode==="switch"){ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true;render();return}
+ if(ses.mode==="work"&&ses.set<x.s){ses.mode="rest";ses.left=30;ses.running=true;ses.say=true;render();return}
+ if(ses.mode==="rest"){ses.set++;ses.si=0;ses.mode="work";ses.left=x.t||0;ses.running=!!x.t;ses.say=true;render();return}
  ses.i++;ses.set=1;if(ses.i>=ses.list.length){finishSession();return}prep();render()}
 function finishSession(){ses.done=true;stopTick();lockOff();if(ses.kind==="chal"){chAdvance(ses.cid);say(t("say_done"));beep(1046);render();return}const r=dayRec(S.plan,ses.n);r[ses.kind]=true;save();say(t("say_done"));beep(1046);checkBadges();render()}
 function stopTick(){if(tick){clearInterval(tick);tick=null}}
@@ -340,14 +348,15 @@ function sessionView(){if(ses.done)return `<div class="box" style="text-align:ce
  const x=ses.list[ses.i],e=fx(x.e),nx=ses.list[ses.i+1];
  return `<div class="row" style="justify-content:space-between"><span class="muted">${esc(t("ex_of",{a:ses.i+1,b:ses.list.length}))}${x.s>1?" · "+esc(t("set_of",{a:ses.set,b:x.s})):""}</span><button class="btn alt sm" id="sesQuit">${t("quit")}</button></div>
  <div class="pbar" style="margin:10px 0 14px"><i style="width:${Math.round(ses.i/ses.list.length*100)}%"></i></div>
- ${ses.mode==="rest"?`<div class="box player" style="text-align:center"><p class="eyebrow">${t("rest")}</p><div class="big">${ses.left}</div><p class="muted">${esc(t("next_up",{x:tr(e.name)}))}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="sesNext">${t("skip")}</button></div></div>`:
- `<div class="box player"><h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.max?t("ch_max"):x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${x.tag?`<p class="small eqtag" style="margin:0 0 6px">＋ ${esc(t(x.tag))}</p>`:""}${visBig(x.e)}
+ ${ses.mode==="switch"?`<div class="box player" style="text-align:center"><p class="eyebrow">${t("sw_h")}</p><div class="swap" aria-hidden="true">${curSide()==="R"?"L → R":"R → L"}</div><div class="big">${ses.left}</div><p class="muted">${esc(t("next_up",{x:tr(e.name)+" · "+t("side_"+curSide())}))}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="sesNext">${t("skip")}</button></div></div>`:ses.mode==="rest"?`<div class="box player" style="text-align:center"><p class="eyebrow">${t("rest")}</p><div class="big">${ses.left}</div><p class="muted">${esc(t("next_up",{x:tr(e.name)}))}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" id="sesNext">${t("skip")}</button></div></div>`:
+ `<div class="box player">${curSide()?`<div class="row" style="justify-content:space-between;gap:8px"><span class="sideb">${curSide()} · ${t("side_"+curSide())}${ses.sides.length>1?` <small>${ses.si+1}/2</small>`:""}</span>${ses.si===0&&ses.set===1?`<span class="row" style="gap:4px"><small class="muted">${t("start_side")}:</small>${["L","R"].map(k=>`<button class="chipbtn" data-s1="${k}" aria-pressed="${(S.side1||"L")===k}">${t("s"+k)}</button>`).join("")}</span>`:""}</div>`:""}<h2>${esc(tr(e.name))}</h2><p class="dose" style="font-size:1.1rem;margin:4px 0">${esc(x.max?t("ch_max"):x.t?fmtT(x.t):x.r+(ONE_SIDED.has(x.e)?" "+t("each"):""))}</p>${x.tag?`<p class="small eqtag" style="margin:0 0 6px">＋ ${esc(t(x.tag))}</p>`:""}<div class="${curSide()==="L"?"mir":""}">${visBig(x.e)}</div>
   <ol class="steps">${e.steps.map(s=>`<li>${esc(tr(s))}</li>`).join("")}</ol>${e.tip?`<p class="muted small"><b>${t("tip")}:</b> ${esc(tr(e.tip))}</p>`:""}
   ${x.t?`<div class="big" style="text-align:center">${ses.left}</div>`:""}
+  ${ses.ask?`<div class="adapt" role="alert" style="text-align:center"><p style="margin:0 0 8px;font-weight:700">${t("side_ask")}</p><div class="row" style="justify-content:center;gap:8px"><button class="btn sm" id="skOther">${t("side_yes")}</button><button class="btn alt sm" id="sesSkip">${t("side_no")}</button></div></div>`:""}
   <div class="row" style="justify-content:center;margin-top:12px">${x.t?`<button class="btn alt" id="sesPause">${ses.running?t("pause"):t("resume")}</button>`:""}<button class="btn warm" id="sesNext">${t("done_set")}</button><button class="btn alt" id="sesSkip">${t("skip")}</button></div>
   ${nx?`<p class="muted small" style="text-align:center;margin-top:10px">${esc(t("next_up",{x:tr(fx(nx.e).name)}))}</p>`:""}</div>`}`}
 function runTick(){stopTick();if(!ses||ses.done)return;if(ses.say){ses.say=false;announce()}tick=setInterval(()=>{if(view!=="session"||!ses||!ses.running)return;ses.left--;const el=document.querySelector(".player .big");if(el)el.textContent=Math.max(0,ses.left);
- if(ses.left>0&&ses.left<=3)beep(660);if(ses.left<=0){beep(990);buzz(200);nextStep()}},1000)}
+ if(ses.left>0&&ses.left<=3)beep(660);if(ses.left<=0){beep(ses.mode==="switch"?(curSide()==="R"?740:520):990);buzz(200);nextStep()}},1000)}
 
 /* ---------- exercise dialog ---------- */
 function openEx(id,dose){const e=fx(id),d=document.getElementById("exDlg");
@@ -425,7 +434,9 @@ function bind(){
  if($("remGo"))$("remGo").onclick=()=>reminderICS($("remT").value);
  if($("optVoice"))$("optVoice").onchange=e=>{S.voice=e.target.checked;save()};
  if($("optSound"))$("optSound").onchange=e=>{S.sound=e.target.checked;save()};
- if($("sesSkip"))$("sesSkip").onclick=()=>{ses.set=ses.list[ses.i].s;ses.mode="work";nextStep()};
+ if($("sesSkip"))$("sesSkip").onclick=()=>{if(ses.mode==="work"&&ses.sides.length>1&&ses.si===0&&!ses.ask){ses.ask=true;render();return}ses.set=ses.list[ses.i].s;ses.si=ses.sides.length-1;ses.mode="work";nextStep()};
+ if($("skOther"))$("skOther").onclick=()=>{ses.ask=false;nextStep()};
+ app.querySelectorAll("[data-s1]").forEach(b=>b.onclick=()=>{S.side1=b.dataset.s1;save();if(ses&&!ses.done&&ses.mode==="work"&&ses.si===0&&ses.sides.length>1){ses.sides=sidesFor(ses.list[ses.i].e);ses.say=true}render()});
  if($("sesPause"))$("sesPause").onclick=()=>{ses.running=!ses.running;render()};
  if($("sesQuit"))$("sesQuit").onclick=()=>{ses=null;lockOff();try{speechSynthesis.cancel()}catch(e){}go("today")};
  if($("sesHome"))$("sesHome").onclick=()=>{if(ses&&ses.kind==="chal"){ses=null;go("chal");return}ses=null;go(selDay&&S.plan&&selDay!==dayNum(S.plan)?"month":"today")};

@@ -1,5 +1,5 @@
 /* IKJON Joint Rehab service worker — works fully offline after first visit. Bump VERSION on every update. */
-const VERSION="ikjon-v1.12.0";
+const VERSION="ikjon-v1.13.0";
 const FILES=[
 "./",
 "index.html",

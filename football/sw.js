@@ -1,5 +1,5 @@
 /* IKJON Football Training — offline after the first visit. */
-const VERSION="ikjon-fb-202611071337";
+const VERSION="ikjon-fb-202611091800";
 const FILES=["./","index.html","manifest.webmanifest","/rehab/icons/favicon-48.png","/rehab/icons/icon-192.png","/rehab/icons/apple-touch-icon.png"];
 self.addEventListener("install",e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k.startsWith("ikjon-fb-")&&k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});

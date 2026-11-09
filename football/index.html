@@ -349,6 +349,10 @@ nav.tabs button.active{ color:var(--teal); }
 .exphoto{ position:absolute; inset:0; background:#1A2630; z-index:2; }
 .exphoto img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; transition:opacity .45s ease; }
 .exphoto img.b{ opacity:0; }
+.exphoto.mir img{ transform:scaleX(-1); }
+.sidepick{ display:flex; gap:6px; justify-content:center; align-items:center; margin:8px 0 0; font-size:.85rem; color:#cfe3ec; }
+.sidepick button{ border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff; border-radius:999px; padding:4px 12px; font-weight:bold; }
+.sidepick button[aria-pressed="true"]{ background:#0097B2; border-color:#0097B2; }
 .exphoto.alt img.b{ opacity:1; } .exphoto.alt img.a{ opacity:0; }
 .exphoto .phase{ position:absolute; left:10px; top:10px; background:rgba(0,151,178,0.92); color:#fff; font-size:.7rem; font-weight:bold; padding:4px 10px; border-radius:999px; letter-spacing:.3px; transition:opacity .3s; }
 .exphoto .phase.f{ opacity:0; background:rgba(217,113,31,0.94); }
@@ -539,6 +543,8 @@ function applyStatic(root){
 function Lparts(s){ return String(s).split(" + ").map(p=> L(p)).join(" + "); }
 
 /* O'zbekcha (lotin) */
+Object.assign(I18N.uz, {"Left leg":"Chap oyoq","Right leg":"O'ng oyoq","Left arm":"Chap qo'l","Right arm":"O'ng qo'l","Left side":"Chap tomon","Right side":"O'ng tomon","Switch!":"Almashtiring!","Both sides equally — start with:":"Ikkala tomon teng — qaysi tomondan boshlaysiz:","Left":"Chap","Right":"O'ng"});
+Object.assign(I18N.ru, {"Left leg":"Левая нога","Right leg":"Правая нога","Left arm":"Левая рука","Right arm":"Правая рука","Left side":"Левая сторона","Right side":"Правая сторона","Switch!":"Смена!","Both sides equally — start with:":"Обе стороны поровну — начинать с:","Left":"Левой","Right":"Правой"});
 Object.assign(I18N.uz, {
 /* ---------- interface ---------- */
 "Skill Development":"Mahorat rivoji","Today":"Bugun","Exercises":"Mashqlar","XP today":"Bugungi XP","Skills hit":"Ko'nikmalar",
@@ -2977,6 +2983,12 @@ function sceneFor(ex){
 }
 
 /* Animator — runs a scene on a canvas */
+/* left/right: when a demo is mirrored, text drawn on the canvas stays readable */
+(function(){ const P = CanvasRenderingContext2D.prototype, o = P.fillText;
+  P.fillText = function(t, x, y, w){ if(!this.__mir) return w === undefined ? o.call(this, t, x, y) : o.call(this, t, x, y, w);
+    this.save(); this.translate(x, y); this.scale(-1, 1); const a = this.textAlign;
+    this.textAlign = a === "right" || a === "end" ? "left" : a === "left" || a === "start" ? "right" : a;
+    if(w === undefined) o.call(this, t, 0, 0); else o.call(this, t, 0, 0, w); this.restore(); }; })();
 class Animator {
   constructor(canvas){ this.cv = canvas; this.ctx = canvas.getContext("2d"); this.scene = null; this.speed = 1; this.time = 0; this.running = false; this.last = 0; this._loop = this._loop.bind(this); this.onTick = null; }
   set(scene){ this.scene = scene; this.time = 0; this.render(); }
@@ -2992,7 +3004,8 @@ class Animator {
     if(!this.scene) return;
     this.fit();
     const c = this.ctx, s = this.cv.width/AW;
-    c.setTransform(s, 0, 0, s, 0, 0); c.clearRect(0, 0, AW, AH);
+    c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, this.cv.width, this.cv.height);
+    c.__mir = !!this.mirror; c.setTransform(this.mirror ? -s : s, 0, 0, s, this.mirror ? this.cv.width : 0, 0);
     const cyc = this.scene.cycle, n = Math.floor(this.time/cyc), t = (this.time % cyc)/cyc;
     try{ this.scene.draw(c, t, n); }catch(e){ console.warn("anim", e); }
     if(this.ph){ this.ph.classList.toggle("alt", this.ph.dataset.n === "2" && Math.floor(this.time/1.5) % 2 === 1); }
@@ -5397,12 +5410,21 @@ function startPlayer(sess){
   clearInterval(pl.timer); pl.timer = setInterval(tick, 200);
 }
 function cur(){ return pl.sess.items[pl.idx]; }
+/* left/right: a one-sided move ("10 each leg") runs the first side for half of each set, then switches —
+   equal time on both sides, with a voice cue, a side badge and a mirrored demo */
+function sideInfo(it){ if(!it || it.kind === "test") return null; const m = /each (leg|side|arm|foot)/i.exec(it.ex.target || ""); if(!m) return null;
+  const limb = m[1].toLowerCase() === "foot" ? "leg" : m[1].toLowerCase(); const first = state.settings.side1 === "R" ? "R" : "L";
+  return { limb, order: first === "L" ? ["L","R"] : ["R","L"], s2:false }; }
+function sideName(k){ const sd = pl.sd; if(!sd) return ""; const sd1 = sd.order[k], nm = { leg:["Left leg","Right leg"], arm:["Left arm","Right arm"], side:["Left side","Right side"] }[sd.limb];
+  return L(nm[sd1 === "L" ? 0 : 1]); }
+function applySide(){ const on = !!(pl.sd && pl.sd.s2 && pl.phase === "work"); if(plAnim){ plAnim.mirror = on; if(plAnim.ph) plAnim.ph.classList.toggle("mir", on); plAnim.render(); }
+  const b = $("pBadge"); if(b && pl.sd && pl.phase === "work"){ const it = cur(); b.textContent = (it.sets > 1 ? L("SET {0} OF {1}", pl.set, it.sets) : L("GO")) + " · " + sideName(pl.sd.s2 ? 1 : 0).toUpperCase(); } }
 function itemTitle(it){ return L(it.kind === "test" ? benchOf(it.test).name : it.ex.n); }
 function nextPending(from){ for(let i=from; i<pl.sess.items.length; i++) if(pl.st[i].status === "pending") return i; return -1; }
 
 function enterItem(i){
   pl.idx = i; pl.set = 1; pl.quiz = null; pl.sw = null; pl.cueI = 0; pl.cueT = 0;
-  const it = cur();
+  const it = cur(); pl.sd = sideInfo(it);
   buildItemUI();
   plAnim.set(sceneFor(it.ex)); plAnim.play();
   setPhase("next", i === 0 ? 8 : TRANSITION);
@@ -5412,7 +5434,7 @@ function fmtWorkSpeech(s){ return s >= 60 && s % 60 === 0 ? L(s === 60 ? "1 minu
 function setPhase(ph, secs){
   pl.phase = ph; pl.paused = false; pl.lastBeep = -1;
   pl.rem = secs || 0; pl.endAt = Date.now() + pl.rem*1000;
-  renderDyn();
+  renderDyn(); if(ph !== "work" && plAnim && plAnim.mirror){ plAnim.mirror = false; if(plAnim.ph) plAnim.ph.classList.remove("mir"); plAnim.render(); }
 }
 function remaining(){ return pl.paused ? pl.rem : Math.max(0, (pl.endAt - Date.now())/1000); }
 
@@ -5423,6 +5445,8 @@ function tick(){
   if(!timed || pl.paused) return;
   const r = remaining();
   if(pl.phase === "work") pl.st[pl.idx].secs += 0.2;
+  if(pl.phase === "work" && pl.sd && it.kind !== "test"){ const s2 = (it.work - r) >= it.work/2;
+    if(s2 !== pl.sd.s2){ pl.sd.s2 = s2; applySide(); if(s2){ beep(pl.sd.order[1] === "R" ? 740 : 520, 0.3); buzz([150]); say(L("Switch!") + " " + sideName(1) + "."); } } }
   const big = $("pBig"); if(big) big.textContent = fmt(Math.ceil(r));
   const whole = Math.ceil(r);
   if(whole <= 3 && whole > 0 && whole !== pl.lastBeep){ pl.lastBeep = whole; beep(pl.phase === "work" ? 520 : 760, 0.12); }
@@ -5441,7 +5465,7 @@ function tick(){
     pl.set++; startWork();
   }
 }
-function startWork(){ beep(990, 0.25); say(pl.set === 1 ? L("Go!") : L("Set {0}. Go!", pl.set)); setPhase("work", cur().work); }
+function startWork(){ beep(990, 0.25); if(pl.sd) pl.sd.s2 = false; say((pl.set === 1 ? L("Go!") : L("Set {0}. Go!", pl.set)) + (pl.sd ? " " + sideName(0) + "." : "")); setPhase("work", cur().work); applySide(); }
 
 /* ---------- UI ---------- */
 function buildItemUI(){
@@ -5478,12 +5502,13 @@ function renderDyn(){
   const it = cur(), d = $("pDyn"); if(!d) return;
   const badge = $("pBadge");
   const ph = pl.phase;
-  if(badge) badge.textContent = ph === "work" ? (it.sets > 1 ? L("SET {0} OF {1}", pl.set, it.sets) : L("GO")) : L(ph === "rest" ? "REST" : ph === "next" ? "WATCH THE DEMO" : ph === "complete" ? "COMPLETE" : "TEST");
+  if(badge) badge.textContent = ph === "work" ? (it.sets > 1 ? L("SET {0} OF {1}", pl.set, it.sets) : L("GO")) + (pl.sd ? " · " + sideName(pl.sd.s2 ? 1 : 0).toUpperCase() : "") : L(ph === "rest" ? "REST" : ph === "next" ? "WATCH THE DEMO" : ph === "complete" ? "COMPLETE" : "TEST");
   let h = "";
   if(ph === "next" || ph === "work" || ph === "rest"){
     const lbl = ph === "next" ? L(pl.idx === 0 ? "Get ready" : "Up next") : ph === "work" ? (it.sets > 1 ? L("Work · set {0}/{1}", pl.set, it.sets) : L("Work")) : L("Rest · set {0} next", pl.set+1);
     h += `<div class="clock"><div class="ph ${ph}">${lbl}</div><div class="big" id="pBig">${fmt(Math.ceil(remaining()))}</div>${setDots(it)}
-      ${ph === "next" ? `<div class="sub">${it.kind === "test" ? L("Read the test instructions") : rxText(it)}</div>` : ""}</div>`;
+      ${ph === "next" ? `<div class="sub">${it.kind === "test" ? L("Read the test instructions") : rxText(it)}</div>` : ""}
+      ${ph === "next" && pl.sd ? `<div class="sidepick"><span>${L("Both sides equally — start with:")}</span>${["L","R"].map(k=>`<button data-s1="${k}" aria-pressed="${pl.sd.order[0] === k}">${L(k === "L" ? "Left" : "Right")}</button>`).join("")}</div>` : ""}</div>`;
     h += ctrls(ph !== "work" ? `<button class="ibtn" id="pPlus" aria-label="Add 15 seconds">+15</button>` : "");
     if(ph === "next") h += `<button class="donebtn" id="pNow">${L(it.kind === "test" ? "Start test now" : "Start now ▶")}</button>`;
     else h += `<button class="donebtn" id="pDone">${L("✓ DONE — finished this exercise")}</button>`;
@@ -5525,6 +5550,7 @@ function renderDyn(){
 }
 function bindDyn(){
   const on = (id, fn)=>{ const b = $(id); if(b) b.onclick = fn; };
+  document.querySelectorAll("#pDyn [data-s1]").forEach(b=> b.onclick = ()=>{ state.settings.side1 = b.dataset.s1; saveState(); pl.sd = sideInfo(cur()); renderDyn(); });
   on("pPause", togglePause); on("pSkip", skipItem); on("pPrev", prevItem); on("pDone", doneItem);
   on("pNow", ()=>{ if(cur().kind === "test") testStart(); else startWork(); });
   on("pPlus", ()=>{ if(pl.paused) pl.rem += 15; else pl.endAt += 15000; const b = $("pBig"); if(b) b.textContent = fmt(Math.ceil(remaining())); });

@@ -161,6 +161,8 @@ EXTRA_CSS = """
 .news{margin-top:14px;border-color:var(--orange)}.news ul{margin:6px 0 0;padding-left:20px}
 .chmed{display:flex;gap:6px}.chmed span{display:flex;flex-direction:column;align-items:center;font-size:1.1rem;line-height:1.1;opacity:.5}.chmed span.on{opacity:1}.chmed small{font-size:.65rem;color:var(--muted)}
 .chact{border-color:var(--orange)}
+.sideb{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:4px 12px;font-weight:800;font-size:.95rem}.sideb small{opacity:.75;font-weight:600}
+.swap{font-size:2.4rem;font-weight:800;color:var(--teal);margin:6px 0}
 .qgrid{display:grid;gap:10px;margin-top:12px}.qopt{text-align:left;font-weight:700;font-size:1.05rem;cursor:pointer;color:var(--ink)}.qopt:hover{border-color:var(--teal)}
 """
 
