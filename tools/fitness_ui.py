@@ -220,6 +220,7 @@ UI.update({
  "q_g_body": ("Stronger, fitter body", "Kuchliroq va chiroyli tana", "Сильное подтянутое тело"),
  "q_g_hair": ("Hair & scalp", "Soch va bosh terisi", "Волосы и кожа головы"),
  "q_g_face": ("Face, neck & posture", "Yuz, bo‘yin va qomat", "Лицо, шея и осанка"),
+ "q_g_tall": ("Height & posture", "Bo‘y va qomat", "Рост и осанка"),
  "q_g_daily": ("Just stay healthy every day", "Har kuni sog‘lom bo‘lish", "Просто быть здоровым каждый день"),
  "q_act": ("How often do you exercise now?", "Hozir qanchalik tez-tez mashq qilasiz?", "Как часто вы сейчас тренируетесь?"),
  "q_a0": ("Rarely or never", "Kamdan-kam yoki umuman", "Редко или никогда"),

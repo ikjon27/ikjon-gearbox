@@ -420,13 +420,13 @@
           "uz": "Bepul mashq rejalari"
         },
         "text": {
-          "en": "Home workout plans for men and women, a 20-minute daily routine, posture and hair-care plans — every day and every exercise written out.",
-          "uz": "Erkaklar va ayollar uchun uyda mashq rejalari, har kuni 20 daqiqalik mashq, qomat va soch parvarishi rejalari — har bir kun va har bir mashq yozib berilgan."
+          "en": "Home workout plans for men and women, a 20-minute daily routine, hair-loss care, posture and height plans — every day and every exercise written out.",
+          "uz": "Erkaklar va ayollar uchun uyda mashq rejalari, har kuni 20 daqiqalik mashq, soch to'kilishiga qarshi parvarish, qomat va bo'y rejalari — har bir kun va har bir mashq yozib berilgan."
         },
         "points": [
           {
-            "en": "5 plans, from 30 days to 3 months",
-            "uz": "30 kundan 3 oygacha 5 ta reja"
+            "en": "8 plans, from 30 days to 6 months",
+            "uz": "30 kundan 6 oygacha 8 ta reja"
           },
           {
             "en": "Weekly schedule with sets and reps",
@@ -455,8 +455,8 @@
         },
         "points": [
           {
-            "en": "142 exercises",
-            "uz": "142 ta mashq"
+            "en": "152 exercises",
+            "uz": "152 ta mashq"
           },
           {
             "en": "Start and finish positions shown",
@@ -489,12 +489,12 @@
             "uz": "Erkaklar va ayollar uchun 3 oylik rejalar"
           },
           {
-            "en": "Posture, hair and scalp care routines",
-            "uz": "Qomat, soch va bosh terisi parvarishi"
+            "en": "Hair-loss care and scalp massage plans",
+            "uz": "Soch to'kilishiga qarshi parvarish va massaj rejalari"
           },
           {
-            "en": "Voice guidance and progress tracking",
-            "uz": "Ovozli yo'riqnoma va natijalarni kuzatish"
+            "en": "Posture and height plans for teens and adults",
+            "uz": "O'smirlar va kattalar uchun qomat va bo'y rejalari"
           }
         ],
         "button": {

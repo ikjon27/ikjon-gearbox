@@ -18,7 +18,7 @@ const {chromium} = require("playwright"), fs = require("fs"), path = require("pa
       try { const a = tp.fr ? tp.fr[0][0] : P(tp.b, tp.fn(0)), z = tp.fr ? tp.fr[Math.min(1, tp.fr.length - 1)][0] : P(tp.b, tp.fn(.5)); figs[id] = [figSVG(a, tp.pr), figSVG(z, tp.pr)]; } catch (e) {}
     }
     const css = [...document.querySelectorAll("style")].map(s => s.textContent).join("").match(/\.rig[^{]*\{[^}]*\}/g) || [];
-    return {EX, FX, PLANS, WK, CARE, HAB, CHAL, AREAS, I18N, figs, css};
+    return {EX, FX, PLANS, WK, CARE, HAB, CHAL, AREAS, AREATIPS, I18N, figs, css};
   });
   fs.writeFileSync(path.join(__dirname, "library-data.json"), JSON.stringify(d));
   console.log("figures:", Object.values(d.figs).filter(Boolean).length, "plans:", d.PLANS.length, "workouts:", Object.keys(d.WK).length);

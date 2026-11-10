@@ -510,3 +510,154 @@ MONTHS = [
  L("Month 3 · Sculpt", "3-oy · Shakllantirish", "Месяц 3 · Рельеф"),
 ]
 LEVELS = [("easy", L("Beginner", "Boshlang‘ich", "Новичок"), 0.8), ("regular", L("Regular", "O‘rta", "Средний"), 1.0), ("active", L("Active", "Faol", "Продвинутый"), 1.25)]
+
+# ================================================================ hair & height programmes (added 10 Nov 2026)
+AREAS.append(("tall", L("Height & posture", "Bo‘y va qomat", "Рост и осанка"), "body"))
+AREA_TIPS["tall"] = [
+ L("Height is mostly set by your genes. Bones get longer at growth plates near their ends; these close in the late teens (often around 14–16 for girls and 15–19 for boys). After that, no exercise or stretch can make bones longer — any app that promises this is not telling the truth.",
+   "Bo‘y asosan genlarga bog‘liq. Suyaklar uchlari yaqinidagi o‘sish zonalarida uzayadi; ular o‘smirlik oxirida yopiladi (qizlarda ko‘pincha 14–16, o‘g‘il bolalarda 15–19 yoshda). Shundan keyin hech bir mashq yoki cho‘zilish suyakni uzaytira olmaydi — buni va’da qiladigan ilova rost gapirmayapti.",
+   "Рост в основном определяют гены. Кости удлиняются в зонах роста у их концов; эти зоны закрываются в конце подросткового возраста (часто около 14–16 лет у девушек и 15–19 у юношей). После этого никакие упражнения или растяжки не удлиняют кости — приложение, которое обещает это, говорит неправду."),
+ L("What exercise can do: help you stand at your full height. Slouching and a rounded upper back can hide some height; a strong back and core and open hips make standing tall easy.",
+   "Mashq nima qila oladi: to‘liq bo‘yingizda turishga yordam beradi. Bukchayish va yumaloqlashgan yuqori orqa bo‘yning bir qismini yashiradi; kuchli orqa va kor hamda ochiq son bo‘g‘imlari tik turishni osonlashtiradi.",
+   "Что могут упражнения: помочь стоять во весь рост. Сутулость и круглая верхняя часть спины скрывают часть роста; сильные спина и кор и раскрытые бёдра делают прямую осанку лёгкой."),
+ L("You are usually about 1 cm taller in the morning than at night, because the discs in your spine compress a little during the day. This is normal and does not change your real height.",
+   "Odatda ertalab kechqurundan taxminan 1 sm balandroq bo‘lasiz, chunki kun davomida umurtqa disklari biroz siqiladi. Bu normal va haqiqiy bo‘yingizni o‘zgartirmaydi.",
+   "Утром вы обычно примерно на 1 см выше, чем вечером: за день межпозвоночные диски немного сжимаются. Это нормально и не меняет ваш настоящий рост."),
+ L("For teens who are still growing: sleep 8–10 hours, eat enough protein, calcium and vitamin D, and be active every day. These help you reach the height your genes allow. Lifting weights with good technique does not stunt growth.",
+   "Hali o‘sayotgan o‘smirlar uchun: 8–10 soat uxlang, yetarli oqsil, kalsiy va D vitamini iste’mol qiling va har kuni faol bo‘ling. Bular genlaringiz imkon bergan bo‘yga yetishga yordam beradi. To‘g‘ri texnika bilan og‘irlik ko‘tarish o‘sishni to‘xtatmaydi.",
+   "Подросткам, которые ещё растут: спите 8–10 часов, ешьте достаточно белка, кальция и витамина D и будьте активны каждый день. Это помогает достичь роста, заложенного генами. Силовые упражнения с правильной техникой не останавливают рост."),
+ L("See a doctor if a child or teen is growing much more slowly than others of the same age, or stops growing early.",
+   "Bola yoki o‘smir tengdoshlaridan ancha sekin o‘sayotgan bo‘lsa yoki erta o‘sishdan to‘xtagan bo‘lsa, shifokorga murojaat qiling.",
+   "Обратитесь к врачу, если ребёнок или подросток растёт намного медленнее сверстников или рано перестал расти."),
+]
+AREA_TIPS["hair"].append(L(
+ "Stress can trigger heavy shedding about 2–3 months later (telogen effluvium). It usually grows back once the stress passes. Calm breathing, yoga and good sleep are worth doing for this reason — not because any pose pushes blood into the hair roots.",
+ "Stress taxminan 2–3 oydan keyin kuchli soch to‘kilishiga sabab bo‘lishi mumkin (telogen effluvium). Stress o‘tgach, odatda soch qayta o‘sadi. Tinch nafas, yoga va yaxshi uyqu aynan shu sababli foydali — biror holat soch ildizlariga qon haydagani uchun emas.",
+ "Стресс может вызвать сильное выпадение волос примерно через 2–3 месяца (телогеновая алопеция). Обычно волосы отрастают, когда стресс проходит. Спокойное дыхание, йога и хороший сон полезны именно поэтому — а не потому, что какая-то поза «гонит кровь к корням волос»."))
+
+NEWEX.update({
+ "scalp_knead": (L("Scalp kneading", "Bosh terisini yumshatish", "Разминание кожи головы"), "hair",
+   L("Scalp mobility, relaxation", "Bosh terisi harakatchanligi, bo‘shashish", "Подвижность кожи головы, расслабление"),
+   [L("Spread your fingers and press the pads firmly on the scalp.", "Barmoqlarni yoyib, uchlarini bosh terisiga qattiq bosing.", "Расставьте пальцы и плотно прижмите подушечки к коже головы."),
+    L("Without sliding, push the skin forward and back, then side to side.", "Sirpantirmasdan terini oldinga-orqaga, so‘ng yonga suring.", "Не скользя, сдвигайте кожу вперёд-назад, затем из стороны в сторону."),
+    L("Move your hands to a new spot every few seconds until you have covered the whole head.", "Butun boshni qamrab olguncha har bir necha soniyada qo‘llarni yangi joyga o‘tkazing.", "Каждые несколько секунд переставляйте руки, пока не пройдёте всю голову.")],
+   L("The skin should move over the skull — that is the point of the exercise.", "Teri bosh suyagi ustida siljishi kerak — mashqning maqsadi shu.", "Кожа должна смещаться по черепу — в этом смысл упражнения."), "Care", "hair"),
+ "temple_circles": (L("Temple & hairline circles", "Chakka va soch chizig‘ini aylantirish", "Круги на висках и у линии роста волос"), "hair",
+   L("Temples, hairline, tension headaches", "Chakkalar, soch chizig‘i, zo‘riqish bosh og‘rig‘i", "Виски, линия роста волос, головная боль напряжения"),
+   [L("Place two or three fingertips on each temple.", "Har bir chakkaga ikki-uch barmoq uchini qo‘ying.", "Положите по два-три пальца на каждый висок."),
+    L("Make slow, firm circles for 20 seconds.", "20 soniya davomida sekin va qattiq doiralar chizing.", "Делайте медленные плотные круги 20 секунд."),
+    L("Move along the hairline to the middle of the forehead and repeat.", "Soch chizig‘i bo‘ylab peshona o‘rtasiga o‘ting va takrorlang.", "Переместитесь вдоль линии роста волос к середине лба и повторите.")],
+   L("Unclench your jaw while you do it.", "Bajarayotganda jag‘ingizni bo‘shating.", "Во время упражнения разожмите челюсть."), "Care", "hair"),
+ "scalp_tap": (L("Fingertip scalp tapping", "Barmoq uchlari bilan boshga urish", "Постукивание по коже головы"), "hair",
+   L("Scalp stimulation, relaxation", "Bosh terisini uyg‘otish, bo‘shashish", "Стимуляция кожи головы, расслабление"),
+   [L("Curve your fingers and tap the scalp lightly and quickly with the fingertips.", "Barmoqlarni bukib, uchlari bilan bosh terisiga yengil va tez uring.", "Согните пальцы и легко и быстро постукивайте подушечками по коже головы."),
+    L("Start at the hairline and work back to the base of the skull.", "Soch chizig‘idan boshlab bosh suyagi asosigacha harakatlaning.", "Начните от линии роста волос и двигайтесь к основанию черепа."),
+    L("Keep it gentle — like light rain, not knocking.", "Yengil bajaring — taqillatish emas, mayda yomg‘irdek.", "Мягко — как лёгкий дождь, а не стук.")],
+   L("Never use your nails.", "Hech qachon tirnoqdan foydalanmang.", "Никогда не используйте ногти."), "Care", "hair"),
+ "alt_nostril": (L("Alternate-nostril breathing", "Navbatma-navbat burun bilan nafas", "Попеременное дыхание ноздрями"), "sleep",
+   L("Calm breathing, stress", "Tinch nafas, stress", "Спокойное дыхание, стресс"),
+   [L("Sit tall. Close the right nostril with your thumb and breathe in through the left for 4 counts.", "Tik o‘tiring. O‘ng burun teshigini bosh barmoq bilan yopib, chapdan 4 sanoq nafas oling.", "Сядьте прямо. Закройте правую ноздрю большим пальцем и вдохните через левую на 4 счёта."),
+    L("Close the left nostril with your ring finger, open the right and breathe out for 6 counts.", "Chap teshikni nomsiz barmoq bilan yopib, o‘ngni oching va 6 sanoq nafas chiqaring.", "Закройте левую ноздрю безымянным пальцем, откройте правую и выдохните на 6 счётов."),
+    L("Breathe in through the right, switch, breathe out through the left. Repeat slowly.", "O‘ngdan nafas oling, almashtiring, chapdan chiqaring. Sekin takrorlang.", "Вдохните через правую, смените, выдохните через левую. Повторяйте медленно.")],
+   L("Stop if you feel dizzy and breathe normally.", "Boshingiz aylansa, to‘xtab, odatdagidek nafas oling.", "Если закружится голова, остановитесь и дышите обычно."), "Breathing", "lungs"),
+ "legs_up_wall": (L("Legs up the wall", "Oyoqlarni devorga ko‘tarish", "Ноги на стену"), "sleep",
+   L("Relaxation, tired legs", "Bo‘shashish, charchagan oyoqlar", "Расслабление, усталые ноги"),
+   [L("Sit sideways next to a wall, then lie back and swing your legs up the wall.", "Devorga yonboshlab o‘tiring, so‘ng chalqancha yotib, oyoqlarni devorga ko‘taring.", "Сядьте боком к стене, лягте на спину и поднимите ноги на стену."),
+    L("Rest your arms by your sides and let your shoulders drop.", "Qo‘llarni yonga qo‘yib, yelkalarni bo‘shating.", "Положите руки вдоль тела и расслабьте плечи."),
+    L("Breathe slowly through your nose.", "Burun orqali sekin nafas oling.", "Медленно дышите через нос.")],
+   L("Skip it if you have glaucoma, uncontrolled high blood pressure or are in late pregnancy.", "Glaukoma, nazoratsiz yuqori qon bosimi bo‘lsa yoki homiladorlikning oxirgi oylarida bo‘lsangiz, bajarmang.", "Пропустите при глаукоме, неконтролируемом высоком давлении или на поздних сроках беременности."), "Stretch", "body"),
+ "down_dog": (L("Downward dog", "Pastga qaragan it holati", "Собака мордой вниз"), "back",
+   L("Calves, hamstrings, shoulders, back", "Boldir, son orqasi, yelkalar, orqa", "Икры, задняя поверхность бедра, плечи, спина"),
+   [L("Start on hands and knees.", "To‘rt oyoqda turing.", "Встаньте на четвереньки."),
+    L("Tuck your toes and lift your hips up and back into an upside-down V.", "Oyoq barmoqlarini bukib, sonlarni yuqoriga va orqaga ko‘tarib, teskari V hosil qiling.", "Подверните пальцы ног и поднимите таз вверх-назад в перевёрнутую букву V."),
+    L("Keep the knees soft and press the floor away with your hands.", "Tizzalarni yumshoq tuting va qo‘llar bilan polni itaring.", "Держите колени мягкими и отталкивайте пол руками.")],
+   L("Heels do not need to touch the floor.", "Tovonlar polga tegishi shart emas.", "Пятки не обязательно должны касаться пола."), "Stretch", "body"),
+ "forward_fold": (L("Standing forward fold", "Turib oldinga egilish", "Наклон вперёд стоя"), "back",
+   L("Hamstrings, back relaxation", "Son orqasi, orqani bo‘shashtirish", "Задняя поверхность бедра, расслабление спины"),
+   [L("Stand with feet hip-width apart and knees soft.", "Oyoqlarni son kengligida qo‘yib, tizzalarni yumshoq tutib turing.", "Встаньте, стопы на ширине таза, колени мягкие."),
+    L("Fold forward from the hips and let your head and arms hang.", "Son bo‘g‘imidan oldinga egilib, bosh va qo‘llarni osiltiring.", "Наклонитесь вперёд от таза, позвольте голове и рукам свисать."),
+    L("Breathe slowly, then roll up one vertebra at a time.", "Sekin nafas oling, so‘ng umurtqama-umurtqa asta ko‘tariling.", "Дышите медленно, затем поднимайтесь, позвонок за позвонком.")],
+   L("Come up slowly to avoid dizziness.", "Bosh aylanmasligi uchun sekin ko‘tariling.", "Поднимайтесь медленно, чтобы не закружилась голова."), "Stretch", "body"),
+ "wall_stand": (L("Wall posture check", "Devorda qomatni tekshirish", "Проверка осанки у стены"), "tall",
+   L("Upright posture, body awareness", "Tik qomat, tanani his qilish", "Прямая осанка, чувство тела"),
+   [L("Stand with heels, buttocks, shoulder blades and the back of your head touching a wall.", "Tovon, dumba, kuraklar va boshning orqa qismi devorga tegib tursin.", "Встаньте так, чтобы пятки, ягодицы, лопатки и затылок касались стены."),
+    L("Tuck your chin slightly and lengthen the back of the neck.", "Iyakni biroz ichkariga tortib, bo‘yin orqasini uzaytiring.", "Слегка подберите подбородок и вытяните заднюю поверхность шеи."),
+    L("Breathe normally and remember this feeling, then step away and keep it.", "Odatdagidek nafas oling va shu hissni eslab qoling, so‘ng devordan uzoqlashib uni saqlang.", "Дышите обычно и запомните это ощущение, затем отойдите от стены и сохраните его.")],
+   L("Do not arch the lower back to touch the wall.", "Devorga tegish uchun belni bukmang.", "Не прогибайте поясницу, чтобы коснуться стены."), "Mobility", "body"),
+ "dead_hang": (L("Dead hang", "Turnikda osilish", "Вис на перекладине"), "tall",
+   L("Grip, shoulders, spine decompression feeling", "Ushlash kuchi, yelkalar, umurtqa bo‘shashishi hissi", "Хват, плечи, ощущение разгрузки позвоночника"),
+   [L("Grip a sturdy bar with hands shoulder-width apart.", "Mustahkam turnikni yelka kengligida ushlang.", "Возьмитесь за прочную перекладину на ширине плеч."),
+    L("Lift your feet or bend your knees and hang with straight arms.", "Oyoqlarni uzib yoki tizzalarni bukib, to‘g‘ri qo‘llarda osiling.", "Оторвите ноги или согните колени и повисните на прямых руках."),
+    L("Breathe slowly. Step down before your grip fails.", "Sekin nafas oling. Qo‘lingiz bo‘shab qolguncha tushing.", "Дышите медленно. Опуститесь, пока хват не ослаб.")],
+   L("No bar? Do a tall overhead reach instead. Hanging feels good for the back, but it does not make you grow taller.", "Turnik yo‘qmi? O‘rniga qo‘llarni yuqoriga cho‘zing. Osilish orqaga yoqimli, lekin bo‘yni o‘stirmaydi.", "Нет перекладины? Сделайте вытяжение рук вверх. Вис приятен для спины, но рост не увеличивает."), "Stretch", "arm"),
+ "tall_reach": (L("Tall overhead reach", "Yuqoriga cho‘zilish", "Вытяжение вверх"), "tall",
+   L("Side body, shoulders, posture", "Tananing yon tomoni, yelkalar, qomat", "Боковая поверхность тела, плечи, осанка"),
+   [L("Stand tall with feet hip-width apart.", "Oyoqlarni son kengligida qo‘yib, tik turing.", "Встаньте прямо, стопы на ширине таза."),
+    L("Reach both arms overhead as high as you can, rising onto your toes.", "Oyoq uchiga ko‘tarilib, ikkala qo‘lni imkon qadar yuqoriga cho‘zing.", "Поднимитесь на носки и тянитесь обеими руками как можно выше."),
+    L("Hold for a slow breath, then lower and reach to each side.", "Bir sekin nafas davomida ushlab turing, so‘ng tushib, har tomonga cho‘ziling.", "Задержитесь на медленный вдох, затем опуститесь и потянитесь в каждую сторону.")],
+   L("Keep the ribs down — do not arch the lower back.", "Qovurg‘alarni pastda tuting — belni bukmang.", "Держите рёбра опущенными — не прогибайте поясницу."), "Stretch", "body"),
+})
+REUSED.update({"press_up": "back", "pogo": "legs", "thoracic_ext": "neck"})
+
+HABITS.update({
+ "sleep_teen": L("Sleep 8–10 hours (teens) — growth hormone is released mainly in deep sleep", "8–10 soat uxlash (o‘smirlar) — o‘sish gormoni asosan chuqur uyquda ajraladi", "Спать 8–10 часов (подросткам) — гормон роста выделяется в основном в глубоком сне"),
+ "calcium": L("Calcium & vitamin D: milk, yogurt, cheese, eggs, fish + some daylight", "Kalsiy va D vitamini: sut, qatiq, pishloq, tuxum, baliq + biroz kunduzgi yorug‘lik", "Кальций и витамин D: молоко, йогурт, сыр, яйца, рыба + немного дневного света"),
+ "active60": L("60 minutes of active play or sport", "60 daqiqa faol o‘yin yoki sport", "60 минут активных игр или спорта"),
+ "calm": L("10 minutes of calm: breathing, a walk or no-phone time", "10 daqiqa xotirjamlik: nafas, sayr yoki telefonsiz vaqt", "10 минут спокойствия: дыхание, прогулка или время без телефона"),
+})
+
+WORKOUTS.update({
+ "hair_massage": (L("Scalp massage routine", "Bosh terisi massaji", "Массаж кожи головы"), "hair",
+   [W("scalp_massage", 1, 0, 240), W("scalp_knead", 1, 0, 60), W("temple_circles", 1, 0, 60), W("scalp_tap", 1, 0, 45), W("neck_release", 1, 0, 60)]),
+ "hair_yoga": (L("Stress-relief yoga for hair", "Soch uchun stressni yengillatuvchi yoga", "Йога против стресса для волос"), "hair",
+   [W("cat_camel", 1, 10), W("child_pose", 1, 0, 60), W("down_dog", 2, 0, 30), W("forward_fold", 1, 0, 45), W("legs_up_wall", 1, 0, 180), W("alt_nostril", 1, 0, 180), W("scalp_massage", 1, 0, 240)]),
+ "hair_walk": (L("Walk, breathe & massage", "Yurish, nafas va massaj", "Прогулка, дыхание и массаж"), "hair",
+   [W("walk", 1, 0, 1200), W("box_breath", 1, 0, 120), W("scalp_massage", 1, 0, 240)]),
+ "tall_posture": (L("Stand tall: posture", "Tik turish: qomat", "Прямая спина: осанка"), "tall",
+   [W("wall_stand", 2, 0, 45), W("chin_tuck", 2, 10), W("wall_slide", 2, 10), W("prone_y", 3, 10), W("thoracic_ext", 2, 8), W("hip_flexor_stretch", 2, 0, 30), W("tall_reach", 2, 6)]),
+ "tall_core": (L("Strong back & core", "Kuchli orqa va kor", "Сильная спина и кор"), "tall",
+   [W("plank", 3, 0, 30), W("side_plank", 2, 0, 20), W("bird_dog", 3, 10), W("superman", 3, 10), W("bridge", 3, 12), W("dead_bug", 3, 10)]),
+ "tall_stretch": (L("Spine & hip mobility", "Umurtqa va son bo‘g‘imi harakatchanligi", "Подвижность позвоночника и бёдер"), "tall",
+   [W("cat_camel", 1, 10), W("open_book", 2, 8), W("press_up", 2, 10), W("child_pose", 1, 0, 45), W("ham_stretch", 2, 0, 30), W("hip_flexor_stretch", 2, 0, 30), W("dead_hang", 3, 0, 20)]),
+ "tall_active": (L("Active play: jump, run, skip", "Faol o‘yin: sakrash, yugurish, arqon", "Активная игра: прыжки, бег, скакалка"), "heart",
+   [W("jumping_jack", 3, 0, 40), W("skipping", 3, 0, 60), W("pogo", 3, 0, 20), W("jog", 1, 0, 600), W("tall_reach", 2, 6), W("dead_hang", 2, 0, 20)]),
+})
+
+for _p in PLANS:
+    if _p["id"] == "hair":
+        _p["week"] = ["hair_massage", "hair_yoga", "hair_walk", "hair_yoga", "hair_massage", "hair_yoga", "hair_walk"]
+        _p["habits"] = ["protein", "ironfood", "water", "gentlehair", "calm", "sleep", "screens"]
+        _p["tag"] = L("Men & women · 30 days · 12–25 min", "Erkak va ayollar · 30 kun · 12–25 daqiqa", "Мужчины и женщины · 30 дней · 12–25 мин")
+        _p["desc"] = L("Scalp massage, stress-relief yoga, calm breathing, walks and the food and care habits that support healthy hair. Honest note: no exercise can reverse genetic hair loss — this plan supports your hair and tells you when to see a doctor.",
+                       "Bosh terisi massaji, stressni yengillatuvchi yoga, tinch nafas, sayr hamda sog‘lom sochni qo‘llab-quvvatlovchi ovqatlanish va parvarish odatlari. Rostini aytganda: hech bir mashq irsiy soch to‘kilishini to‘xtata olmaydi — bu reja sochingizni qo‘llab-quvvatlaydi va qachon shifokorga borish kerakligini aytadi.",
+                       "Массаж кожи головы, йога против стресса, спокойное дыхание, прогулки и привычки питания и ухода для здоровых волос. Честно: никакие упражнения не остановят наследственное выпадение волос — этот план поддерживает волосы и подскажет, когда идти к врачу.")
+PLANS += [
+ {"id": "hair6", "months": 6, "care": "hair", "for": "all",
+  "name": L("Scalp Massage: 6-Month Programme", "Bosh terisi massaji: 6 oylik dastur", "Массаж кожи головы: программа на 6 месяцев"),
+  "tag": L("Men & women · 6 months · about 10 min", "Erkak va ayollar · 6 oy · taxminan 10 daqiqa", "Мужчины и женщины · 6 месяцев · около 10 мин"),
+  "desc": L("A daily scalp massage routine for 24 weeks — the length used in the small studies where a few minutes of massage a day made hair slightly thicker. Simple, free and safe; it works best together with any treatment your doctor recommends.",
+            "24 hafta davomida har kungi bosh terisi massaji — kuniga bir necha daqiqa massaj sochni biroz qalinlashtirgan kichik tadqiqotlardagi muddat. Oddiy, bepul va xavfsiz; shifokor tavsiya qilgan davolash bilan birga eng yaxshi natija beradi.",
+            "Ежедневный массаж кожи головы в течение 24 недель — столько длились небольшие исследования, где несколько минут массажа в день делали волосы немного гуще. Просто, бесплатно и безопасно; лучше всего работает вместе с лечением, которое советует врач."),
+  "week": ["hair_massage", "hair_massage", "hair_walk", "hair_massage", "hair_massage", "hair_walk", "hair_massage"], "habits": ["protein", "ironfood", "gentlehair", "calm", "sleep"]},
+ {"id": "tall", "months": 2, "care": "", "for": "all",
+  "name": L("Stand Tall: Posture Plan", "Tik turing: qomat rejasi", "Во весь рост: план осанки"),
+  "tag": L("Teens & adults · 8 weeks · 15–20 min", "O‘smir va kattalar · 8 hafta · 15–20 daqiqa", "Подростки и взрослые · 8 недель · 15–20 мин"),
+  "desc": L("Stand at your full height: posture drills, a strong back and core, and spine and hip mobility. Honest note: after your growth plates close in the late teens, no exercise makes bones longer — but good posture shows every centimetre you have.",
+            "To‘liq bo‘yingizda turing: qomat mashqlari, kuchli orqa va kor, umurtqa va son bo‘g‘imi harakatchanligi. Rostini aytganda: o‘smirlik oxirida o‘sish zonalari yopilgach, hech bir mashq suyakni uzaytirmaydi — lekin to‘g‘ri qomat bor har bir santimetrni ko‘rsatadi.",
+            "Стойте во весь рост: упражнения для осанки, сильные спина и кор, подвижность позвоночника и бёдер. Честно: после закрытия зон роста в конце подросткового возраста никакие упражнения не удлиняют кости — но хорошая осанка показывает каждый ваш сантиметр."),
+  "week": ["tall_posture", "tall_core", "tall_stretch", "active", "tall_posture", "tall_stretch", "rest"], "habits": ["posture", "protein", "steps", "screens", "sleep"]},
+ {"id": "teen", "months": 3, "care": "", "for": "all",
+  "name": L("Teen Growth: Strong & Healthy", "O‘smirlar: o‘sish uchun kuch va salomatlik", "Подросткам: рост, сила и здоровье"),
+  "tag": L("Ages 12–18 · 3 months · 20–30 min", "12–18 yosh · 3 oy · 20–30 daqiqa", "12–18 лет · 3 месяца · 20–30 мин"),
+  "desc": L("For teens who are still growing: daily active play, posture and core work, plus the sleep and food habits that help you reach the height your genes allow. It cannot change your genes — it helps you grow well.",
+            "Hali o‘sayotgan o‘smirlar uchun: har kungi faol o‘yin, qomat va kor mashqlari hamda genlaringiz imkon bergan bo‘yga yetishga yordam beradigan uyqu va ovqatlanish odatlari. U genlaringizni o‘zgartira olmaydi — yaxshi o‘sishingizga yordam beradi.",
+            "Для подростков, которые ещё растут: ежедневные активные игры, упражнения для осанки и кора, а также привычки сна и питания, которые помогают достичь роста, заложенного генами. Гены это не изменит — но поможет расти правильно."),
+  "week": ["tall_active", "tall_posture", "tall_core", "tall_active", "tall_stretch", "active", "rest"], "habits": ["sleep_teen", "calcium", "protein", "veg", "active60", "screens"]},
+]
+MONTHS += [
+ L("Month 4 · Keep going", "4-oy · Davom eting", "Месяц 4 · Продолжаем"),
+ L("Month 5 · Steady", "5-oy · Barqarorlik", "Месяц 5 · Стабильность"),
+ L("Month 6 · Finish strong", "6-oy · Yakunlash", "Месяц 6 · Финиш"),
+]
+_order = ["daily", "men", "women", "hair", "hair6", "face", "tall", "teen"]
+PLANS.sort(key=lambda p: _order.index(p["id"]) if p["id"] in _order else 99)

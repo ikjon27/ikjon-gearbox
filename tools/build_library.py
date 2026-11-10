@@ -43,9 +43,9 @@ assert len({x["slug"] for x in EXS.values()}) == len(EXS), "duplicate exercise s
 
 REGL = dict(D["REG"])
 REGL.update({"hair": "Hair & scalp", "face": "Face & jaw", "eyes": "Eyes", "upper": "Shoulders, arms & chest", "glutes": "Hips & glutes",
-             "heart": "Heart & lungs", "pelvic": "Pelvic floor", "hands": "Hands & nails", "feet": "Feet & toes", "core": "Core & waist"})
+             "heart": "Heart & lungs", "pelvic": "Pelvic floor", "hands": "Hands & nails", "feet": "Feet & toes", "core": "Core & waist", "sleep": "Sleep & mind", "tall": "Height & posture"})
 REG_ORDER = ["general", "neck", "shoulder", "upper", "elbow", "hands", "back", "core", "hip", "glutes", "thigh", "knee", "shin", "ankle", "foot", "feet",
-             "heart", "pelvic", "face", "eyes", "hair"]
+             "heart", "pelvic", "tall", "sleep", "face", "eyes", "hair"]
 TYPEDESC = D["TYPEDESC"]; GUIDE = D["GUIDE"]
 
 # where each exercise is used
@@ -88,7 +88,7 @@ U = {
             home="IKJON", n_ex="{n} exercises",
             plans="Free workout plans", p_h1="{h1}", p_week="Weekly schedule", p_day="Day {n}", p_work="The workouts", p_care="Daily care routine",
             p_care_full="Each day the plan picks one exercise from each area below — it changes from day to day.", p_care_face="Each day: two face exercises, one for the eyes, one for the neck and a scalp massage.",
-            p_hab="Daily habits", p_prog="How to progress", p_prog_t="Start at a level that feels easy to medium. When every set feels easy, add 1–2 reps or one more set. If you miss a day, simply continue — the plan does not reset.",
+            p_hab="Daily habits", p_facts="What the research says", p_prog="How to progress", p_prog_t="Start at a level that feels easy to medium. When every set feels easy, add 1–2 reps or one more set. If you miss a day, simply continue — the plan does not reset.",
             p_len="Length", p_time="Time a day", p_for="For", p_months="{n} months", p_month="{n} month", p_rest="Rest day",
             p_cta="<b>Follow this plan day by day</b> in IKJON Fitness — free, with timers, voice guidance and progress tracking. No account needed.", p_btn="Start this plan",
             p_safe="<b>Before you start:</b> if you have a heart condition, high blood pressure, are pregnant, or have a recent injury or surgery, check with a doctor first. Stop if you feel pain, dizziness or chest pain.",
@@ -109,7 +109,7 @@ U = {
             home="IKJON", n_ex="{n} ta mashq",
             plans="Bepul mashq rejalari", p_h1="{h1}", p_week="Haftalik jadval", p_day="{n}-kun", p_work="Mashg‘ulotlar", p_care="Kundalik parvarish",
             p_care_full="Har kuni reja quyidagi har bir sohadan bittadan mashq tanlaydi — u kundan-kunga almashadi.", p_care_face="Har kuni: yuz uchun ikkita, ko‘z uchun bitta, bo‘yin uchun bitta mashq va bosh terisi massaji.",
-            p_hab="Kundalik odatlar", p_prog="Qanday rivojlanish kerak", p_prog_t="Yengil-o‘rtacha tuyuladigan darajadan boshlang. Barcha setlar oson bo‘lib qolganda 1–2 takror yoki yana bitta set qo‘shing. Bir kunni o‘tkazib yuborsangiz, shunchaki davom eting — reja boshidan boshlanmaydi.",
+            p_hab="Kundalik odatlar", p_facts="Tadqiqotlar nima deydi", p_prog="Qanday rivojlanish kerak", p_prog_t="Yengil-o‘rtacha tuyuladigan darajadan boshlang. Barcha setlar oson bo‘lib qolganda 1–2 takror yoki yana bitta set qo‘shing. Bir kunni o‘tkazib yuborsangiz, shunchaki davom eting — reja boshidan boshlanmaydi.",
             p_len="Davomiyligi", p_time="Kuniga vaqt", p_for="Kim uchun", p_months="{n} oy", p_month="{n} oy", p_rest="Dam olish kuni",
             p_cta="<b>Bu rejaga kunma-kun amal qiling</b> — IKJON Fitness’da bepul, taymer, ovozli yo‘riqnoma va natijalarni kuzatish bilan. Ro‘yxatdan o‘tish shart emas.", p_btn="Rejani boshlash",
             p_safe="<b>Boshlashdan oldin:</b> yurak kasalligi, yuqori qon bosimi, homiladorlik yoki yaqinda jarohat yoki operatsiya bo‘lsa, avval shifokor bilan maslahatlashing. Og‘riq, bosh aylanishi yoki ko‘krakda og‘riq sezsangiz, to‘xtating.",
@@ -130,7 +130,7 @@ U = {
             home="IKJON", n_ex="упражнений: {n}",
             plans="Бесплатные планы тренировок", p_h1="{h1}", p_week="Расписание на неделю", p_day="День {n}", p_work="Тренировки", p_care="Ежедневный уход",
             p_care_full="Каждый день план выбирает по одному упражнению из каждой зоны ниже — они меняются изо дня в день.", p_care_face="Каждый день: два упражнения для лица, одно для глаз, одно для шеи и массаж головы.",
-            p_hab="Ежедневные привычки", p_prog="Как прогрессировать", p_prog_t="Начните с уровня, который кажется лёгким или средним. Когда все подходы даются легко, добавьте 1–2 повторения или ещё один подход. Пропустили день — просто продолжайте, план не начинается заново.",
+            p_hab="Ежедневные привычки", p_facts="Что говорят исследования", p_prog="Как прогрессировать", p_prog_t="Начните с уровня, который кажется лёгким или средним. Когда все подходы даются легко, добавьте 1–2 повторения или ещё один подход. Пропустили день — просто продолжайте, план не начинается заново.",
             p_len="Длительность", p_time="Время в день", p_for="Для кого", p_months="{n} мес.", p_month="{n} мес.", p_rest="День отдыха",
             p_cta="<b>Следуйте этому плану день за днём</b> в IKJON Fitness — бесплатно, с таймерами, голосовыми подсказками и отслеживанием прогресса. Без регистрации.", p_btn="Начать план",
             p_safe="<b>Перед началом:</b> если у вас болезнь сердца, высокое давление, беременность, недавняя травма или операция, сначала посоветуйтесь с врачом. Остановитесь при боли, головокружении или боли в груди.",
@@ -150,9 +150,18 @@ PLAN_SEO = {
  "women": {"en": ("home-workout-plan-for-women", "Home Workout Plan for Women: 3 Months, Glutes, Waist & Posture"),
            "uz": ("ayollar-uchun-uyda-mashq-rejasi", "Ayollar uchun uyda mashq rejasi: 3 oy — dumba, bel va qomat"),
            "ru": ("programma-trenirovok-doma-dlya-zhenshchin", "Программа тренировок дома для женщин: 3 месяца — ягодицы, талия, осанка")},
- "hair": {"en": ("scalp-massage-hair-care-routine", "Scalp Massage & Hair Care Routine: 30-Day Plan"),
-          "uz": ("soch-uchun-bosh-terisi-massaji", "Soch uchun bosh terisi massaji va parvarish rejasi: 30 kun"),
-          "ru": ("massazh-golovy-i-ukhod-za-volosami", "Массаж головы и уход за волосами: план на 30 дней")},
+ "hair": {"en": ("scalp-massage-hair-care-routine", "Hair Loss Exercises: Scalp Massage, Yoga & Care (30-Day Plan)"),
+          "uz": ("soch-uchun-bosh-terisi-massaji", "Soch to‘kilishi uchun mashqlar: massaj, yoga va parvarish (30 kun)"),
+          "ru": ("massazh-golovy-i-ukhod-za-volosami", "Упражнения при выпадении волос: массаж, йога и уход (план на 30 дней)")},
+ "hair6": {"en": ("scalp-massage-for-hair-6-month-plan", "Scalp Massage for Hair: 6-Month Plan, 10 Minutes a Day"),
+           "uz": ("soch-uchun-bosh-massaji-6-oylik-reja", "Soch uchun bosh terisi massaji: 6 oylik reja, kuniga 10 daqiqa"),
+           "ru": ("massazh-golovy-dlya-volos-6-mesyatsev", "Массаж головы для волос: план на 6 месяцев, 10 минут в день")},
+ "tall": {"en": ("height-increase-exercises-posture-plan", "Height Increase Exercises: What Really Works + 8-Week Posture Plan"),
+          "uz": ("boy-ostirish-mashqlari", "Bo‘y o‘stirish mashqlari: nima haqiqatan ishlaydi + 8 haftalik qomat rejasi"),
+          "ru": ("uprazhneniya-dlya-uvelicheniya-rosta", "Упражнения для увеличения роста: что работает на самом деле + план осанки на 8 недель")},
+ "teen": {"en": ("how-to-grow-taller-as-a-teen", "How to Grow Taller as a Teen: Exercise, Sleep & Food Plan (3 Months)"),
+          "uz": ("osmirlar-uchun-boy-osishi", "O‘smirlar bo‘yi qanday o‘sadi: mashq, uyqu va ovqatlanish rejasi (3 oy)"),
+          "ru": ("kak-vyrasti-podrostku", "Как вырасти подростку: упражнения, сон и питание (план на 3 месяца)")},
  "face": {"en": ("face-neck-posture-exercises", "Face, Neck & Posture Exercises: 30-Day Plan"),
           "uz": ("yuz-boyin-va-qomat-mashqlari", "Yuz, bo‘yin va qomat mashqlari: 30 kunlik reja"),
           "ru": ("uprazhneniya-dlya-litsa-shei-i-osanki", "Упражнения для лица, шеи и осанки: план на 30 дней")},
@@ -343,6 +352,9 @@ def plan_page(pl, L):
         for a, opts in areas:
             links = ", ".join(f'<a class="exl" href="{ex_base(L)}{EXS[o[0]]["slug"]}/">{e(tx(EXS[o[0]]["name"], L))}</a>' for o in opts if o[0] in EXS)
             b.append(f"<p><b>{e(tx(AREA_NAME.get(a, a), L))}:</b> {links}</p>")
+    area = {"hair": "hair", "hair6": "hair", "tall": "tall", "teen": "tall"}.get(pl["id"])
+    if area and LD.get("AREATIPS", {}).get(area):
+        b.append(f"<h2>{u['p_facts']}</h2><ul>" + "".join(f"<li>{e(tx(x, L))}</li>" for x in LD["AREATIPS"][area]) + "</ul>")
     b.append(f"<h2>{u['p_hab']}</h2><ul>" + "".join(f"<li>{e(tx(LD['HAB'][h], L))}</li>" for h in pl["habits"]) + "</ul>")
     b.append(f"<h2>{u['p_prog']}</h2><p>{u['p_prog_t']}</p>")
     b.append(f'<p class="note">{u["p_safe"]}</p>')

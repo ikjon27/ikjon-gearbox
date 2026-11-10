@@ -212,7 +212,7 @@ function shareCard(){const p=S.plan;if(!p)return;const c=document.createElement(
 function quizView(){const step=quiz.who==null?0:quiz.goal==null?1:quiz.act==null?2:3;
  const opt=(k,v,lbl)=>`<button class="card qopt" data-qk="${k}" data-qv="${v}">${esc(t(lbl))}</button>`;
  let body;if(step===0)body=`<h2>${t("q_who")}</h2><div class="qgrid">${opt("who","m","q_man")}${opt("who","w","q_woman")}</div>`;
- else if(step===1)body=`<h2>${t("q_goal")}</h2><div class="qgrid">${opt("goal","body","q_g_body")}${opt("goal","hair","q_g_hair")}${opt("goal","face","q_g_face")}${opt("goal","daily","q_g_daily")}</div>`;
+ else if(step===1)body=`<h2>${t("q_goal")}</h2><div class="qgrid">${opt("goal","body","q_g_body")}${opt("goal","hair","q_g_hair")}${opt("goal","face","q_g_face")}${opt("goal","tall","q_g_tall")}${opt("goal","daily","q_g_daily")}</div>`;
  else if(step===2)body=`<h2>${t("q_act")}</h2><div class="qgrid">${opt("act","easy","q_a0")}${opt("act","regular","q_a1")}${opt("act","active","q_a2")}</div>`;
  else{const id=quiz.goal==="body"?(quiz.who==="w"?"women":"men"):quiz.goal;S.lvlPick=quiz.act;
   body=`<p class="eyebrow">${t("q_rec")}</p><div class="grid" style="margin-top:8px">${planCard(planById(id),false)}</div><p class="muted small" style="margin-top:10px">${esc(tr((LEVELS.find(l=>l[0]===quiz.act)||LEVELS[1])[1]))} · ${t("q_also")}</p><div class="row" style="margin-top:12px"><button class="btn alt sm" id="qReset">${t("q_again")}</button><button class="btn alt sm" data-go="plans">${t("t_plans")}</button></div>`}
