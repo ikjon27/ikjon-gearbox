@@ -59,7 +59,12 @@ function swapList(list,modes,eq){const out=[],used=new Set(list.map(x=>x.e));
 function adaptModes(p,n){const o=todayOpt(p,n),eq=S.equip&&S.equip!=="all"?S.equip:null,m=[];
  if(o.noeq)m.push("none");else if(eq)m.push(eq);if(o.quiet)m.push("quiet");return{m,eq:o.noeq?null:S.equip}}
 function adapt(list,p,n){const a=adaptModes(p,n);return swapList(list,a.m,a.eq)}
-function workFor(p,n){const pl=planById(p.id),wid=pl.week[(n-1)%7];const w=WK[wid];return{id:wid,name:w[0],icon:w[1],list:adapt(scaleList(w[2],p,n),p,n),warm:wid!=="rest"&&wid!=="hairday"&&wid!=="active"}}
+const DAYPAT={2:[0,3],3:[0,2,4],4:[0,1,3,4]};
+function weekFor(p,wi){const pl=planById(p.id),wk=pl.week.slice();if(!p.days||p.days>=5||pl.care==="hair")return wk;
+ const train=wk.filter(w=>w!=="rest"&&w!=="active"),pos=DAYPAT[p.days]||[],off=(wi||0)*pos.length;
+ return wk.map((w,i)=>{const j=pos.indexOf(i);return j>=0?train[(off+j)%train.length]:i===6?"rest":(WK.active?"active":"rest")})}
+function fitMins(p,list){const m=p.mins;if(!m||m>=30)return list;const cut=m<=10?4:6;return list.slice(0,cut).map(x=>Object.assign({},x,{s:Math.min(x.s,2)}))}
+function workFor(p,n){const wid=weekFor(p,Math.floor((n-1)/7))[(n-1)%7];const w=WK[wid];return{id:wid,name:w[0],icon:w[1],list:fitMins(p,adapt(scaleList(w[2],p,n),p,n)),warm:wid!=="rest"&&wid!=="hairday"&&wid!=="active"}}
 function habitsFor(p,n){const pl=planById(p.id),wd=(dateOf(p,n).getDay()+6)%7;
  return pl.habits.map(k=>["h:"+k,HAB[k]]).concat((WEEKLY[wd]||[]).map((s,j)=>["w:"+j,s]))}
 const dayRec=(p,n)=>{const k=dayKey(dateOf(p,n));return S.hist[k]||(S.hist[k]={})};
@@ -154,7 +159,7 @@ function monthView(){const p=S.plan;if(!p)return `<h1>${t("month_plan")}</h1><p 
  const pl=planById(p.id),tot=totalDays(p),now=dayNum(p);if(monthPage==null)monthPage=Math.max(0,Math.min(pl.months-1,Math.floor((Math.max(now,1)-1)/30)));
  const a=monthPage*30+1,b=a+29,wd=(dateOf(p,a).getDay()+6)%7,wk=t("wk").split(" ");
  let cells=wk.map(x=>`<div class="wk">${x}</div>`).join("")+Array.from({length:wd},()=>"<div></div>").join("");
- for(let n=a;n<=b;n++){const w=pl.week[(n-1)%7],cls=["dc"];if(dayDone(p,n))cls.push("done");if(n===now)cls.push("today");if(n===selDay)cls.push("sel");if(n>now)cls.push("future");if(dayLocked(p,n))cls.push("lock");if(w==="rest")cls.push("rest");
+ for(let n=a;n<=b;n++){const w=weekFor(p,Math.floor((n-1)/7))[(n-1)%7],cls=["dc"];if(dayDone(p,n))cls.push("done");if(n===now)cls.push("today");if(n===selDay)cls.push("sel");if(n>now)cls.push("future");if(dayLocked(p,n))cls.push("lock");if(w==="rest")cls.push("rest");
   cells+=`<button class="${cls.join(" ")}" data-day="${n}" style="background:${KCOL[WK[w][1]]||"var(--tint)"}" aria-label="${esc(t("day",{n}))}: ${esc(tr(WK[w][0]))}">${dateOf(p,n).getDate()}</button>`}
  const sd=selDay&&selDay>=a&&selDay<=b?selDay:Math.min(Math.max(now,a),b);selDay=sd;
  return `<h1>${t("month_plan")}</h1><p class="muted" style="margin:6px 0 12px">${esc(tr(pl.name))} · ${t("month_p")}</p>
@@ -209,14 +214,23 @@ function shareCard(){const p=S.plan;if(!p)return;const c=document.createElement(
   if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:"IKJON Fitness"}).catch(()=>{});
   else{const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="ikjon-fitness.png";a.click()}},"image/png")}
 /* find-your-plan quiz */
-function quizView(){const step=quiz.who==null?0:quiz.goal==null?1:quiz.act==null?2:3;
- const opt=(k,v,lbl)=>`<button class="card qopt" data-qk="${k}" data-qv="${v}">${esc(t(lbl))}</button>`;
- let body;if(step===0)body=`<h2>${t("q_who")}</h2><div class="qgrid">${opt("who","m","q_man")}${opt("who","w","q_woman")}</div>`;
- else if(step===1)body=`<h2>${t("q_goal")}</h2><div class="qgrid">${opt("goal","body","q_g_body")}${opt("goal","hair","q_g_hair")}${opt("goal","face","q_g_face")}${opt("goal","tall","q_g_tall")}${opt("goal","daily","q_g_daily")}</div>`;
- else if(step===2)body=`<h2>${t("q_act")}</h2><div class="qgrid">${opt("act","easy","q_a0")}${opt("act","regular","q_a1")}${opt("act","active","q_a2")}</div>`;
- else{const id=quiz.goal==="body"?(quiz.who==="w"?"women":"men"):quiz.goal;S.lvlPick=quiz.act;
-  body=`<p class="eyebrow">${t("q_rec")}</p><div class="grid" style="margin-top:8px">${planCard(planById(id),false)}</div><p class="muted small" style="margin-top:10px">${esc(tr((LEVELS.find(l=>l[0]===quiz.act)||LEVELS[1])[1]))} · ${t("q_also")}</p><div class="row" style="margin-top:12px"><button class="btn alt sm" id="qReset">${t("q_again")}</button><button class="btn alt sm" data-go="plans">${t("t_plans")}</button></div>`}
- return `<button class="back" data-go="today">${t("back")}</button><h1>${t("quiz_h")}</h1><div class="pbar" style="margin:10px 0 16px"><i style="width:${step*33.4}%"></i></div>${body}`}
+function quizRec(){const q=quiz;if(q.goal==="hair")return"hair";if(q.goal==="face")return"face";if(q.goal==="daily")return"daily";
+ if(q.goal==="tall")return q.age==="t"?"teen":"tall";if(q.age==="t")return"teen";return q.who==="w"?"women":"men"}
+function quizLvl(){return quiz.pain&&quiz.pain!=="none"||quiz.age==="s"?"easy":quiz.act||"regular"}
+const QSTEPS=[["who",[["m","q_man"],["w","q_woman"]],"q_who"],["age",[["t","q_age_t"],["a","q_age_a"],["m","q_age_m"],["s","q_age_s"]],"q_age"],
+ ["goal",[["body","q_g_body"],["hair","q_g_hair"],["face","q_g_face"],["tall","q_g_tall"],["daily","q_g_daily"]],"q_goal"],["act",[["easy","q_a0"],["regular","q_a1"],["active","q_a2"]],"q_act"],
+ ["days",[["2","q_d2"],["3","q_d3"],["4","q_d4"],["5","q_d5"]],"q_days"],["mins",[["10","q_m10"],["20","q_m20"],["30","q_m30"],["45","q_m45"]],"q_mins"],
+ ["equip",[["none","q_eq_none"],["band","q_eq_band"],["weights","q_eq_weights"],["all","q_eq_all"]],"q_eq"],
+ ["pain",[["none","q_p_none"],["knee","q_p_knee"],["back","q_p_back"],["shoulder","q_p_shoulder"],["other","q_p_other"]],"q_pain"]];
+function quizView(){const step=QSTEPS.findIndex(([k])=>quiz[k]==null),N=QSTEPS.length;let body;
+ if(step>=0){const [k,opts,h]=QSTEPS[step];body=`<p class="muted small">${esc(t("q_step",{a:step+1,b:N}))}</p><h2>${t(h)}</h2><div class="qgrid">${opts.map(([v,l])=>`<button class="card qopt" data-qk="${k}" data-qv="${v}">${esc(t(l))}</button>`).join("")}</div>${step>0?`<button class="btn alt sm" id="qBack" style="margin-top:12px">${t("back")}</button>`:""}`}
+ else{const id=quizRec(),lv=quizLvl();S.lvlPick=lv;
+  const sum=t("q_sum",{d:t("q_daysw",{n:quiz.days==="5"?"5+":quiz.days}),m:t("q_m"+quiz.mins),e:t("q_eq_"+quiz.equip),l:tr((LEVELS.find(l=>l[0]===lv)||LEVELS[1])[1])});
+  body=`<p class="eyebrow">${t("q_rec")}</p><div class="grid" style="margin-top:8px">${planCard(planById(id),false)}</div><p class="dose" style="margin-top:12px">${esc(sum)}</p>
+  ${quiz.age==="t"&&id==="teen"?`<p class="muted small">${t("q_teen")}</p>`:""}${quiz.age==="s"?`<p class="adapt">${t("q_60")}</p>`:""}
+  ${quiz.pain&&quiz.pain!=="none"?`<div class="adapt"><p style="margin:0 0 8px">${t("q_pain_note")}</p><a class="btn alt sm" href="/rehab/">${t("q_rehab")}</a></div>`:""}
+  <p class="muted small" style="margin-top:10px">${t("q_also")}</p><div class="row" style="margin-top:12px"><button class="btn alt sm" id="qReset">${t("q_again")}</button><button class="btn alt sm" data-go="plans">${t("t_plans")}</button></div>`}
+ return `<button class="back" data-go="today">${t("back")}</button><h1>${t("quiz_h")}</h1><div class="pbar" style="margin:10px 0 16px"><i style="width:${Math.round((step<0?N:step)/N*100)}%"></i></div>${body}`}
 /* voice coach */
 let wake=null;
 function voiceFor(){try{const vs=speechSynthesis.getVoices(),L=S.lang;return vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith(L))||null}catch(e){return null}}
@@ -401,7 +415,7 @@ function render(){document.documentElement.lang=S.lang;
 function bind(){
  bindChal();
  app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
- app.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{S.plan={id:b.dataset.pick,lvl:S.lvlPick||"regular",start:dayKey(new Date()),cycle:0};save();selDay=null;monthPage=null;go("today")});
+ app.querySelectorAll("[data-pick]").forEach(b=>b.onclick=()=>{S.plan={id:b.dataset.pick,lvl:S.lvlPick||"regular",start:dayKey(new Date()),cycle:0};if(view==="quiz"&&QSTEPS.every(([k])=>quiz[k]!=null)){S.plan.days=+quiz.days;S.plan.mins=+quiz.mins;S.equip=quiz.equip;S.profile={who:quiz.who,age:quiz.age,pain:quiz.pain}}save();selDay=null;monthPage=null;go("today")});
  app.querySelectorAll("[data-lvl]").forEach(b=>b.onclick=()=>{S.lvlPick=b.dataset.lvl;save();render()});
  app.querySelectorAll("[data-k]").forEach(c=>c.onchange=()=>{const p=S.plan,n=view==="month"&&selDay?selDay:dayNum(p);const r=dayRec(p,n);if(c.checked)r[c.dataset.k]=true;else delete r[c.dataset.k];r.perfect=habitsFor(p,n).every(([k])=>r[k])||undefined;save();checkBadges();if(view!=="today"||c.dataset.k==="care"||c.dataset.k==="work")render()});
  app.querySelectorAll("[data-sess]").forEach(b=>b.onclick=()=>startSession(b.dataset.sess));
@@ -428,7 +442,7 @@ function bind(){
  app.querySelectorAll("[data-adapt]").forEach(b=>b.onclick=()=>{const k=b.dataset.adapt,d=dayKey(new Date());if(!S.todayOpt||S.todayOpt.d!==d)S.todayOpt={d};S.todayOpt[k]=!S.todayOpt[k];save();render()});
  if($("newsOk"))$("newsOk").onclick=()=>{S.newsSeen=NEWS_V;save();render()};
  app.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>{const k=b.dataset.fb,p=S.plan;p.adj=Math.min(1.5,Math.max(.7,(p.adj||1)*(k==="easy"?1.08:k==="hard"?.9:1)));const r=dayRec(p,ses.n);r.fb=k;ses.fb=k;save();render()});
- app.querySelectorAll("[data-qk]").forEach(b=>b.onclick=()=>{quiz[b.dataset.qk]=b.dataset.qv;render();scrollTo(0,0)});
+ app.querySelectorAll("[data-qk]").forEach(b=>b.onclick=()=>{quiz[b.dataset.qk]=b.dataset.qv;render();scrollTo(0,0)});if($("qBack"))$("qBack").onclick=()=>{const i=QSTEPS.findIndex(([k])=>quiz[k]==null);if(i>0)delete quiz[QSTEPS[i-1][0]];render()};
  if($("qReset"))$("qReset").onclick=()=>{quiz={};render()};
  if($("shareBtn"))$("shareBtn").onclick=shareCard;
  if($("remGo"))$("remGo").onclick=()=>reminderICS($("remT").value);
