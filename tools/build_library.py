@@ -10,6 +10,7 @@ Run:    python3 tools/build_guides.py && python3 tools/build_library.py && node 
 import json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_guides as G
+from musclemap import muscle_svg, muscle_list, NAMES as MUSN
 from sitekit import trust_box, share_bar, EXTRA_CSS, ex_slug, ex_base, CARDS, e, nice_date, ABOUT
 
 ROOT, SITE, LANGS = G.ROOT, G.SITE, G.LANGS
@@ -72,7 +73,8 @@ FIGCSS = """.figs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14p
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px}.kv div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}.kv b{display:block;font-size:.8rem;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
 .chips{display:flex;flex-wrap:wrap;gap:8px}.chips a{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px;text-decoration:none;color:inherit;font-weight:700;font-size:.9rem}.chips a:hover{border-color:var(--teal)}
 .week{display:grid;gap:8px}.week a{display:grid;grid-template-columns:70px minmax(0,1fr);gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;color:inherit;text-decoration:none}.week a:hover{border-color:var(--teal)}.week b{color:var(--teal)}
-ul.dl{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}ul.dl li{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-top:1px solid var(--line);padding-top:6px}ul.dl .dose{flex:none}"""
+ul.dl{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:6px}ul.dl li{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;border-top:1px solid var(--line);padding-top:6px}ul.dl .dose{flex:none}
+.musbox2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}.musmap{width:100%;height:auto;display:block}.muslegend p{margin:6px 0}.muslegend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}@media (max-width:600px){.musbox2{grid-template-columns:1fr}}"""
 
 U = {
  "en": dict(lib="Exercise library", h1="{name}: how to do it", title="{name}: How to Do It, Muscles & Tips | IKJON",
@@ -264,6 +266,8 @@ def ex_page(x, L):
     b.append(figs(x, L))
     if ph:
         b.append(f'<div class="photo1">{ph}</div>')
+    if muscle_svg(x["id"], L):
+        b.append(f"<h2>{MUSN[L]['title']}</h2><div class='musbox2'>{muscle_svg(x['id'], L)}{muscle_list(x['id'], L)}</div>")
     b.append(f"<h2>{u['howto']}</h2><ol>" + "".join(f"<li>{e(tx(s, L))}</li>" for s in x["steps"]) + "</ol>")
     gd = GUIDE.get(x["type"])
     tips = []

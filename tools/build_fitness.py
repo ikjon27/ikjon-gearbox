@@ -11,6 +11,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import fitness_data as FD
 from fitness_ui import UI
+from musclemap import js_bundle as MUS_JS
 
 REHAB = open(os.path.join(ROOT, "rehab", "index.html"), encoding="utf-8").read()
 OUT = os.path.join(ROOT, "fitness")
@@ -116,9 +117,10 @@ DATA = "".join(f"const {n}={json.dumps(v, ensure_ascii=False, separators=(',', '
     ("U", U), ("I18N", I18N), ("AREAS", AREAS), ("AREATIPS", AREATIPS), ("FX", FX), ("AREAOF", FD.REUSED), ("HAB", HAB),
     ("WEEKLY", WEEKLY), ("WK", WK), ("WARM", [list(x) for x in FD.WARMUP]), ("CARE", CARE), ("PLANS", PLANS), ("MONTHS", MONTHS),
     ("LEVELS", LEVELS), ("ICONS", ICONS), ("ICONK", ICONK), ("KCOL", KCOL)])
-APP = open(os.path.join(ROOT, "tools", "fitness_app.js"), encoding="utf-8").read()
+APP = MUS_JS() + open(os.path.join(ROOT, "tools", "fitness_app.js"), encoding="utf-8").read()
 
 EXTRA_CSS = """
+.musbox2{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:12px;align-items:center;background:var(--bg,#F4F7F9);border-radius:14px;padding:10px;margin-top:10px}.musmap{width:100%;height:auto;display:block;max-height:300px}.muslegend p{margin:4px 0;font-size:.92rem}.muslegend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}@media (max-width:520px){.musbox2{grid-template-columns:1fr}}
 .small{font-size:.88rem}
 .hero1{padding:8px 0 4px}.hero1 .lede{color:var(--muted);margin-top:10px;max-width:62ch;font-size:1.05rem}
 .itile{display:grid;place-items:center;color:var(--teal);background:var(--tint)}

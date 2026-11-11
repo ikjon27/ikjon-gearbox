@@ -361,7 +361,7 @@ function runTick(){stopTick();if(!ses||ses.done)return;if(ses.say){ses.say=false
 /* ---------- exercise dialog ---------- */
 function openEx(id,dose){const e=fx(id),d=document.getElementById("exDlg");
  document.getElementById("exDlgBody").innerHTML=`<span class="chip">${esc(tr(AREAS.find(a=>a[0]===e.area)[1]))} · ${esc(tr(e.type))}</span><h2 style="margin:6px 0">${esc(tr(e.name))}</h2>${dose?`<p class="dose">${esc(dose)}</p>`:""}
- ${visBig(id)}<p style="margin-top:10px"><b>${t("works")}:</b> ${esc(tr(e.target))}</p><h3 style="margin-top:12px">${t("how")}</h3><ol class="steps">${e.steps.map(s=>`<li>${esc(tr(s))}</li>`).join("")}</ol>
+ ${visBig(id)}<p style="margin-top:10px"><b>${t("works")}:</b> ${esc(tr(e.target))}</p>${musMap(id,["en","uz","ru"][LI()])}<h3 style="margin-top:12px">${t("how")}</h3><ol class="steps">${e.steps.map(s=>`<li>${esc(tr(s))}</li>`).join("")}</ol>
  ${e.tip?`<p class="muted"><b>${t("tip")}:</b> ${esc(tr(e.tip))}</p>`:""}<div class="row end"><button class="btn" id="dlgClose">${t("close")}</button></div>`;
  if(d.showModal&&!d.open)d.showModal();mountAnims();document.getElementById("dlgClose").onclick=()=>d.close()}
 
