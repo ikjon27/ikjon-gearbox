@@ -364,6 +364,7 @@ textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:1
 .demo.v3[data-live]{touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
 .demo.v3[data-live]::after{content:"\21BB  Drag to rotate";position:absolute;right:8px;bottom:6px;font-size:.72rem;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px;pointer-events:none}
 .demo.v3.spun::after{display:none}
+.demo.v3[data-cue]::before{content:attr(data-cue);position:absolute;left:8px;top:7px;font-size:.8rem;font-weight:800;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 11px;pointer-events:none}
 @keyframes pulse{50%{opacity:.45}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 /* session adjust, morning check, welcome, what's new (Nov 2026) */
@@ -1109,11 +1110,11 @@ function draw(tp,p,el){return svgWrap(tp.v?fig3(p,tp,el&&el._yaw):figSVG(p,tp.pr
 const LIVE=new Set();
 function mountAnims(){
  document.querySelectorAll("[data-anim]").forEach(el=>{const tp=TPL[el.dataset.anim];if(!tp)return;if(isFlat(tp)&&!el.classList.contains("mini"))el.classList.add("flat");
-  if(el.dataset.live&&!reduceMotion){LIVE.add({el,tp,t0:performance.now()})}
+  if(el.dataset.live&&!reduceMotion){LIVE.add({el,tp,t0:performance.now(),k:paceK(el.dataset.anim,tp)})}
   if(tp.v){el.classList.add("v3");el._tp=tp}
   el.innerHTML=draw(tp,staticPose(tp),el)})}
 let lastF=0;
-function loop(now){if(now-lastF>33){lastF=now;LIVE.forEach(a=>{if(!a.el.isConnected){LIVE.delete(a);return}a.el.innerHTML=draw(a.tp,poseAt(a.tp,now-a.t0),a.el)})}requestAnimationFrame(loop)}
+function loop(now){if(now-lastF>33){lastF=now;LIVE.forEach(a=>{if(!a.el.isConnected){LIVE.delete(a);return}const ms=(now-a.t0)/a.k;if(a.tp.cue){const c=a.tp.cue((ms%a.tp.per)/a.tp.per);if(a.el.dataset.cue!==c)a.el.dataset.cue=c}a.el.innerHTML=draw(a.tp,poseAt(a.tp,ms),a.el)})}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 const demo=(id,live,cls)=>`<div class="${cls||"demo"}" data-anim="${EX[id][7]}" ${live?'data-live="1"':""} role="img" aria-label="Animated demo of ${EX[id][0]}"></div>`;
 /* Free Exercise DB photos (public domain, Unlicense) — two frames each: start & end position */
@@ -1248,7 +1249,7 @@ Object.assign(TPL,{
   return{h:[112,114,hz],up:[.2,-1,0],f1:[120,176-6*l1,z1],f2:[120,176-6*l2,z2],kp1:[1,0,.25],kp2:[1,0,-.25],
    w1:[116,106,hz+12],w2:[116,106,hz-12],ep1:[-.6,0,1],ep2:[-.6,0,-1],hl:ph<.22?["hip1"]:ph>.5&&ph<.72?["hip2"]:[]}}},
  /* three-quarter front view: elbow pinned to the side, forearm swings out against the band, returns slowly */
- er_band:{v:{yaw:52,pitch:16},vb:"36 16 168 133",b:{},per:2800,sp:.42,pr3:[{k:"post",at:[136,-72],y:58},{k:"band",a:[136,87,-72],b:"w1"}],fn:ph=>{
+ er_band:{v:{yaw:52,pitch:16},vb:"36 16 168 133",b:{},per:4200,sp:.42,pr3:[{k:"post",at:[136,-72],y:58},{k:"band",a:[136,87,-72],b:"w1"}],fn:ph=>{
   const a=kf(ph,[[0,-55],[.38,50],[.5,50],[1,-55]])*RAD,e=[119,87,17];
   return P(ST3,{e1:e,w1:[e[0]+FAL*Math.cos(a),87,e[2]+FAL*Math.sin(a)],hl:ph<.5?["fa1"]:[]})}},
  /* close-up from the front: nod down and up, then turn right and left */
@@ -1256,11 +1257,48 @@ Object.assign(TPL,{
   const n=kf(ph,[[0,0],[.1,34],[.24,-24],[.34,0],[1,0]])*RAD,t=kf(ph,[[0,0],[.4,0],[.52,58],[.74,-58],[.88,0],[1,0]])*RAD;
   return P(ST3,{hf:[Math.cos(n)*Math.cos(t),Math.sin(n),Math.cos(n)*Math.sin(t)],hn:[Math.sin(n*.7),-Math.cos(n*.7),0],hl:["nk"]})}},
  /* front view, slightly from above: heels stay together, the top knee opens like a shell and lowers slowly */
- clamshell:{v:{yaw:14,pitch:18,cx:112},vb:"30 84 172 136.2",b:{},per:3000,sp:.42,fn:ph=>{
+ clamshell:{v:{yaw:14,pitch:18,cx:112},vb:"30 84 172 136.2",b:{},per:4200,sp:.42,fn:ph=>{
   const a=kf(ph,[[0,0],[.36,46],[.48,46],[1,0]])*RAD;
   return{h:[118,164,0],up:[-1,-.1,0],ax:[0,-1,0],hf:[0,0,1],f1:[170,165,2],f2:[170,172,2],kp1:[0,-Math.sin(a),Math.cos(a)],kp2:[0,0,1],td1:[.3,0,1],td2:[.3,0,1],
    w1:[86,173,24],ep1:[0,-1,.4],w2:[36,172,4],ep2:[0,0,1],hl:a>.05?["th1","hip1"]:[]}}}
 });
+/* phase label shown on a live 3D demo: move → hold → return */
+const cue3=(a,b,la,lb)=>ph=>ph<a?la:ph<b?"Hold":lb;
+const SL3={h:[118,164,0],up:[-1,-.1,0],ax:[0,-1,0],hf:[0,0,1],td1:[.3,0,1],td2:[.3,0,1],w1:[86,173,24],ep1:[0,-1,.4],w2:[36,172,4],ep2:[0,0,1]};
+TPL.clamshell.cue=cue3(.36,.48,"Open the knee","Lower slowly");TPL.er_band.cue=cue3(.38,.5,"Rotate out","Return slowly");
+TPL.monster_walk.cue=ph=>ph<.5?"Step sideways":"Step back";
+TPL.neck_mob.cue=ph=>ph<.1?"Nod down":ph<.24?"Look up":ph<.4?"Back to centre":ph<.52?"Turn one way":ph<.74?"Turn the other way":"Back to centre";
+Object.assign(TPL,{
+ /* side-lying: bottom knee bent, straight top leg lifts slightly behind the body */
+ hip_abd:{v:{yaw:14,pitch:18,cx:116},vb:"22 72 190 150.4",b:{},per:4200,sp:.42,cue:cue3(.36,.48,"Lift the leg","Lower slowly"),fn:ph=>{
+  const a=kf(ph,[[0,-7],[.36,31],[.48,31],[1,-7]])*RAD;
+  return P(SL3,{f1:[118+73.5*Math.cos(a),156-73.5*Math.sin(a),-7],f2:[160,172,-6],kp1:[0,-1,.2],kp2:[0,0,1],td1:[0,0,1],hl:a>-.05?["th1","hip1"]:[]})}},
+ /* band anchored on the working side: forearm swings in to the belly, returns slowly */
+ ir_band:{v:{yaw:52,pitch:16},vb:"30 16 168 133",b:{},per:4200,sp:.42,cue:cue3(.38,.5,"Rotate in","Return slowly"),pr3:[{k:"post",at:[136,78],y:58},{k:"band",a:[136,87,78],b:"w1"}],fn:ph=>{
+  const a=kf(ph,[[0,52],[.38,-55],[.5,-55],[1,52]])*RAD,e=[119,87,17];
+  return P(ST3,{e1:e,w1:[e[0]+FAL*Math.cos(a),87,e[2]+FAL*Math.sin(a)],hl:ph<.5?["fa1"]:[]})}},
+ /* front view: wide stance, sit into one hip, other leg stays straight */
+ side_lunge:{v:{yaw:76,pitch:12,cz:6},vb:"30 38 184 145.7",b:{},per:4600,sp:.5,cue:ph=>ph<.42?"Shift and bend":ph<.52?"Hold":ph<.86?"Push back":"Stand tall",fn:ph=>{
+  const u=kf(ph,[[0,0],[.42,1],[.52,1],[.86,0],[1,0]]);
+  return{h:[117-9*u,109+18*u,22*u],up:[.08+.3*u,-1,0],f1:[120,176,36],f2:[120,176,-36],kp1:[1,0,.15],kp2:[1,0,-.1],
+   w1:[136-4*u,84+16*u,22*u+4],w2:[136-4*u,84+16*u,22*u-4],ep1:[-.2,.6,1],ep2:[-.2,.6,-1],hl:u>.05?["th1","hip1"]:[]}}},
+ /* front view: bound from one leg to the other and stick each landing */
+ lateral_bound:{v:{yaw:76,pitch:12},vb:"30 37 184 145.7",b:{},per:3600,sp:.1,cue:ph=>(ph%.5)<.3?"Land and stick":"Jump",fn:ph=>{
+  const q=(ph+.5)%1,Z=p=>kf(p,[[0,36],[.3,36],[.5,-20],[.8,-20],[1,36]]),Y=p=>kf(p,[[0,0],[.3,0],[.42,32],[.5,26],[.8,26],[.92,32],[1,0]]);
+  const hz=kf(ph,[[0,30],[.3,30],[.5,-30],[.8,-30],[1,30]]),air=bump(ph,.3,.5)+bump(ph,.8,1),dip=bump(ph,.2,.34)+bump(ph,.7,.84)+bump(ph,-.02,.1)+bump(ph,.48,.6);
+  const y1=Y(ph),y2=Y(q),on1=ph<.3,on2=ph>=.5&&ph<.8;
+  return{h:[110,118-22*air+7*dip,hz],up:[.26,-1,0],f1:[119-.55*y1,176-y1,Z(ph)],f2:[119-.55*y2,176-y2,-Z(q)],kp1:[1,0,.1],kp2:[1,0,-.1],
+   w1:[128,96-14*air,hz+21],w2:[128,96-14*air,hz-21],ep1:[-1,.3,.5],ep2:[-1,.3,-.5],hl:on1?["th1","hip1"]:on2?["th2","hip2"]:[]}}},
+ /* seen from above: knees stay stacked, the top arm opens across and the eyes follow it */
+ open_book:{v:{yaw:24,pitch:34,cx:108},vb:"22 62 196 155.2",b:{},per:6400,sp:.38,cue:cue3(.4,.5,"Open the arm","Return slowly"),fn:ph=>{
+  const u=kf(ph,[[0,0],[.4,1],[.5,1],[.94,0],[1,0]]),r=68*u*RAD,f=(4+160*u)*RAD,up=V.n(SL3.up),sc=V.a(SL3.h,V.m(up,44)),sax=[0,-Math.cos(r),-Math.sin(r)],s1=V.a(sc,V.m(sax,SW));
+  return P(SL3,{sax,f1:[170,165,2],f2:[170,172,2],kp1:[0,0,1],kp2:[0,0,1],w1:[s1[0]-3,s1[1]-53*Math.sin(f),s1[2]+53*Math.cos(f)],ep1:[-1,0,0],w2:[sc[0]-3,173,52],ep2:[-1,0,0],
+   hf:[0,-Math.sin(r*1.15),Math.cos(r*1.15)],hl:u>.05?["ua1","fa1"]:[]})}}
+});
+/* demo tempo: stretch each loop to the pace the guide prescribes (slow and controlled) instead of a quick loop */
+const PACE={Strength:5000,Mobility:5000,Core:4600},paceMemo={};
+function paceK(name,tp){if(tp.v)return 1;if(name in paceMemo)return paceMemo[name];const e=Object.values(EX).find(x=>x[7]===name),tg=e&&PACE[e[6]];
+ const tot=tp.fn?tp.per:tp.fr.reduce((a,f)=>a+f[1],0);return paceMemo[name]=tg?Math.min(3,Math.max(1,tg/tot)):1}
 /* new injuries */
 INJ.push(
 {id:"knee-oa",name:"Knee osteoarthritis (wear & tear)",region:"knee",sport:"Everyday life, over-40s, ex-athletes",
