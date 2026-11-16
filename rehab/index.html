@@ -352,6 +352,18 @@ textarea{width:100%;min-height:70px;border:1px solid var(--line);border-radius:1
 .rig .propl{stroke:var(--prop);fill:none}
 .rig .band{stroke:var(--orange);fill:none;stroke-dasharray:4 3}
 .rig .gnd{stroke:var(--line)}
+.rig .torf{fill:var(--navy);stroke:var(--navy)}
+:root[data-theme="dark"] .rig .torf{fill:#CFE3EC;stroke:#CFE3EC}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rig .torf{fill:#CFE3EC;stroke:#CFE3EC}}
+.rig .halo{stroke:var(--stage)}
+.rig .eye{fill:var(--stage)}
+.rig .shd{fill:var(--line);opacity:.75}
+.rig circle.near{fill:var(--teal);stroke:none}
+.rig circle.far{fill:var(--far);stroke:none}
+.demo.v3{position:relative}
+.demo.v3[data-live]{touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none}
+.demo.v3[data-live]::after{content:"\21BB  Drag to rotate";position:absolute;right:8px;bottom:6px;font-size:.72rem;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 9px;pointer-events:none}
+.demo.v3.spun::after{display:none}
 @keyframes pulse{50%{opacity:.45}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 /* session adjust, morning check, welcome, what's new (Nov 2026) */
@@ -1090,16 +1102,18 @@ function poseAt(tp,ms){
  if(tp.fn){const ph=(ms%tp.per)/tp.per;return P(tp.b,tp.fn(ph))}
  const fr=tp.fr,tot=fr.reduce((a,f)=>a+f[1],0);let t=ms%tot,i=0;while(t>fr[i][1]){t-=fr[i][1];i++}
  const u=t/fr[i][1],e=(1-Math.cos(Math.PI*u))/2;return lerp(fr[i][0],fr[(i+1)%fr.length][0],e)}
-function staticPose(tp){return tp.fn?P(tp.b,tp.fn(.25)):tp.fr[Math.min(1,tp.fr.length-1)][0]}
+function staticPose(tp){return tp.fn?P(tp.b,tp.fn(tp.sp??.25)):tp.fr[Math.min(1,tp.fr.length-1)][0]}
 const isFlat=tp=>tp&&Math.abs(tp.b.t)>=60&&!tp.pr.some(q=>q.k==="bed"||q.k==="bench");
-const svgWrap=(inner,tp)=>`<svg viewBox="${isFlat(tp)?"0 56 240 134":"0 0 240 190"}" class="rig" aria-hidden="true" preserveAspectRatio="xMidYMid meet">${inner}</svg>`;
+const svgWrap=(inner,tp)=>`<svg viewBox="${isFlat(tp)?"0 56 240 134":"0 0 240 190"}" class="rig" aria-hidden="true" preserveAspectRatio="xMidYMid meet">${inner}</svg>`.replace(/viewBox="[^"]*"/,m=>tp.vb?`viewBox="${tp.vb}"`:m);
+function draw(tp,p,el){return svgWrap(tp.v?fig3(p,tp,el&&el._yaw):figSVG(p,tp.pr),tp)}
 const LIVE=new Set();
 function mountAnims(){
  document.querySelectorAll("[data-anim]").forEach(el=>{const tp=TPL[el.dataset.anim];if(!tp)return;if(isFlat(tp)&&!el.classList.contains("mini"))el.classList.add("flat");
   if(el.dataset.live&&!reduceMotion){LIVE.add({el,tp,t0:performance.now()})}
-  el.innerHTML=svgWrap(figSVG(staticPose(tp),tp.pr),tp)})}
+  if(tp.v){el.classList.add("v3");el._tp=tp}
+  el.innerHTML=draw(tp,staticPose(tp),el)})}
 let lastF=0;
-function loop(now){if(now-lastF>33){lastF=now;LIVE.forEach(a=>{if(!a.el.isConnected){LIVE.delete(a);return}const p=poseAt(a.tp,now-a.t0);a.el.innerHTML=svgWrap(figSVG(p,a.tp.pr),a.tp)})}requestAnimationFrame(loop)}
+function loop(now){if(now-lastF>33){lastF=now;LIVE.forEach(a=>{if(!a.el.isConnected){LIVE.delete(a);return}a.el.innerHTML=draw(a.tp,poseAt(a.tp,now-a.t0),a.el)})}requestAnimationFrame(loop)}
 requestAnimationFrame(loop);
 const demo=(id,live,cls)=>`<div class="${cls||"demo"}" data-anim="${EX[id][7]}" ${live?'data-live="1"':""} role="img" aria-label="Animated demo of ${EX[id][0]}"></div>`;
 /* Free Exercise DB photos (public domain, Unlicense) — two frames each: start & end position */
@@ -1164,6 +1178,88 @@ Object.assign(TPL,{
  hip_circles:{b:P(ST,{w1:[160,100],w2:[156,102]}),per:2000,pr:[{k:"post",x:178,y:80}],fn:ph=>{const a=2*Math.PI*ph;return{f2:[124+16*Math.cos(a),142+14*Math.sin(a)]}}},
  box_jump:T(ST,[[{h:[96,130],t:35,f1:[104,176],f2:[98,176],w1:[80,140],w2:[76,140]},450],[{h:[140,74],t:5,f1:[150,140],f2:[144,140],w1:[150,20],w2:[146,20]},400],[{h:[164,116],t:25,f1:[172,146],f2:[166,146],w1:[196,104],w2:[192,104],hl:["th1"]},900],[{h:[166,92],f1:[172,146],f2:[166,146]},700]],[{k:"box",x:146,y:146,w:54}]),
  skipping:runT(14,34,6,700,8)
+});
+/* =========================================================
+   3D RIG (pilot) — the same figure with depth: hips and shoulders have width,
+   every joint is an [x,y,z] point (x forward, y down, z towards side 1), each
+   exercise has its own camera, and a live demo can be dragged to rotate.
+   A template opts in with v:{yaw,pitch}; all other templates keep the side view.
+   ========================================================= */
+const HW=8,SW=15;
+const V={a:(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]],s:(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],m:(a,k)=>[a[0]*k,a[1]*k,a[2]*k],d:(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],
+ n:a=>{const l=Math.hypot(a[0],a[1],a[2])||1;return[a[0]/l,a[1]/l,a[2]/l]},x:(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]};
+/* 2-bone IK in 3D: the middle joint (knee/elbow) bends towards `pole` */
+function ik3(a,b,l1,l2,pole){const d=V.s(b,a),L0=Math.hypot(d[0],d[1],d[2])||1,u=V.m(d,1/L0),L=Math.min(Math.max(L0,Math.abs(l1-l2)+.5),l1+l2-.3);
+ const x=(l1*l1+L*L-l2*l2)/(2*L),r=Math.sqrt(Math.max(0,l1*l1-x*x));let p=V.s(pole,V.m(u,V.d(pole,u)));if(Math.hypot(p[0],p[1],p[2])<1e-3)p=V.x(u,[0,0,1]);p=V.n(p);
+ const j=V.a(a,V.a(V.m(u,x),V.m(p,r)));return[j,V.a(j,V.m(V.n(V.s(b,j)),l2))]}
+function solve3(p){const up=V.n(p.up||[0,-1,0]),ax=V.n(p.ax||[0,0,1]),sax=V.n(p.sax||ax),h=p.h,hn=V.n(p.hn||up),hf=V.n(p.hf||[1,0,0]);
+ const J={h,h1:V.a(h,V.m(ax,HW)),h2:V.a(h,V.m(ax,-HW)),sc:V.a(h,V.m(up,44)),nk:V.a(h,V.m(up,TL))};
+ J.s1=V.a(J.sc,V.m(sax,SW));J.s2=V.a(J.sc,V.m(sax,-SW));J.hd=V.a(J.nk,V.m(hn,11));
+ const hs=V.n(V.x(hn,hf));J.ns0=V.a(J.hd,V.m(hf,7));J.ns1=V.a(J.hd,V.m(hf,12));
+ J.ey1=V.a(J.hd,V.a(V.m(hf,8.2),V.a(V.m(hs,3.8),V.m(hn,1.5))));J.ey2=V.a(J.hd,V.a(V.m(hf,8.2),V.a(V.m(hs,-3.8),V.m(hn,1.5))));
+ [J.k1,J.a1]=ik3(J.h1,p.f1,THL,SHL,p.kp1||[1,0,0]);[J.k2,J.a2]=ik3(J.h2,p.f2,THL,SHL,p.kp2||[1,0,0]);
+ [J.e1,J.w1]=p.e1?[p.e1,p.w1]:ik3(J.s1,p.w1,UAL,FAL,p.ep1||[-1,0,0]);[J.e2,J.w2]=p.e2?[p.e2,p.w2]:ik3(J.s2,p.w2,UAL,FAL,p.ep2||[-1,0,0]);
+ J.t1=V.a(J.a1,V.m(V.n(p.td1||[1,0,0]),FTL));J.t2=V.a(J.a2,V.m(V.n(p.td2||[1,0,0]),FTL));
+ return{J,hf}}
+function fig3(p,tp,dyaw){const{J,hf}=solve3(p),v=tp.v,ps=(v.yaw+(dyaw||0))*RAD,ph=(v.pitch??14)*RAD,cs=Math.cos(ps),sn=Math.sin(ps),cp=Math.cos(ph),sp=Math.sin(ph),cx=v.cx??118,cz=v.cz||0,hl=p.hl||[];
+ /* orthographic camera turning around the vertical axis through (cx,cz); returns [screen x, screen y, depth towards the viewer] */
+ const pj=a=>{const X=a[0]-cx,Z=a[2]-cz,d=X*sn+Z*cs,y=a[1]-G;return[120+X*cs-Z*sn,G+y*cp+d*sp,d*cp-y*sp]};
+ const Q={};for(const k in J)Q[k]=pj(J[k]);
+ const at=q=>typeof q==="string"?Q[q]:pj(q),out=[];
+ const L=(a,b,cls,w,ex)=>`<line x1="${F1(a[0])}" y1="${F1(a[1])}" x2="${F1(b[0])}" y2="${F1(b[1])}" class="${cls}" stroke-width="${w}" stroke-linecap="round"${ex||""}/>`;
+ const limb=(a,b,cls,w,key)=>{const A=Q[a],B=Q[b];out.push([(A[2]+B[2])/2,L(A,B,"halo",w+3)+L(A,B,cls+(hl.includes(key)?" hl":""),w)])};
+ const dot=(a,cls,r,dd)=>{const A=Q[a];out.push([A[2]+(dd||0),`<circle class="${cls}" cx="${F1(A[0])}" cy="${F1(A[1])}" r="${r}"/>`])};
+ /* soft shadow on the floor under the body */
+ const gp=["h1","h2","a1","a2","s1","s2","hd"].map(k=>pj([J[k][0],G,J[k][2]])),xs=gp.map(q=>q[0]),ys=gp.map(q=>q[1]);
+ const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);
+ let s=`<ellipse class="shd" cx="${F1((x0+x1)/2)}" cy="${F1((y0+y1)/2+2)}" rx="${F1((x1-x0)/2+14)}" ry="${F1(Math.max(3.5,(y1-y0)/2+16*sp))}"/>`;
+ /* trunk: a filled panel between the shoulders and the hips */
+ const tq=["s1","s2","h2","h1"].map(k=>Q[k]);
+ out.push([tq.reduce((a,q)=>a+q[2],0)/4,`<polygon class="torf${hl.includes("tor")?" hl":""}" points="${tq.map(q=>F1(q[0])+","+F1(q[1])).join(" ")}" stroke-width="9" stroke-linejoin="round"/>`]);
+ out.push([Math.min(Q.sc[2],Q.hd[2])-.5,L(Q.sc,Q.hd,"tor"+(hl.includes("nk")?" hl":""),6.5)]);
+ /* head with a nose and eyes, so turning and nodding can be seen */
+ const fd=pj(V.a([cx,G,cz],hf))[2],nose=L(Q.ns0,Q.ns1,"tor",4.5),eyes=fd>.2?`<circle class="eye" cx="${F1(Q.ey1[0])}" cy="${F1(Q.ey1[1])}" r="1.5"/><circle class="eye" cx="${F1(Q.ey2[0])}" cy="${F1(Q.ey2[1])}" r="1.5"/>`:"";
+ const head=`<circle class="head" cx="${F1(Q.hd[0])}" cy="${F1(Q.hd[1])}" r="10"/>`;
+ out.push([Q.hd[2],fd>0?head+nose+eyes:nose+head]);
+ limb("h1","k1","near",8.5,"th1");limb("k1","a1","near",7.5,"sh1");limb("a1","t1","near",5.5,"ft1");
+ limb("h2","k2","far",8.5,"th2");limb("k2","a2","far",7.5,"sh2");limb("a2","t2","far",5.5,"ft2");
+ limb("s1","e1","near",6.5,"ua1");limb("e1","w1","near",6,"fa1");dot("w1","near",3.8);
+ limb("s2","e2","far",6.5,"ua2");limb("e2","w2","far",6,"fa2");dot("w2","far",3.8);
+ if(hl.includes("hip1"))dot("h1","hlc",6,3);if(hl.includes("hip2"))dot("h2","hlc",6,3);
+ for(const q of tp.pr3||[]){
+  if(q.k==="band"){const A=at(q.a),B=at(q.b);out.push([(A[2]+B[2])/2+1,L(A,B,"band",2.5)])}
+  else if(q.k==="post"){const A=pj([q.at[0],G,q.at[1]]),B=pj([q.at[0],q.y,q.at[1]]);out.push([(A[2]+B[2])/2,L(A,B,"propl",7,' style="stroke-linecap:butt"')])}}
+ out.sort((a,b)=>a[0]-b[0]);return s+out.map(o=>o[1]).join("")}
+/* drag a live 3D demo sideways to turn the figure */
+let spin=null;
+document.addEventListener("pointerdown",e=>{const el=e.target.closest&&e.target.closest(".v3[data-live]");if(!el)return;spin={el,x:e.clientX,m:el.closest(".mir")?-1:1};el.classList.add("spun");try{el.setPointerCapture(e.pointerId)}catch(_){}});
+document.addEventListener("pointermove",e=>{if(!spin)return;const dx=e.clientX-spin.x,el=spin.el;spin.x=e.clientX;el._yaw=(el._yaw||0)-dx*.7*spin.m;if(reduceMotion&&el._tp)el.innerHTML=draw(el._tp,staticPose(el._tp),el)});
+["pointerup","pointercancel"].forEach(t=>document.addEventListener(t,()=>{spin=null}));
+/* timing helpers for 3D templates: eased keyframes over one loop (0..1), and a lift "bump" */
+const ez=u=>(1-Math.cos(Math.PI*Math.min(1,Math.max(0,u))))/2;
+const kf=(ph,ks)=>{let i=0;while(i<ks.length-2&&ph>ks[i+1][0])i++;const[a,va]=ks[i],[b,vb]=ks[i+1];return va+(vb-va)*ez((ph-a)/(b-a))};
+const bump=(ph,a,b)=>ph>a&&ph<b?Math.sin(Math.PI*(ph-a)/(b-a)):0;
+const ST3={h:[118,103,0],f1:[119,176,HW],f2:[119,176,-HW],w1:[121,112,SW+2],w2:[121,112,-SW-2]};
+Object.assign(TPL,{
+ /* front view: two steps out, two steps back; band stays stretched between the knees */
+ monster_walk:{v:{yaw:76,pitch:12,cz:12},vb:"34 40 180 142.5",b:{},per:3400,sp:.24,pr3:[{k:"band",a:"k1",b:"k2"}],fn:ph=>{
+  const z1=kf(ph,[[0,11],[.22,35],[.75,35],[.97,11],[1,11]]),z2=kf(ph,[[0,-11],[.25,-11],[.47,13],[.5,13],[.72,-11],[1,-11]]),hz=(z1+z2)/2;
+  const l1=bump(ph,0,.22)+bump(ph,.75,.97),l2=bump(ph,.25,.47)+bump(ph,.5,.72);
+  return{h:[112,114,hz],up:[.2,-1,0],f1:[120,176-6*l1,z1],f2:[120,176-6*l2,z2],kp1:[1,0,.25],kp2:[1,0,-.25],
+   w1:[116,106,hz+12],w2:[116,106,hz-12],ep1:[-.6,0,1],ep2:[-.6,0,-1],hl:ph<.22?["hip1"]:ph>.5&&ph<.72?["hip2"]:[]}}},
+ /* three-quarter front view: elbow pinned to the side, forearm swings out against the band, returns slowly */
+ er_band:{v:{yaw:52,pitch:16},vb:"36 16 168 133",b:{},per:2800,sp:.42,pr3:[{k:"post",at:[136,-72],y:58},{k:"band",a:[136,87,-72],b:"w1"}],fn:ph=>{
+  const a=kf(ph,[[0,-55],[.38,50],[.5,50],[1,-55]])*RAD,e=[119,87,17];
+  return P(ST3,{e1:e,w1:[e[0]+FAL*Math.cos(a),87,e[2]+FAL*Math.sin(a)],hl:ph<.5?["fa1"]:[]})}},
+ /* close-up from the front: nod down and up, then turn right and left */
+ neck_mob:{v:{yaw:50,pitch:8},vb:"60 12 120 95",b:{},per:7000,sp:.5,fn:ph=>{
+  const n=kf(ph,[[0,0],[.1,34],[.24,-24],[.34,0],[1,0]])*RAD,t=kf(ph,[[0,0],[.4,0],[.52,58],[.74,-58],[.88,0],[1,0]])*RAD;
+  return P(ST3,{hf:[Math.cos(n)*Math.cos(t),Math.sin(n),Math.cos(n)*Math.sin(t)],hn:[Math.sin(n*.7),-Math.cos(n*.7),0],hl:["nk"]})}},
+ /* front view, slightly from above: heels stay together, the top knee opens like a shell and lowers slowly */
+ clamshell:{v:{yaw:14,pitch:18,cx:112},vb:"30 84 172 136.2",b:{},per:3000,sp:.42,fn:ph=>{
+  const a=kf(ph,[[0,0],[.36,46],[.48,46],[1,0]])*RAD;
+  return{h:[118,164,0],up:[-1,-.1,0],ax:[0,-1,0],hf:[0,0,1],f1:[170,165,2],f2:[170,172,2],kp1:[0,-Math.sin(a),Math.cos(a)],kp2:[0,0,1],td1:[.3,0,1],td2:[.3,0,1],
+   w1:[86,173,24],ep1:[0,-1,.4],w2:[36,172,4],ep2:[0,0,1],hl:a>.05?["th1","hip1"]:[]}}}
 });
 /* new injuries */
 INJ.push(
