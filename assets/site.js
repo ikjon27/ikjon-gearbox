@@ -61,7 +61,7 @@
       "<span>" + t(b.name, lang) + "</span></a>" +
       '<nav class="nav" aria-label="Main">' + (NAV[page] || NAV.home).map(function (n) { return '<a href="' + n[0] + '">' + esc(n[1][lang]) + "</a>"; }).join("") + "</nav>" +
       '<div class="lang" role="group" aria-label="Language"><button id="lang-en" aria-pressed="' + (lang === "en") + '">EN</button><button id="lang-uz" aria-pressed="' + (lang === "uz") + '">UZ</button></div>' +
-      '<a class="signin" href="/portal/"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + (lang === "uz" ? "Kirish" : "Sign in") + "</a>";
+      '<a class="signin" href="/learn/"><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>' + (lang === "uz" ? "Kirish" : "Sign in") + "</a>";
   }
 
   function card(x, lang, live, level) {

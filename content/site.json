@@ -28,7 +28,7 @@
     "button_second": {
       "en": "Education Portal",
       "uz": "Ta'lim portali",
-      "link": "#services"
+      "link": "/learn/"
     }
   },
   "services_intro": {
@@ -41,8 +41,8 @@
       "uz": "Ikki yo'nalish"
     },
     "text": {
-      "en": "Our sport and health tools are open to everyone. The Education Portal for our students and teachers is being prepared.",
-      "uz": "Sport va sog'liq vositalarimiz hamma uchun ochiq. O'quvchi va o'qituvchilarimiz uchun Ta'lim portali tayyorlanmoqda."
+      "en": "Our sport and health tools are open to everyone. The Education Portal is for IKJON students and teachers.",
+      "uz": "Sport va sog'liq vositalarimiz hamma uchun ochiq. Ta'lim portali IKJON o'quvchi va o'qituvchilari uchun."
     }
   },
   "services": [
@@ -87,8 +87,8 @@
         "uz": "Ta'lim portali"
       },
       "text": {
-        "en": "Courses, learning apps and student progress in one place, for IKJON students and teachers.",
-        "uz": "IKJON o'quvchi va o'qituvchilari uchun kurslar, o'quv ilovalari va o'quvchi natijalari bir joyda."
+        "en": "Courses, learning apps and your progress in one place, for IKJON students and teachers. Sign in with the email and passcode from your centre.",
+        "uz": "IKJON o'quvchi va o'qituvchilari uchun kurslar, o'quv ilovalari va natijalaringiz bir joyda. Markazdan berilgan email va parol bilan kiring."
       },
       "points": [
         {
@@ -104,11 +104,11 @@
           "uz": "Grammatika, lug'at va IELTS uchun o'quv ilovalari"
         }
       ],
-      "status": "soon",
+      "status": "live",
       "button": {
-        "en": "Coming soon",
-        "uz": "Tez kunda",
-        "link": ""
+        "en": "Sign in to the portal",
+        "uz": "Portalga kirish",
+        "link": "/learn/"
       },
       "image": "/brand/goals/english.svg"
     }
