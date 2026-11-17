@@ -72,12 +72,17 @@
       b.innerHTML = '<div class="inst" style="border:0;padding:0"><b>📲 Install the IKJON app</b><small>Opens full-screen from your home screen, like a normal app. · Telefoningizga ilova sifatida o\'rnating.</small><button id="instBtn">Install · O\'rnatish</button></div>';
       document.getElementById("instBtn").onclick = function(){ var p = window.__ikjInstall; if(!p) return; p.prompt(); p.userChoice.then(function(){ window.__ikjInstall = null; }); };
       b.classList.remove("hidden");
-    } else if(ios){
-      b.innerHTML = '<div class="inst" style="border:0;padding:0"><b>📲 Put IKJON on your home screen</b><small>In Safari tap <b>Share</b> <span aria-hidden="true">⬆︎</span> then <b>Add to Home Screen</b>. · Safari’da «Ulashish» → «Bosh ekranga qo‘shish».</small></div>';
+    } else {
+      var u = navigator.userAgent || "", inApp = /Telegram|Instagram|FBAN|FBAV|Line\/|; wv\)/i.test(u);
+      var how = inApp ? 'This page is open inside another app (e.g. Telegram). Tap <b>⋮</b> → <b>Open in Chrome</b> (or Safari), then install. · Boshqa ilova ichida ochilgan: ⋮ → «Chrome’da ochish».'
+        : ios ? 'In Safari tap <b>Share</b> ⬆︎ then <b>Add to Home Screen</b>. · Safari’da «Ulashish» → «Bosh ekranga qo‘shish».'
+        : /SamsungBrowser/i.test(u) ? 'Tap the menu <b>≡</b> → <b>Add page to</b> → <b>Home screen</b>.'
+        : 'Tap the Chrome menu <b>⋮</b> → <b>Install app</b> (or <b>Add to Home screen</b>). · Chrome menyusi ⋮ → «Ilovani o‘rnatish».';
+      b.innerHTML = '<div class="inst" style="border:0;padding:0"><b>📲 Install the IKJON app</b><small>' + how + '</small></div>';
       b.classList.remove("hidden");
     }
   }
-  setTimeout(showInstall, 600);
+  setTimeout(showInstall, 1500);
   function ls(k, v){ try{ if(v === undefined) return localStorage.getItem(k); if(v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
   function sess(){ try{ return JSON.parse(ls("ikj_sess") || "null"); }catch(e){ return null; } }
