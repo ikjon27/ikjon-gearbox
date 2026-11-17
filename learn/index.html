@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#1A4264">
+<title>IKJON Portal · Kirish</title>
+<style>
+  :root{ --navy:#1A4264; --teal:#0097B2; --bg:#F3F7FA; --card:#fff; --ink:#1A2B3A; --mute:#5B6B7A; --bad:#B4293B; --ok:#1F7A4D; --line:#D6E2EA; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#0E1A24; --card:#16242F; --ink:#E6EEF4; --mute:#9DB0C0; --line:#2A3B49; } }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; min-height:100%; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  .wrap{ min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px 16px; }
+  .brand{ display:flex; align-items:center; gap:10px; margin-bottom:18px; color:var(--navy); }
+  @media (prefers-color-scheme: dark){ .brand{ color:#8FD3E3; } }
+  .logo{ width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,var(--navy),var(--teal)); color:#fff; display:grid; place-items:center; font-weight:800; letter-spacing:.5px; }
+  .brand b{ font-size:20px; } .brand small{ display:block; color:var(--mute); font-size:13px; }
+  .card{ width:100%; max-width:400px; background:var(--card); border:1px solid var(--line); border-radius:18px; padding:24px 20px; box-shadow:0 8px 30px rgba(26,66,100,.08); }
+  h1{ font-size:21px; margin:0 0 4px; } .sub{ color:var(--mute); font-size:14px; margin:0 0 16px; }
+  label{ display:block; font-size:13px; font-weight:600; margin:12px 0 4px; color:var(--mute); }
+  input[type=text],input[type=email],input[type=password]{ width:100%; padding:13px 14px; border:1.5px solid var(--line); border-radius:12px; font-size:16px; background:transparent; color:var(--ink); }
+  input:focus{ outline:none; border-color:var(--teal); }
+  .show{ display:flex; gap:6px; align-items:center; font-weight:400; margin-top:8px; }
+  button{ width:100%; margin-top:16px; padding:14px; border:0; border-radius:12px; background:var(--navy); color:#fff; font-size:16px; font-weight:700; cursor:pointer; }
+  button.ghost{ background:transparent; color:var(--teal); border:1.5px solid var(--line); font-weight:600; }
+  button:disabled{ opacity:.6; cursor:default; }
+  .err{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#FBE9EC; color:var(--bad); font-size:14px; }
+  .note{ margin-top:12px; color:var(--mute); font-size:13px; text-align:center; }
+  .code{ font:800 40px/1 ui-monospace,Menlo,Consolas,monospace; letter-spacing:10px; text-align:center; padding:18px 0 14px; color:var(--teal); }
+  .bar{ height:8px; border-radius:6px; background:var(--line); overflow:hidden; margin:18px 0 8px; } .bar i{ display:block; height:100%; width:0; background:var(--teal); transition:width .3s; }
+  .hidden{ display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="logo">IK</div><div><b>IKJON Education</b><small>Students' portal · O'quvchilar portali</small></div></div>
+  <div class="card" id="card"></div>
+  <p class="note">Only IKJON students with an account can enter. · Faqat IKJON o'quvchilari uchun.</p>
+</div>
+<script>
+(function(){
+  "use strict";
+  /* ↓↓ the only setting: your Google Apps Script web-app URL (Deploy → Web app → …/exec) ↓↓ */
+  var GAS = "PASTE_YOUR_WEB_APP_URL_HERE";
+  /* ↑↑ ------------------------------------------------------------------------------- ↑↑ */
+  try{ var q = new URLSearchParams(location.search).get("server"); if(q && /^http:\/\/localhost[:\/]/.test(q)) GAS = q; }catch(e){}
+
+  var card = document.getElementById("card");
+  function ls(k, v){ try{ if(v === undefined) return localStorage.getItem(k); if(v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
+  function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
+  function sess(){ try{ return JSON.parse(ls("ikj_sess") || "null"); }catch(e){ return null; } }
+  function devId(){
+    var d = ls("ikj_dev");
+    if(!d || !/^[A-Za-z0-9_-]{16,64}$/.test(d)){ var a = new Uint8Array(24); crypto.getRandomValues(a); var al = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"; d = ""; for(var i = 0; i < a.length; i++) d += al[a[i] % 64]; ls("ikj_dev", d); }
+    return d;
+  }
+  function devLabel(){
+    var u = navigator.userAgent || "";
+    var os = /Android/i.test(u) ? "Android" : /iPhone|iPad|iPod/i.test(u) ? "iPhone/iPad" : /Windows/i.test(u) ? "Windows" : /Mac OS/i.test(u) ? "Mac" : /CrOS/i.test(u) ? "Chromebook" : /Linux/i.test(u) ? "Linux" : "Device";
+    var br = /Edg\//.test(u) ? "Edge" : /OPR\//.test(u) ? "Opera" : /YaBrowser/.test(u) ? "Yandex" : /SamsungBrowser/.test(u) ? "Samsung Internet" : /Chrome\//.test(u) ? "Chrome" : /Firefox\//.test(u) ? "Firefox" : /Safari\//.test(u) ? "Safari" : "Browser";
+    return os + " " + (/Mobi|Android|iPhone|iPod/i.test(u) ? "phone" : /iPad|Tablet/i.test(u) ? "tablet" : "computer") + " · " + br;
+  }
+  function api(fn, args){
+    var s = sess();
+    return fetch(GAS, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body:JSON.stringify({ fn:fn, args:args || {}, token:(s && s.access_token) || "" }), redirect:"follow" })
+      .catch(function(){ var e = new Error("No internet connection. · Internet yo'q."); e.offline = true; throw e; })
+      .then(function(r){ return r.json().catch(function(){ throw new Error("Server problem (" + r.status + "). Try again later."); }); })
+      .then(function(o){ if(!o.ok){ var e = new Error(o.error || "Server error"); e.status = o.status; throw e; } return o.data; });
+  }
+
+  /* ---------- lessons cache (IndexedDB, this device only) ---------- */
+  function db(){ return new Promise(function(res, rej){ var r = indexedDB.open("ikjon-portal", 1); r.onupgradeneeded = function(){ r.result.createObjectStore("app"); }; r.onsuccess = function(){ res(r.result); }; r.onerror = function(){ rej(r.error); }; }); }
+  function cacheGet(){ return db().then(function(d){ return new Promise(function(res){ var t = d.transaction("app").objectStore("app").get("cur"); t.onsuccess = function(){ res(t.result || null); }; t.onerror = function(){ res(null); }; }); }).catch(function(){ return null; }); }
+  function cachePut(v){ return db().then(function(d){ return new Promise(function(res){ var t = d.transaction("app", "readwrite"); t.objectStore("app").put(v, "cur"); t.oncomplete = res; t.onerror = res; }); }).catch(function(){}); }
+  function cacheClear(){ return db().then(function(d){ return new Promise(function(res){ var t = d.transaction("app", "readwrite"); t.objectStore("app").clear(); t.oncomplete = res; t.onerror = res; }); }).catch(function(){}); }
+
+  /* ---------- screens ---------- */
+  var busy = false, pollT = null;
+  function showLogin(msg){
+    clearInterval(pollT);
+    card.innerHTML = '<h1>Sign in · Kirish</h1><p class="sub">Use your email (or username) and the passcode IKJON gave you.</p>' +
+      '<form id="f" autocomplete="on"><label for="u">Email or username · Email yoki login</label><input id="u" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" required>' +
+      '<label for="p">Passcode · Parol</label><input id="p" type="password" autocomplete="current-password" required>' +
+      '<label class="show"><input type="checkbox" id="sh"> Show passcode · Parolni ko\'rsatish</label>' +
+      '<button id="go" type="submit">Sign in ▶</button>' + (msg ? '<div class="err">' + esc(msg) + '</div>' : "") + '</form>' +
+      '<p class="note">Forgot your passcode? Ask your teacher. · Parolni unutdingizmi? O\'qituvchingizga ayting.</p>';
+    var u = document.getElementById("u"); u.type = "text"; u.value = ls("ikj_last_login") || ""; (u.value ? document.getElementById("p") : u).focus();
+    document.getElementById("sh").onchange = function(){ document.getElementById("p").type = this.checked ? "text" : "password"; };
+    document.getElementById("f").onsubmit = function(ev){ ev.preventDefault(); doLogin(); };
+  }
+  function doLogin(){
+    if(busy) return; var u = document.getElementById("u").value.trim(), p = document.getElementById("p").value; if(!u || !p) return;
+    busy = true; var b = document.getElementById("go"); b.disabled = true; b.textContent = "Signing in… · Kirilmoqda…";
+    api("login", { login:u, passcode:p }).then(function(s){
+      ls("ikj_last_login", u);
+      ls("ikj_sess", JSON.stringify({ access_token:s.access_token, refresh_token:"", expires_at:Math.floor(Date.now() / 1000) + (s.expires_in || 86400), uid:s.user && s.user.id }));
+      busy = false; start();
+    }).catch(function(e){ busy = false; showLogin(e.message); });
+  }
+  function showWait(st){
+    var blocked = st.status === "blocked";
+    card.innerHTML = blocked
+      ? '<h1>⛔ This device is blocked</h1><p class="sub">Your teacher has blocked this phone or computer for your account. If this is a mistake, talk to your teacher. · Bu qurilma bloklangan.</p><button class="ghost" id="out">Sign out · Chiqish</button>'
+      : '<h1>📱 New device · Yangi qurilma</h1><p class="sub">Your passcode is correct. Before this phone or computer can open lessons, your teacher must approve it. Show them this code:</p>' +
+        '<div class="code">' + esc(st.code || "····") + '</div><p class="sub" style="text-align:center">' + esc(devLabel()) + '</p>' +
+        '<button id="chk">I\'ve been approved — check again</button><button class="ghost" id="out">Sign out · Chiqish</button><p class="note">This page checks by itself every 15 seconds.</p>';
+    document.getElementById("out").onclick = signOut;
+    var c = document.getElementById("chk"); if(c) c.onclick = function(){ start(); };
+    clearInterval(pollT); if(!blocked) pollT = setInterval(function(){ if(document.visibilityState === "visible") start(true); }, 15000);
+  }
+  function showLoading(t, pct){ card.innerHTML = '<h1>' + esc(t) + '</h1><p class="sub">Getting your lessons ready… · Darslar yuklanmoqda…</p><div class="bar"><i id="bar" style="width:' + (pct || 10) + '%"></i></div>'; }
+  function showOwnerPublish(msg){
+    card.innerHTML = '<h1>📦 Publish the lessons</h1><p class="sub">Nothing has been published yet. Choose the newest <b>IKJON app .html</b> file from your computer. It is kept in your private Google Drive and sent only to signed-in students on approved devices.</p>' +
+      '<input type="file" id="af" accept=".html,text/html"><button id="pub">⬆ Publish</button><button class="ghost" id="out">Sign out</button>' + (msg ? '<div class="err">' + esc(msg) + '</div>' : "");
+    document.getElementById("out").onclick = signOut;
+    document.getElementById("pub").onclick = function(){
+      var f = document.getElementById("af").files[0]; if(!f) return; var b = this; b.disabled = true; b.textContent = "Uploading " + (f.size / 1048576).toFixed(1) + " MB…";
+      new Response(f.stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer().then(function(buf){
+        var a = new Uint8Array(buf), bin = ""; for(var i = 0; i < a.length; i += 0x8000) bin += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000));
+        return api("app_put", { b64:btoa(bin), name:f.name });
+      }).then(function(){ start(); }).catch(function(e){ showOwnerPublish(e.message); });
+    };
+  }
+  function signOut(){ var s = sess(); ls("ikj_sess", null); ls("ikj_data", null); cacheClear().then(function(){ showLogin(); }); }
+
+  /* ---------- main flow ---------- */
+  function start(quiet){
+    var s = sess();
+    if(!s || !s.access_token){ cacheClear(); return showLogin(); }
+    if(!quiet) showLoading("Checking your access…", 15);
+    var dev = devId();
+    api("ikj_device", { p_device:dev, p_label:devLabel() })
+      .then(function(st){ if(st.status !== "approved"){ if(!quiet || !document.querySelector(".code")) showWait(st); throw { handled:true }; } clearInterval(pollT); return api("app_info", { p_device:dev }); })
+      .then(function(info){
+        if(!info || !info.version){ throw { noApp:true }; }
+        return cacheGet().then(function(c){
+          if(c && c.v === info.version && c.html) return c.html;
+          showLoading("Downloading lessons…", 35);
+          return api("app_get", { p_device:dev }).then(function(r){
+            var bin = atob(r.b64), a = new Uint8Array(bin.length); for(var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+            var bar = document.getElementById("bar"); if(bar) bar.style.width = "75%";
+            return new Response(new Blob([a]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
+          }).then(function(html){ return cachePut({ v:info.version, html:html }).then(function(){ return html; }); });
+        });
+      })
+      .then(boot)
+      .catch(function(e){
+        if(e && e.handled) return;
+        if(e && e.noApp){ var d = null; try{ d = JSON.parse(ls("ikj_data") || "null"); }catch(_){}
+          return api("ikj_session", { p_device:dev }).then(function(x){ if(x.me.role === "owner") showOwnerPublish(); else { card.innerHTML = '<h1>⏳ Almost ready</h1><p class="sub">Your account works, but IKJON hasn\'t published the lessons yet. Please try again later. · Darslar hali joylanmagan.</p><button class="ghost" id="out">Sign out</button>'; document.getElementById("out").onclick = signOut; } }).catch(function(er){ showLogin(er.message); }); }
+        if(e && e.offline){ return cacheGet().then(function(c){ if(c && c.html) boot(c.html); else showLogin(e.message); }); }
+        if(e && (e.status === 401 || /DEVICE_NOT_APPROVED/.test(e.message || ""))){ ls("ikj_sess", e.status === 401 ? null : ls("ikj_sess")); cacheClear(); if(e.status === 401) return showLogin("Please sign in again. · Qaytadan kiring."); return start(); }
+        showLogin(e && e.message || String(e));
+      });
+  }
+  function boot(html){
+    var cfg = "<script>window.IKJ_PORTAL_CFG=" + JSON.stringify({ gas:GAS, url:"" }).replace(/</g, "\\u003c") + ";<\/script>";
+    window.IKJ_PORTAL_CFG = { gas:GAS, url:"" };
+    html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function(m){ return m + cfg; }) : cfg + html;
+    document.open(); document.write(html); document.close();
+  }
+  if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(GAS) && !/^http:\/\/localhost[:\/]/.test(GAS)){
+    card.innerHTML = '<h1>Opening soon · Tez orada</h1><p class="sub">The IKJON students\' portal is being set up. Please check back soon. · O\'quvchilar portali tayyorlanmoqda, tez orada ochiladi.</p>'; return;
+  }
+  start();
+})();
+</script>
+</body>
+</html>
