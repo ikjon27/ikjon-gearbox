@@ -146,10 +146,15 @@
       '<input type="file" id="af" accept=".html,text/html"><button id="pub">⬆ Publish</button><button class="ghost" id="out">Sign out</button>' + (msg ? '<div class="err">' + esc(msg) + '</div>' : "");
     document.getElementById("out").onclick = signOut;
     document.getElementById("pub").onclick = function(){
-      var f = document.getElementById("af").files[0]; if(!f) return; var b = this; b.disabled = true; b.textContent = "Uploading " + (f.size / 1048576).toFixed(1) + " MB…";
-      new Response(f.stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer().then(function(buf){
+      var f = document.getElementById("af").files[0]; if(!f) return; var b = this; b.disabled = true; b.textContent = "Checking the file…"; var build = "";
+      f.text().then(function(t){
+        if(f.size < 1000000 || t.indexOf("IKJ_PORTAL_CFG") < 0 || t.indexOf("ikjGas(") < 0) throw new Error("That isn't an IKJON app file that works with the portal. Choose the newest IKJON-app-v…html file.");
+        var m = t.match(/const IKJ_APP_BUILD = "(\d+)"/); build = m ? m[1] : "";
+        b.textContent = "Uploading " + (f.size / 1048576).toFixed(1) + " MB…";
+        return new Response(f.stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer();
+      }).then(function(buf){
         var a = new Uint8Array(buf), bin = ""; for(var i = 0; i < a.length; i += 0x8000) bin += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000));
-        return api("app_put", { b64:btoa(bin), name:f.name });
+        return api("app_put", { b64:btoa(bin), name:f.name, build:build });
       }).then(function(){ start(); }).catch(function(e){ showOwnerPublish(e.message); });
     };
   }
@@ -172,13 +177,13 @@
       .then(function(info){
         if(!info || !info.version){ throw { noApp:true }; }
         return cacheGet().then(function(c){
-          if(c && c.v === info.version && c.html) return c.html;
+          if(c && c.v === info.version && c.html) return { h:c.html, v:c.v };
           showLoading("Downloading lessons…", 35);
           return api("app_get", { p_device:dev }).then(function(r){
             var bin = atob(r.b64), a = new Uint8Array(bin.length); for(var i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
             var bar = document.getElementById("bar"); if(bar) bar.style.width = "75%";
             return new Response(new Blob([a]).stream().pipeThrough(new DecompressionStream("gzip"))).text();
-          }).then(function(html){ return cachePut({ v:info.version, html:html }).then(function(){ return html; }); });
+          }).then(function(html){ return cachePut({ v:info.version, html:html }).then(function(){ return { h:html, v:info.version }; }); });
         });
       })
       .then(boot)
@@ -186,16 +191,17 @@
         if(e && e.handled) return;
         if(e && e.noApp){ var d = null; try{ d = JSON.parse(ls("ikj_data") || "null"); }catch(_){}
           return api("ikj_session", { p_device:dev }).then(function(x){ if(x.me.role === "owner") showOwnerPublish(); else { card.innerHTML = '<h1>⏳ Almost ready</h1><p class="sub">Your account works, but IKJON hasn\'t published the lessons yet. Please try again later. · Darslar hali joylanmagan.</p><button class="ghost" id="out">Sign out</button>'; document.getElementById("out").onclick = signOut; } }).catch(function(er){ showLogin(er.message); }); }
-        if(e && e.offline){ return cacheGet().then(function(c){ if(c && c.html) boot(c.html); else showLogin(e.message); }); }
+        if(e && e.offline){ return cacheGet().then(function(c){ if(c && c.html) boot({ h:c.html, v:c.v }); else showLogin(e.message); }); }
         if(e && e.status === 401){ ls("ikj_sess", null); ls("ikj_data", null); return showLogin("New day — enter your passcode to continue. · Yangi kun — davom etish uchun parolni kiriting.", true); }
         if(e && /DEVICE_NOT_APPROVED/.test(e.message || "")){ cacheClear(); return start(); }
         showLogin(e && e.message || String(e));
       });
   }
-  function boot(html){
-    var cfg = "<script>window.IKJ_PORTAL_CFG=" + JSON.stringify({ gas:GAS, url:"" }).replace(/</g, "\\u003c") + ";<\/script>" +
+  function boot(o){
+    var html = o.h, C = { gas:GAS, url:"", ver:o.v || "" };   // ver: which lessons version is running (the app offers an update when a newer one is published)
+    var cfg = "<script>window.IKJ_PORTAL_CFG=" + JSON.stringify(C).replace(/</g, "\\u003c") + ";<\/script>" +
       '<link rel="manifest" href="/learn/manifest.webmanifest"><link rel="apple-touch-icon" href="/learn/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#1A4264">';
-    window.IKJ_PORTAL_CFG = { gas:GAS, url:"" };
+    window.IKJ_PORTAL_CFG = C;
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function(m){ return m + cfg; }) : cfg + html;
     document.open(); document.write(html); document.close();
   }
