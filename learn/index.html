@@ -26,6 +26,7 @@
   button.ghost{ background:transparent; color:var(--teal); border:1.5px solid var(--line); font-weight:600; }
   button:disabled{ opacity:.6; cursor:default; }
   .err{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#FBE9EC; color:var(--bad); font-size:14px; }
+  .info{ margin-top:12px; padding:10px 12px; border-radius:10px; background:#E3F4F8; color:#0B5E70; font-size:14px; }
   .note{ margin-top:12px; color:var(--mute); font-size:13px; text-align:center; }
   .code{ font:800 40px/1 ui-monospace,Menlo,Consolas,monospace; letter-spacing:10px; text-align:center; padding:18px 0 14px; color:var(--teal); }
   .bar{ height:8px; border-radius:6px; background:var(--line); overflow:hidden; margin:18px 0 8px; } .bar i{ display:block; height:100%; width:0; background:var(--teal); transition:width .3s; }
@@ -77,13 +78,13 @@
 
   /* ---------- screens ---------- */
   var busy = false, pollT = null;
-  function showLogin(msg){
+  function showLogin(msg, info){
     clearInterval(pollT);
     card.innerHTML = '<h1>Sign in · Kirish</h1><p class="sub">Use your email (or username) and the passcode IKJON gave you.</p>' +
       '<form id="f" autocomplete="on"><label for="u">Email or username · Email yoki login</label><input id="u" type="email" inputmode="email" autocomplete="username" autocapitalize="off" spellcheck="false" required>' +
       '<label for="p">Passcode · Parol</label><input id="p" type="password" autocomplete="current-password" required>' +
       '<label class="show"><input type="checkbox" id="sh"> Show passcode · Parolni ko\'rsatish</label>' +
-      '<button id="go" type="submit">Sign in ▶</button>' + (msg ? '<div class="err">' + esc(msg) + '</div>' : "") + '</form>' +
+      '<button id="go" type="submit">Sign in ▶</button>' + (msg ? '<div class="' + (info ? "info" : "err") + '">' + esc(msg) + '</div>' : "") + '</form>' +
       '<p class="note">Forgot your passcode? Ask your teacher. · Parolni unutdingizmi? O\'qituvchingizga ayting.</p>';
     var u = document.getElementById("u"); u.type = "text"; u.value = ls("ikj_last_login") || ""; (u.value ? document.getElementById("p") : u).focus();
     document.getElementById("sh").onchange = function(){ document.getElementById("p").type = this.checked ? "text" : "password"; };
@@ -96,7 +97,7 @@
       ls("ikj_last_login", u);
       ls("ikj_sess", JSON.stringify({ access_token:s.access_token, refresh_token:"", expires_at:Math.floor(Date.now() / 1000) + (s.expires_in || 86400), uid:s.user && s.user.id }));
       busy = false; start();
-    }).catch(function(e){ busy = false; showLogin(e.message); });
+    }).catch(function(e){ busy = false; showLogin(e.message); var f = document.getElementById("u"); if(f){ f.value = u; document.getElementById("p").focus(); } });
   }
   function showWait(st){
     var blocked = st.status === "blocked";
@@ -122,12 +123,18 @@
       }).then(function(){ start(); }).catch(function(e){ showOwnerPublish(e.message); });
     };
   }
-  function signOut(){ var s = sess(); ls("ikj_sess", null); ls("ikj_data", null); cacheClear().then(function(){ showLogin(); }); }
+  function signOut(){ ls("ikj_sess", null); ls("ikj_data", null); cacheClear().then(function(){ showLogin(); }); }
 
   /* ---------- main flow ---------- */
   function start(quiet){
     var s = sess();
-    if(!s || !s.access_token){ cacheClear(); return showLogin(); }
+    // sign in once a day: an expired sign-in asks for the passcode again (the lessons stay saved on this approved device)
+    if(s && s.expires_at && s.expires_at * 1000 < Date.now()){ ls("ikj_sess", null); ls("ikj_data", null); s = null; ls("ikj_day_end", "1"); }
+    if(!s || !s.access_token){
+      if(ls("ikj_signed_out")){ ls("ikj_signed_out", null); cacheClear(); }   // signed out on purpose: remove the lessons from this device
+      var day = ls("ikj_day_end"); ls("ikj_day_end", null);
+      return showLogin(day ? "New day — enter your passcode to continue. · Yangi kun — davom etish uchun parolni kiriting." : "", !!day);
+    }
     if(!quiet) showLoading("Checking your access…", 15);
     var dev = devId();
     api("ikj_device", { p_device:dev, p_label:devLabel() })
@@ -150,7 +157,8 @@
         if(e && e.noApp){ var d = null; try{ d = JSON.parse(ls("ikj_data") || "null"); }catch(_){}
           return api("ikj_session", { p_device:dev }).then(function(x){ if(x.me.role === "owner") showOwnerPublish(); else { card.innerHTML = '<h1>⏳ Almost ready</h1><p class="sub">Your account works, but IKJON hasn\'t published the lessons yet. Please try again later. · Darslar hali joylanmagan.</p><button class="ghost" id="out">Sign out</button>'; document.getElementById("out").onclick = signOut; } }).catch(function(er){ showLogin(er.message); }); }
         if(e && e.offline){ return cacheGet().then(function(c){ if(c && c.html) boot(c.html); else showLogin(e.message); }); }
-        if(e && (e.status === 401 || /DEVICE_NOT_APPROVED/.test(e.message || ""))){ ls("ikj_sess", e.status === 401 ? null : ls("ikj_sess")); cacheClear(); if(e.status === 401) return showLogin("Please sign in again. · Qaytadan kiring."); return start(); }
+        if(e && e.status === 401){ ls("ikj_sess", null); ls("ikj_data", null); return showLogin("New day — enter your passcode to continue. · Yangi kun — davom etish uchun parolni kiriting.", true); }
+        if(e && /DEVICE_NOT_APPROVED/.test(e.message || "")){ cacheClear(); return start(); }
         showLogin(e && e.message || String(e));
       });
   }
