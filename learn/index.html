@@ -6,6 +6,13 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1A4264">
 <title>IKJON Portal · Kirish</title>
+<link rel="manifest" href="/learn/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/learn/icons/favicon-48.png">
+<link rel="apple-touch-icon" href="/learn/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="IKJON">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
   :root{ --navy:#1A4264; --teal:#0097B2; --bg:#F3F7FA; --card:#fff; --ink:#1A2B3A; --mute:#5B6B7A; --bad:#B4293B; --ok:#1F7A4D; --line:#D6E2EA; }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#0E1A24; --card:#16242F; --ink:#E6EEF4; --mute:#9DB0C0; --line:#2A3B49; } }
@@ -31,12 +38,16 @@
   .code{ font:800 40px/1 ui-monospace,Menlo,Consolas,monospace; letter-spacing:10px; text-align:center; padding:18px 0 14px; color:var(--teal); }
   .bar{ height:8px; border-radius:6px; background:var(--line); overflow:hidden; margin:18px 0 8px; } .bar i{ display:block; height:100%; width:0; background:var(--teal); transition:width .3s; }
   .hidden{ display:none; }
+  .inst{ margin-top:14px; padding:12px; border-radius:12px; border:1.5px dashed var(--teal); text-align:center; font-size:14px; }
+  .inst button{ margin-top:8px; background:var(--teal); }
+  .inst small{ display:block; color:var(--mute); margin-top:4px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="brand"><div class="logo">IK</div><div><b>IKJON Education</b><small>Students' portal · O'quvchilar portali</small></div></div>
   <div class="card" id="card"></div>
+  <div class="card hidden" id="inst" style="margin-top:12px"></div>
   <p class="note">Only IKJON students with an account can enter. · Faqat IKJON o'quvchilari uchun.</p>
 </div>
 <script>
@@ -48,6 +59,25 @@
   try{ var q = new URLSearchParams(location.search).get("server"); if(q && /^http:\/\/localhost[:\/]/.test(q)) GAS = q; }catch(e){}
 
   var card = document.getElementById("card");
+
+  /* ---------- install as an app on the phone / computer ---------- */
+  var standalone = (window.matchMedia && matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+  var ios = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("/learn/sw.js", { scope:"/learn/" }).catch(function(){});
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); window.__ikjInstall = e; showInstall(); });
+  window.addEventListener("appinstalled", function(){ window.__ikjInstall = null; var b = document.getElementById("inst"); if(b) b.innerHTML = '<div class="inst">✅ IKJON app installed — open it from your home screen. · Ilova o\'rnatildi.</div>'; });
+  function showInstall(){
+    var b = document.getElementById("inst"); if(!b || standalone) return;
+    if(window.__ikjInstall){
+      b.innerHTML = '<div class="inst" style="border:0;padding:0"><b>📲 Install the IKJON app</b><small>Opens full-screen from your home screen, like a normal app. · Telefoningizga ilova sifatida o\'rnating.</small><button id="instBtn">Install · O\'rnatish</button></div>';
+      document.getElementById("instBtn").onclick = function(){ var p = window.__ikjInstall; if(!p) return; p.prompt(); p.userChoice.then(function(){ window.__ikjInstall = null; }); };
+      b.classList.remove("hidden");
+    } else if(ios){
+      b.innerHTML = '<div class="inst" style="border:0;padding:0"><b>📲 Put IKJON on your home screen</b><small>In Safari tap <b>Share</b> <span aria-hidden="true">⬆︎</span> then <b>Add to Home Screen</b>. · Safari’da «Ulashish» → «Bosh ekranga qo‘shish».</small></div>';
+      b.classList.remove("hidden");
+    }
+  }
+  setTimeout(showInstall, 600);
   function ls(k, v){ try{ if(v === undefined) return localStorage.getItem(k); if(v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
   function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]; }); }
   function sess(){ try{ return JSON.parse(ls("ikj_sess") || "null"); }catch(e){ return null; } }
@@ -163,7 +193,8 @@
       });
   }
   function boot(html){
-    var cfg = "<script>window.IKJ_PORTAL_CFG=" + JSON.stringify({ gas:GAS, url:"" }).replace(/</g, "\\u003c") + ";<\/script>";
+    var cfg = "<script>window.IKJ_PORTAL_CFG=" + JSON.stringify({ gas:GAS, url:"" }).replace(/</g, "\\u003c") + ";<\/script>" +
+      '<link rel="manifest" href="/learn/manifest.webmanifest"><link rel="apple-touch-icon" href="/learn/icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#1A4264">';
     window.IKJ_PORTAL_CFG = { gas:GAS, url:"" };
     html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function(m){ return m + cfg; }) : cfg + html;
     document.open(); document.write(html); document.close();
