@@ -42,7 +42,7 @@
 (function(){
   "use strict";
   /* ↓↓ the only setting: your Google Apps Script web-app URL (Deploy → Web app → …/exec) ↓↓ */
-  var GAS = "PASTE_YOUR_WEB_APP_URL_HERE";
+  var GAS = "https://script.google.com/macros/s/AKfycbxaC-uM92iLL--ajlkFR5GO5KYmqK9NJAO3cuyZ-AInV-uxExageZ4SHEf-zTWKRccx/exec";
   /* ↑↑ ------------------------------------------------------------------------------- ↑↑ */
   try{ var q = new URLSearchParams(location.search).get("server"); if(q && /^http:\/\/localhost[:\/]/.test(q)) GAS = q; }catch(e){}
 
