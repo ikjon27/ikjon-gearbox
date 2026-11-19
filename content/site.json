@@ -325,6 +325,11 @@
         "link": "/exercises/"
       },
       {
+        "en": "Health calculators",
+        "uz": "Sog'liq kalkulyatorlari",
+        "link": "/calculators/"
+      },
+      {
         "en": "IKJON Fitness",
         "uz": "IKJON Fitness",
         "link": "/fitness/"
@@ -473,6 +478,36 @@
           "link": "/exercises/"
         },
         "image": "/brand/goals/men.svg"
+      },
+      {
+        "name": {
+          "en": "Health calculators",
+          "uz": "Sog'liq kalkulyatorlari"
+        },
+        "text": {
+          "en": "Work out your BMI, waist-to-height ratio and heart-rate zones for exercise, with clear explanations.",
+          "uz": "Tana vazni indeksi (TVI), bel-bo'y nisbati va mashq uchun puls zonalarini aniq tushuntirishlar bilan hisoblang."
+        },
+        "points": [
+          {
+            "en": "BMI and waist-to-height ratio (NICE)",
+            "uz": "TVI va bel-bo'y nisbati (NICE)"
+          },
+          {
+            "en": "Heart-rate zones by age",
+            "uz": "Yoshga qarab puls zonalari"
+          },
+          {
+            "en": "Private: nothing is saved or sent",
+            "uz": "Maxfiy: hech narsa saqlanmaydi yoki yuborilmaydi"
+          }
+        ],
+        "button": {
+          "en": "Open the calculators",
+          "uz": "Kalkulyatorlarni ochish",
+          "link": "/calculators/"
+        },
+        "image": "/brand/goals/sport.svg"
       },
       {
         "name": {
