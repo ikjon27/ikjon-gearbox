@@ -1,0 +1,1083 @@
+{
+ "app": "ikjon-latest",
+ "version": 1,
+ "updated": "2026-11-23",
+ "from": "IKJON Education & Consulting Centre",
+ "items": [
+  {
+   "id": "wk20261123-r01",
+   "skill": "digest",
+   "type": "read",
+   "level": "A2",
+   "title": "Grand Theft Auto 6 is released worldwide (Level 1)",
+   "url": "https://breakingnewsenglish.com/2611/261119-gta-6-1.html",
+   "src": "Breaking News English",
+   "date": "19 Nov 2026",
+   "note": "Read it and write 3 sentences: is it OK to miss school or work for a new game? (Hobbies topic)",
+   "words": [
+    "release | chiqarish | The new phone will be released in March.",
+    "fan | muxlis | Thousands of fans waited outside the shop.",
+    "sales | sotuvlar | Sales of the game were very high.",
+    "graphics | grafika | The graphics in this game look real.",
+    "violence | zo'ravonlik | Some games have too much violence.",
+    "unsuitable | mos emas | This film is unsuitable for children."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r02",
+   "skill": "digest",
+   "type": "read",
+   "level": "B1",
+   "title": "Wire upgrade at fault for grounding all US flights",
+   "url": "https://breakingnewsenglish.com/2611/261116-ground-stop-at-us-airports.html",
+   "src": "Breaking News English",
+   "date": "16 Nov 2026",
+   "note": "Read Level 4 and list 5 words about air travel problems. Who or what was blamed?",
+   "words": [
+    "grounded | uchishi to'xtatilgan | All planes were grounded because of the storm.",
+    "stranded | yo'lda qolib ketgan | Hundreds of passengers were stranded at the airport.",
+    "maintenance | texnik xizmat | The lift is closed for maintenance.",
+    "infrastructure | infratuzilma | Old infrastructure causes many problems.",
+    "reassure | ishontirmoq, tinchlantirmoq | The pilot reassured the passengers.",
+    "incident | hodisa | Nobody was hurt in the incident."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r03",
+   "skill": "digest",
+   "type": "read",
+   "level": "B1",
+   "title": "Peru's penguins are in trouble. A super El Niño could worsen things",
+   "url": "https://www.snexplores.org/article/peru-penguins-el-nino-trouble",
+   "src": "Science News Explores",
+   "date": "19 Nov 2026",
+   "note": "Read it and find the three main threats to the penguins. Which one do people cause?",
+   "words": [
+    "prey | o'lja | Small fish are the penguins' main prey.",
+    "ecosystem | ekotizim | Pollution damages the whole ecosystem.",
+    "conservation | tabiatni muhofaza qilish | Conservation projects need money.",
+    "population | populyatsiya, son | The bird population fell by half.",
+    "overfishing | haddan ortiq baliq ovlash | Overfishing leaves seabirds hungry.",
+    "colony | koloniya, to'da | A large colony lives on the island."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r04",
+   "skill": "digest",
+   "type": "read",
+   "level": "B1",
+   "title": "A new flying drone uses touch to perch like a bird",
+   "url": "https://www.snexplores.org/article/flying-drone-perch-like-bird",
+   "src": "Science News Explores",
+   "date": "18 Nov 2026",
+   "note": "Read it and explain in 2 sentences how the drone saves energy.",
+   "words": [
+    "drone | dron | The farmer uses a drone to check his fields.",
+    "sensor | sensor, datchik | The sensor can feel pressure.",
+    "grip | ushlamoq | The robot can grip a small branch.",
+    "engineer | muhandis | Engineers tested the new design.",
+    "perch | qo'nmoq (shoxga) | A bird perched on the window.",
+    "battery | batareya | The battery lasts two hours."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r05",
+   "skill": "digest",
+   "type": "read",
+   "level": "B2",
+   "title": "AI is set to change the graduate job market. Here's how unis can respond",
+   "url": "https://www.westernsydney.edu.au/news-centre/stories/2026/opinion-ai-is-set-to-change-the-graduate-job-market-heres-how-the-unis-can-respond",
+   "src": "The Conversation (via Western Sydney University)",
+   "date": "16 Nov 2026",
+   "note": "Useful for the Multilevel topic 'A university degree is no longer...'. Note 3 skills the writer says graduates need.",
+   "words": [
+    "automation | avtomatlashtirish | Automation has replaced many factory jobs.",
+    "graduate | bitiruvchi | Many graduates cannot find a job.",
+    "entry-level | boshlang'ich (lavozim) | She applied for an entry-level role.",
+    "critical thinking | tanqidiy fikrlash | Critical thinking helps you check AI answers.",
+    "vocational | kasbiy | Vocational courses teach practical skills.",
+    "white-collar | ofis xodimi | White-collar workers may be affected first."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r06",
+   "skill": "digest",
+   "type": "read",
+   "level": "B2",
+   "title": "This simple habit is linked to a 33% lower risk of Alzheimer's",
+   "url": "https://www.sciencedaily.com/releases/2026/11/261118065536.htm",
+   "src": "ScienceDaily",
+   "date": "20 Nov 2026",
+   "note": "Read it and find 4 benefits of reading for pleasure. Does the study prove cause and effect?",
+   "words": [
+    "dementia | demensiya, aqli zaiflik | Reading may lower the risk of dementia.",
+    "cognitive decline | aqliy qobiliyat pasayishi | Exercise slows cognitive decline.",
+    "well-being | farovonlik | Hobbies improve our well-being.",
+    "empathy | hamdardlik | Novels can build empathy.",
+    "correlational | bog'liqlikni ko'rsatuvchi | It is a correlational study, not proof.",
+    "stress relief | stressdan xalos bo'lish | Music is good stress relief."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r07",
+   "skill": "digest",
+   "type": "read",
+   "level": "B2",
+   "title": "For better mental health, how often you exercise may matter more than how hard",
+   "url": "https://www.sciencedaily.com/releases/2026/11/261119194601.htm",
+   "src": "ScienceDaily",
+   "date": "20 Nov 2026",
+   "note": "Read it and compare 'frequency' and 'intensity'. Write one piece of advice for a busy student.",
+   "words": [
+    "frequency | tezlik, takrorlanish | The frequency of training matters.",
+    "intensity | jadallik | Start at low intensity.",
+    "anxiety | xavotir | Exercise can reduce anxiety.",
+    "routine | kun tartibi | A regular routine helps students.",
+    "inactive | harakatsiz | Inactive people have more health problems.",
+    "observational | kuzatuvga asoslangan | This is an observational study."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r08",
+   "skill": "digest",
+   "type": "read",
+   "level": "B2",
+   "title": "Solo meerkats can find their way back home",
+   "url": "https://www.sciencenews.org/article/solo-meerkats-can-find-their-way-home",
+   "src": "Science News",
+   "date": "19 Nov 2026",
+   "note": "Read it and describe the experiment in 4 steps using sequence words (first, then...).",
+   "words": [
+    "navigation | yo'l topish | Birds use the sun for navigation.",
+    "tracking | kuzatib borish | GPS tracking showed their route.",
+    "spatial memory | fazoviy xotira | Taxi drivers have good spatial memory.",
+    "visual cues | ko'rish belgilari | Animals use visual cues like trees.",
+    "release | qo'yib yubormoq | They released the animal far from home.",
+    "cooperation | hamkorlik | Meerkats depend on cooperation."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r09",
+   "skill": "digest",
+   "type": "read",
+   "level": "C1",
+   "title": "A New Clue to Where Speech Originates in the Brain",
+   "url": "https://www.nationalgeographic.com/science/article/brain-wernicke-speech-listening-neurons",
+   "src": "National Geographic",
+   "date": "19 Nov 2026",
+   "note": "Read it and summarise the main finding in 40 words using your own words.",
+   "words": [
+    "neuron | neyron, nerv hujayrasi | Neurons send signals in the brain.",
+    "cortex | po'stloq (miya) | This part of the cortex controls language.",
+    "auditory | eshitishga oid | Auditory areas process sound.",
+    "speech production | nutq hosil qilish | Speech production needs planning.",
+    "neurosurgery | neyroxirurgiya | The data came from neurosurgery patients.",
+    "interface | interfeys | A brain-computer interface helps paralysed people."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-r10",
+   "skill": "digest",
+   "type": "read",
+   "level": "C1",
+   "title": "How do scientists learn from failure? This researcher has clues",
+   "url": "https://www.sciencenews.org/article/scientists-learn-failure-sn-10-yian-yin",
+   "src": "Science News",
+   "date": "21 Nov 2026",
+   "note": "Great for Multilevel Part 2 'a time you failed'. Find 3 ideas you can use in your own talk.",
+   "words": [
+    "persistence | qat'iyat | Persistence led to her success.",
+    "rejection | rad etilish | He faced many rejections before winning.",
+    "feedback | fikr-mulohaza | Use feedback to improve your essay.",
+    "bounce back | o'zini tiklamoq | She bounced back after the failure.",
+    "peer review | mutaxassislar ko'rigi | The paper passed peer review.",
+    "innovation | innovatsiya | Failure often leads to innovation."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-p01",
+   "skill": "digest",
+   "type": "listen",
+   "level": "B1",
+   "title": "6 Minute English: Are microplastics harming us?",
+   "url": "https://podcasts.apple.com/us/podcast/are-microplastics-harming-us/id262026947?i=1000802907917",
+   "src": "BBC Learning English",
+   "date": "19 Nov 2026",
+   "note": "Listen twice. Write down 5 words about food packaging and health.",
+   "words": [
+    "microplastics | mikroplastik | Microplastics are found in water.",
+    "packaging | qadoq | Plastic packaging keeps food fresh.",
+    "particle | zarra | The particles are too small to see.",
+    "naked eye | oddiy ko'z bilan | You can't see it with the naked eye."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-p02",
+   "skill": "digest",
+   "type": "listen",
+   "level": "C1",
+   "title": "Science Quickly: The sopranos of the jungle",
+   "url": "https://podcasts.apple.com/us/podcast/the-sopranos-of-the-jungle/id189330872?i=1000803106841",
+   "src": "Scientific American",
+   "date": "20 Nov 2026",
+   "note": "Listen to the first 10 minutes. How do the lemurs' songs help scientists protect them?",
+   "words": [
+    "species | tur | This species lives only in Madagascar.",
+    "vocal | ovozga oid | The animals have strong vocal skills.",
+    "rainforest | tropik o'rmon | The rainforest is losing trees."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-p03",
+   "skill": "digest",
+   "type": "listen",
+   "level": "C1",
+   "title": "Science Quickly: A Roman-era frog whodunit and more science surprises",
+   "url": "https://podcasts.apple.com/us/podcast/a-roman-era-frog-whodunit-and-more-science-surprises/id189330872?i=1000802256084",
+   "src": "Scientific American",
+   "date": "16 Nov 2026",
+   "note": "Listen and note the three news stories. Which is about the environment?",
+   "words": [
+    "emissions | chiqindilar (gaz) | Emissions from cars are falling.",
+    "fossil fuels | qazilma yoqilg'ilar | Fossil fuels pollute the air.",
+    "archive | arxiv | The archive holds old magazines."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-w01",
+   "skill": "digest",
+   "type": "words",
+   "level": "B2",
+   "title": "Idioms and collocations from this week's news",
+   "src": "IKJON",
+   "date": "23 Nov 2026",
+   "note": "Learn 4 a day. Use each one in a sentence about your own life.",
+   "words": [
+    "learn from failure | xatodan saboq olmoq | Good students learn from failure.",
+    "switch gears | yo'nalishni o'zgartirmoq | After the exam I switched gears and started IELTS.",
+    "make things worse | vaziyatni yomonlashtirmoq | Shouting will only make things worse.",
+    "be at fault | aybdor bo'lmoq | The driver was not at fault.",
+    "return to normal | izga tushmoq | Life returned to normal after the holiday.",
+    "stay relevant | dolzarbligini saqlamoq | Teachers must update skills to stay relevant.",
+    "in real time | real vaqtda | The app shows bus times in real time.",
+    "in the wild | yovvoyi tabiatda | These animals rarely survive in the wild.",
+    "tight-knit | bir-biriga juda yaqin | We are a tight-knit family.",
+    "make a beeline for | to'g'ri ... tomon yo'l olmoq | The kids made a beeline for the cakes.",
+    "far-reaching | keng qamrovli | The new law will have far-reaching effects.",
+    "an open question | hali hal bo'lmagan savol | Whether it works is still an open question."
+   ],
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-t01",
+   "skill": "writing",
+   "type": "task2",
+   "title": "The availability of entertainment such as electronic games on portable devices is harmful to individuals and society.",
+   "prompt": "The availability of entertainment such as electronic games on portable devices is harmful to individuals and to the society they live in.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "qType": "Opinion",
+   "topic": "Technology / leisure",
+   "date": "22 Nov 2026",
+   "src": "Tram Nguyen IELTS (candidate reports, Vietnam)",
+   "srcUrl": "https://www.tramnguyenielts.com/post/t%E1%BB%95ng-h%E1%BB%A3p-%C4%91%E1%BB%81-thi-ielts-writing-2024-2025-m%E1%BB%9Bi-nh%E1%BA%A5t",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-t02",
+   "skill": "writing",
+   "type": "task2",
+   "title": "In some cities people are choosing cars instead of bicycles, while in others bicycles are replacing cars.",
+   "prompt": "In some cities, people are choosing cars instead of bicycles, while in other cities riding bicycles is replacing cars.\n\nWhy is this the case? Which development do you think is better?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "qType": "Two-part",
+   "topic": "Transport / cities",
+   "date": "21 Nov 2026",
+   "src": "Tram Nguyen IELTS (candidate reports, Vietnam)",
+   "srcUrl": "https://www.tramnguyenielts.com/post/t%E1%BB%95ng-h%E1%BB%A3p-%C4%91%E1%BB%81-thi-ielts-writing-2024-2025-m%E1%BB%9Bi-nh%E1%BA%A5t",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-t03",
+   "skill": "writing",
+   "type": "task2",
+   "title": "The typical teaching situation of a teacher and students in a classroom will not exist by 2050.",
+   "prompt": "The typical teaching situation of a teacher and students in a classroom will not exist by the year 2050.\n\nTo what extent do you agree or disagree?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "qType": "Opinion",
+   "topic": "Education / technology",
+   "date": "20 Nov 2026",
+   "src": "Tram Nguyen IELTS (candidate reports, Vietnam)",
+   "srcUrl": "https://www.tramnguyenielts.com/post/t%E1%BB%95ng-h%E1%BB%A3p-%C4%91%E1%BB%81-thi-ielts-writing-2024-2025-m%E1%BB%9Bi-nh%E1%BA%A5t",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-t04",
+   "skill": "writing",
+   "type": "task2",
+   "title": "Economic progress is one way to measure a country's success, but other factors should be considered.",
+   "prompt": "Economic progress is one way to measure a country's success. Some people believe that there are other factors that should be considered when measuring the success of a country.\n\nWhat are the other factors? Do you think there is a factor that is more important than the others?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "qType": "Two-part",
+   "topic": "Society / economy",
+   "date": "16 Nov 2026",
+   "src": "Tram Nguyen IELTS (candidate reports, Vietnam)",
+   "srcUrl": "https://www.tramnguyenielts.com/post/t%E1%BB%95ng-h%E1%BB%A3p-%C4%91%E1%BB%81-thi-ielts-writing-2024-2025-m%E1%BB%9Bi-nh%E1%BA%A5t",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "wk20261123-t05",
+   "skill": "writing",
+   "type": "task2",
+   "title": "All young adults should undertake a period of unpaid work helping people in the community.",
+   "prompt": "It is suggested that all young adults should undertake a period of unpaid work, helping people in the community.\n\nDo the advantages of this outweigh the disadvantages?\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.\n\nWrite at least 250 words.",
+   "qType": "Advantages / disadvantages",
+   "topic": "Youth / volunteering",
+   "date": "15 Nov 2026",
+   "src": "Tram Nguyen IELTS (candidate reports, Vietnam)",
+   "srcUrl": "https://www.tramnguyenielts.com/post/t%E1%BB%95ng-h%E1%BB%A3p-%C4%91%E1%BB%81-thi-ielts-writing-2024-2025-m%E1%BB%9Bi-nh%E1%BA%A5t",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p2_fail",
+   "skill": "speaking",
+   "part": "Part 2",
+   "title": "A time you failed at something important",
+   "qs": [
+    "Describe a time when you failed at something important.",
+    "What happened and why did you fail?",
+    "How did this failure affect your future?"
+   ],
+   "seen": [
+    "Sep–Oct 2026",
+    "2026 (repeating)",
+    "9–16 Nov 2026",
+    "17 Nov 2026 (2 reports)"
+   ],
+   "note": "Repeated again this week, now with 'how it affected your future'. Finish with a clear lesson you learned.",
+   "model": [
+    "I'd like to talk about the time I failed my first attempt at a national English exam, which turned out to be one of the most useful setbacks of my life.",
+    "It happened two years ago. I had studied grammar for months, but I hardly practised speaking or timed writing. On the day, I ran out of time in the writing section and froze during the speaking interview, so my score was well below what I needed.",
+    "Looking back, the main reason I failed was poor preparation strategy rather than a lack of effort. I was studying hard but not studying smart, and I never tested myself under real exam conditions.",
+    "The failure changed my future in a positive way. I joined a study group, recorded myself speaking every day and wrote two timed essays a week. Six months later I passed with a much higher score and won a place at university.",
+    "Since then, I have treated mistakes as feedback rather than as a disaster. That experience taught me persistence, and I honestly believe I would not be where I am now without it."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p2_secret",
+   "skill": "speaking",
+   "part": "Part 2",
+   "title": "A time you shared a secret",
+   "qs": [
+    "Describe a time when you shared a secret with someone.",
+    "Who did you share it with and why?",
+    "How did you feel afterwards?"
+   ],
+   "seen": [
+    "Jan 2025",
+    "Sep–Oct 2026",
+    "9–16 Nov 2026 (2 reports)",
+    "17 Nov 2026 (Namangan)"
+   ],
+   "note": "A favourite topic in recent sessions. Choose a harmless secret, such as a surprise or a plan, so the story is easy to tell.",
+   "model": [
+    "I'm going to describe a time when I shared a secret with my older sister about a surprise party for our parents' anniversary.",
+    "My brother and I had been planning it for weeks, but we realised we couldn't organise the food and the guest list without help, so I told my sister everything one evening and made her promise not to say a word.",
+    "I chose her because she is very reliable and good at keeping things to herself. She immediately offered to take care of the cooking, which took a huge weight off my shoulders.",
+    "Afterwards I felt relieved and a little nervous at the same time, because the more people know a secret, the easier it is to slip out. Luckily she kept her promise, and our parents were completely surprised.",
+    "The experience showed me that sharing a secret with the right person can actually make a plan stronger, as long as you trust them completely."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p2_happy",
+   "skill": "speaking",
+   "part": "Part 2",
+   "title": "A happy moment or event",
+   "qs": [
+    "Describe a happy moment or event in your life.",
+    "When and where did it happen?",
+    "Why did it make you so happy?"
+   ],
+   "seen": [
+    "4 Jan 2025",
+    "24 Feb 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "Back again after a month. Use feeling words: thrilled, over the moon, proud, relieved.",
+   "model": [
+    "One of the happiest moments of my life was the day I found out I had been accepted to university.",
+    "It was a hot afternoon last August. I was at home with my family when the results appeared online, and my hands were shaking as I typed in my number.",
+    "When I saw my name on the list, I screamed so loudly that our neighbours came to check on us. My mother burst into tears, and my father, who rarely shows emotion, gave me a big hug.",
+    "It made me so happy because it was the reward for two years of hard work, early mornings and many sacrifices. I also felt proud that I had made my parents proud.",
+    "Even now, whenever I feel tired or unmotivated, I remember that moment and it reminds me that effort really does pay off."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p2_decision",
+   "skill": "speaking",
+   "part": "Part 2",
+   "title": "An important decision you made",
+   "qs": [
+    "Describe an important decision you made.",
+    "Why was it difficult to make?",
+    "How do you feel about it now?"
+   ],
+   "seen": [
+    "4 Jan 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "12 Oct 2026",
+    "17 Nov 2026 (Nukus)"
+   ],
+   "note": "The Nukus report gave only part of the wording, so prepare a story that fits 'difficult', 'important' or 'regretted' decisions.",
+   "model": [
+    "I'd like to talk about the decision to change my field of study from economics to English teaching.",
+    "It was difficult because my parents had always imagined me working in a bank, and economics seemed like the safer choice for a stable salary. I was worried about disappointing them.",
+    "I spent weeks weighing up the pros and cons. In the end I talked openly with my family, explained how much I enjoyed helping my classmates with English, and showed them that teachers are in high demand.",
+    "Now I feel it was absolutely the right choice. I enjoy my studies, my results are much better, and my parents are proud of me.",
+    "The experience taught me that an important decision should be based on your strengths and interests, not only on what others expect."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s01",
+   "skill": "speaking",
+   "part": "Part 2",
+   "title": "A time you felt stronger",
+   "src": "Multilevelexamm (Telegram), Samarqand",
+   "qs": [
+    "Describe a time when you felt stronger than before.",
+    "What made you feel stronger?",
+    "How did this experience change you?"
+   ],
+   "seen": [
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "New this week. 'Stronger' can mean mentally strong. A story about overcoming a difficulty works best.",
+   "model": [
+    "I'd like to describe the time I felt much stronger after finishing my first half-marathon last spring.",
+    "For years I believed I was not a sporty person, and I could barely run for ten minutes. A friend persuaded me to join a running club, and we trained three times a week for four months.",
+    "What made me feel stronger was not only my fitness but crossing the finish line after twenty-one kilometres. My legs were aching, but I realised I could do far more than I had thought.",
+    "This experience changed my attitude to challenges in general. Now, when I face a difficult exam or a busy week, I tell myself that if I could finish that race, I can manage this too.",
+    "So it made me physically fitter, but more importantly it made me mentally tougher and more confident."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s02",
+   "skill": "speaking",
+   "part": "Part 3",
+   "title": "Should society move to a four-day working week?",
+   "src": "Multilevelexamm (Telegram), Samarqand",
+   "qs": [
+    "Society should move from a five-day to a four-day working week. Discuss the arguments for and against."
+   ],
+   "seen": [
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "New this week. Give two points on each side, then a clear opinion.",
+   "for": [
+    "Better work-life balance and mental health",
+    "Rested staff are often more productive",
+    "Less commuting means less traffic and pollution"
+   ],
+   "against": [
+    "Some services (hospitals, shops) must stay open",
+    "Longer daily hours can cause tiredness",
+    "Small businesses may lose income"
+   ],
+   "model": [
+    "Many countries are now experimenting with a four-day working week, and it is a controversial issue.",
+    "On the one hand, a shorter week gives people more time for their families, hobbies and rest, which can reduce stress and burnout.",
+    "Furthermore, several trials have shown that well-rested employees often get the same amount of work done in four days, so productivity does not necessarily fall.",
+    "On the other hand, not every job can be shortened. Hospitals, shops and public transport need staff every day, so this system is difficult to apply everywhere.",
+    "In addition, if the same hours are squeezed into four days, the working day becomes longer and people may feel exhausted, and small businesses could lose customers.",
+    "In my opinion, a four-day week is a good idea for office jobs where results matter more than hours, but it should be introduced gradually and flexibly rather than for everyone at once."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s03",
+   "skill": "speaking",
+   "part": "Part 3",
+   "title": "Private cars vs bicycles in cities",
+   "src": "Multilevelexamm (Telegram), Nukus",
+   "qs": [
+    "People in cities should use bicycles instead of private cars. Discuss the arguments for and against."
+   ],
+   "seen": [
+    "17 Nov 2026 (Nukus)"
+   ],
+   "note": "New this week, and the same theme appeared in an IELTS Writing task on 21 Nov. Related to the logged 'private cars banned in city centres' essay.",
+   "for": [
+    "No pollution and less traffic",
+    "Cycling keeps people fit",
+    "Much cheaper than owning a car"
+   ],
+   "against": [
+    "Unsafe without bike lanes",
+    "Hard in very hot or cold weather",
+    "Not practical for long distances or families"
+   ],
+   "model": [
+    "Whether city residents should choose bicycles over cars is an important question as our cities become more crowded.",
+    "One strong argument for bicycles is the environment. Bikes produce no exhaust fumes, so if more people cycled, air quality and traffic jams would both improve.",
+    "Another advantage is health and cost. Cycling to work is free daily exercise, and it saves the large expense of fuel, insurance and parking.",
+    "However, cycling can be dangerous in cities without proper bike lanes, where cyclists have to share the road with fast cars and buses.",
+    "Moreover, bicycles are not practical for everyone. Elderly people, parents with small children or anyone travelling long distances in extreme heat or snow will still need a car.",
+    "Overall, I believe bicycles should be encouraged for short trips, but only if the government first builds safe bike lanes; cars will still be necessary for some journeys."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261102-s06",
+   "skill": "speaking",
+   "part": "Part 3",
+   "title": "Nature documentaries raise environmental awareness",
+   "src": "Multilevelexamm (Telegram), Samarqand",
+   "qs": [
+    "Nature documentaries are an effective way to raise awareness of environmental problems. Discuss the arguments for and against."
+   ],
+   "seen": [
+    "13 Oct 2026",
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "Repeated after a month. Mention a real example of a documentary you have watched.",
+   "for": [
+    "Powerful images make problems real",
+    "Reach millions of viewers worldwide",
+    "Inspire young people to act"
+   ],
+   "against": [
+    "Viewers forget quickly and do not change habits",
+    "Some films focus on beauty, not problems",
+    "People who watch them already care"
+   ],
+   "model": [
+    "Nature documentaries have become extremely popular, and many people believe they help protect the planet.",
+    "First, these films show problems that most of us never see with our own eyes, such as melting ice or plastic in the ocean, and strong images can change people's attitudes.",
+    "Second, documentaries on television and streaming platforms reach millions of viewers, including children, who may later choose careers in science or conservation.",
+    "On the other hand, many viewers feel sad for an hour and then forget, without changing their daily habits like using less plastic.",
+    "Also, the people who choose to watch these films are often those who already care about nature, so the message may not reach the people who need it most.",
+    "In my view, documentaries are a useful starting point, but they work best when combined with education in schools and practical action by governments."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p3_phones",
+   "skill": "speaking",
+   "part": "Part 3",
+   "title": "Smartphones should be banned in classrooms",
+   "src": "Multilevelexamm (Telegram), Namangan",
+   "qs": [
+    "Smartphones should be banned in classrooms. Discuss the arguments for and against."
+   ],
+   "seen": [
+    "24 Feb 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "17 Nov 2026 (Namangan)"
+   ],
+   "note": "One of the most repeated Part 3 topics, reported this week in Namangan. Students at our centre should know this one well.",
+   "for": [
+    "Fewer distractions and better focus",
+    "Less cheating in tests",
+    "More face-to-face interaction"
+   ],
+   "against": [
+    "Useful for dictionaries and research",
+    "Needed to contact parents in emergencies",
+    "Students must learn to use technology responsibly"
+   ],
+   "model": [
+    "Whether smartphones should be banned from classrooms is a hot topic for schools around the world.",
+    "Supporters of a ban argue that phones are a huge distraction. Notifications and social media make it very hard for students to concentrate on the lesson.",
+    "They also point out that phones make cheating easier and reduce real conversation between classmates during breaks.",
+    "However, smartphones can be excellent learning tools. Students can use online dictionaries, educational apps and search for information quickly.",
+    "In addition, many parents want their children to be reachable in an emergency, and a total ban does not teach young people to manage technology responsibly.",
+    "Personally, I support a middle way: phones should be switched off and kept in bags during lessons, but teachers can allow them for specific learning tasks."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s04",
+   "skill": "speaking",
+   "part": "Part 3",
+   "title": "A university degree is no longer ... (reported incomplete)",
+   "qs": [
+    "A university degree is no longer ... (the candidate did not remember the end; most likely 'necessary for success'). Discuss the arguments for and against."
+   ],
+   "seen": [
+    "17 Nov 2026 (2 reports)"
+   ],
+   "note": "Reported in two posts but the statement was cut off. Prepare the 'degree vs skills and experience' arguments; they also fit the 7 Nov Writing Task 2.",
+   "for": [
+    "Many successful people have no degree",
+    "Employers value practical skills",
+    "Online courses teach skills cheaply"
+   ],
+   "against": [
+    "Doctors, lawyers and engineers must have degrees",
+    "Graduates usually earn more",
+    "University builds critical thinking and networks"
+   ],
+   "model": [
+    "Some people now claim that a university degree is no longer necessary for success, especially with so many online learning options.",
+    "Those who agree point to famous entrepreneurs and IT specialists who built careers without a degree, which shows that talent and hard work matter most.",
+    "They also argue that many employers now care more about practical skills and certificates, which can be gained quickly and cheaply online.",
+    "On the other hand, many professions, such as medicine, law and engineering, are impossible without a formal degree, for obvious safety reasons.",
+    "Furthermore, statistics in most countries show that graduates still earn more on average, and university develops critical thinking and useful contacts.",
+    "In my opinion, a degree is still very valuable, but it is no longer the only path; the best results come from combining a degree with practical experience."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p12_walkdrive",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Driving a car vs waiting at a bus stop (pictures)",
+   "qs": [
+    "Picture 1: a woman driving a car. Picture 2: a man and a woman talking at a bus stop.",
+    "What are the advantages of each way of travelling?",
+    "Why do some people prefer public transport?"
+   ],
+   "seen": [
+    "Nov 2026 (pack)",
+    "17 Nov 2026"
+   ],
+   "note": "Compare the two pictures first (similarity, then difference), then answer each question with a reason and an example.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p12_market",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Market / bazaar vs supermarket (pictures)",
+   "src": "Multilevelexamm (Telegram), Samarqand",
+   "qs": [
+    "What are the advantages of shopping at a market or bazaar?",
+    "Why do some people choose supermarkets instead?"
+   ],
+   "seen": [
+    "24 Feb 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "22 Oct 2026",
+    "Nov 2026 (pack, 4 sets)",
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "Very frequent. Key words: fresh produce, bargain, fixed prices, convenience, under one roof.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s05",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Watching TV vs playing video games (pictures)",
+   "src": "Multilevelexamm (Telegram), Nukus",
+   "qs": [
+    "Compare the pictures: people watching TV and people playing video games.",
+    "Which activity is better for young people, and why?",
+    "Can video games have any benefits?"
+   ],
+   "seen": [
+    "17 Nov 2026 (Nukus)"
+   ],
+   "note": "New this week. Only the topic was reported, so practise comparing the two activities: passive vs interactive, alone vs together, benefits and risks.",
+   "words": [
+    "passive | sust, faol bo'lmagan | Watching TV is quite a passive activity.",
+    "interactive | interaktiv | Video games are more interactive.",
+    "screen time | ekran oldida o'tkazilgan vaqt | Parents should limit screen time.",
+    "addictive | o'ziga qaram qiluvchi | Some games are very addictive.",
+    "reflexes | reflekslar | Gaming may improve your reflexes."
+   ],
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261102-s07",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Eating at home with family vs at a restaurant with friends (pictures)",
+   "src": "Multilevelexamm (Telegram), Samarqand",
+   "qs": [
+    "Compare eating at home with family and eating at a restaurant with friends.",
+    "What are the advantages of each?"
+   ],
+   "seen": [
+    "12 Oct 2026",
+    "17 Nov 2026 (Samarqand)"
+   ],
+   "note": "Repeated. Talk about cost, healthiness, atmosphere and conversation.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p12_planetrain",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Travelling by plane vs train (pictures)",
+   "src": "Multilevelexamm (Telegram), Namangan",
+   "qs": [
+    "What are the advantages of travelling by train?",
+    "Why do many people prefer to fly?"
+   ],
+   "seen": [
+    "24 Feb 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "12 Oct 2026",
+    "Nov 2026 (pack)",
+    "17 Nov 2026 (Namangan)"
+   ],
+   "note": "One of the most repeated picture sets. Mention the Afrosiyob high-speed train as a local example.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p12_food",
+   "skill": "speaking",
+   "part": "Part 1.2",
+   "title": "Healthy vs unhealthy eating (pictures)",
+   "qs": [
+    "What are the benefits of avoiding fast food?",
+    "Why do people choose unhealthy food?"
+   ],
+   "seen": [
+    "Oct 2026 (undated report)",
+    "Nov 2026 (pack, 2 sets)",
+    "9–16 Nov 2026 (2 reports)",
+    "17 Nov 2026"
+   ],
+   "note": "Reported again this week. Key words: processed, nutritious, convenient, cheap, balanced diet.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p11_room",
+   "skill": "speaking",
+   "part": "Part 1.1",
+   "title": "Describe your house / home",
+   "qs": [
+    "Describe your house.",
+    "Do you live in a house or a flat?"
+   ],
+   "seen": [
+    "3 Jan 2025",
+    "24 Feb 2025",
+    "25 Feb 2025",
+    "Sep–Oct 2026",
+    "12 Oct 2026",
+    "13 Oct 2026",
+    "22 Oct 2026",
+    "9–16 Nov 2026",
+    "17 Nov 2026 (3 reports)"
+   ],
+   "note": "The most repeated Part 1.1 question. Prepare a 30-second answer with size, rooms and your favourite place.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p11_teacher",
+   "skill": "speaking",
+   "part": "Part 1.1",
+   "title": "Tell me about your first teacher",
+   "qs": [
+    "Tell me about your first teacher."
+   ],
+   "seen": [
+    "3 Jan 2025",
+    "24 Feb 2025",
+    "9–16 Nov 2026 (3 reports)",
+    "17 Nov 2026 (2 reports)"
+   ],
+   "note": "Very common in November. Describe the person, one memory and why you remember them.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261116-s03",
+   "skill": "speaking",
+   "part": "Part 1.1",
+   "title": "Evening plans, typical day, pets, house or flat",
+   "qs": [
+    "What are your plans for this evening?",
+    "Describe your typical day.",
+    "Do you have any pets?",
+    "Do you live in a house or a flat?"
+   ],
+   "seen": [
+    "9–16 Nov 2026",
+    "17 Nov 2026 (2 reports)"
+   ],
+   "note": "Repeated. Keep Part 1.1 answers to 2–3 sentences with one reason or example.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mls_p11_home",
+   "skill": "speaking",
+   "part": "Part 1.1",
+   "title": "Hometown",
+   "qs": [
+    "Tell me about your hometown."
+   ],
+   "seen": [
+    "3 Jan 2025",
+    "24 Feb 2025",
+    "Aug 2026",
+    "Sep–Oct 2026",
+    "17 Nov 2026 (Nukus)"
+   ],
+   "note": "Mention location, size and one thing your town is famous for.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-s06",
+   "skill": "speaking",
+   "part": "Part 1.1",
+   "title": "Weather, transport, sport, weekends, friends, bedtime, drinks",
+   "qs": [
+    "What is your favourite weather?",
+    "Do you often use public transport?",
+    "What is your favourite sport?",
+    "What do you usually do at weekends?",
+    "What are your hobbies?",
+    "What do you usually do with your friends?",
+    "What do you do before going to bed?",
+    "What is your favourite drink?"
+   ],
+   "seen": [
+    "17 Nov 2026"
+   ],
+   "note": "New Part 1.1 questions from Samarqand, Nukus and Namangan reports. Answer directly, then add one reason.",
+   "exam": "multilevel",
+   "type": "mlq",
+   "src": "Multilevelexamm (Telegram)",
+   "srcUrl": "https://t.me/s/Multilevelexamm",
+   "date": "17 Nov 2026",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-n01",
+   "exam": "multilevel",
+   "skill": "dates",
+   "type": "date",
+   "title": "December Multilevel: pay the fee by 28 Nov",
+   "when": "2026-11-28",
+   "note": "Registration on my.gov.uz runs 13–27 Nov. The 594,000 so'm fee must be paid by 28 Nov or the application is cancelled.",
+   "url": "https://infoedu.uz/dekabr-chet-tili-imtihoni-royxatdan-otish-2026",
+   "date": "13 Nov 2026",
+   "src": "infoedu.uz",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-n02",
+   "exam": "multilevel",
+   "skill": "dates",
+   "type": "date",
+   "title": "December Multilevel exam: 12–14 Dec",
+   "when": "2026-12-12",
+   "note": "Written exam 12–14 Dec. Speaking is on separate days shown on the admission ticket. Arrive early: entry closes 30 minutes before the start.",
+   "url": "https://talimxabarlari.uz/83119/",
+   "date": "13 Nov 2026",
+   "src": "Ta'lim xabarlari",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-m01",
+   "exam": "multilevel",
+   "skill": "digest",
+   "type": "read",
+   "title": "Alberta bill would give province power to bulldoze bike lanes",
+   "url": "https://ctvnews.ca/edmonton/article/alberta-bill-would-give-province-power-to-bulldoze-bike-lanes-ban-new-ones-on-municipal-roads",
+   "level": "B2",
+   "note": "Matches Part 3 'cars vs bicycles'. Find 2 arguments for and 2 against bike lanes.",
+   "words": [
+    "bike lane | velosiped yo'lagi | The city built a new bike lane.",
+    "legislation | qonunchilik | New legislation was introduced.",
+    "municipality | shahar hokimligi | The municipality controls local roads.",
+    "cyclist | velosipedchi | Cyclists need safe roads.",
+    "priority | ustuvorlik | Safety should be the top priority."
+   ],
+   "date": "19 Nov 2026",
+   "src": "CTV News",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-m02",
+   "exam": "multilevel",
+   "skill": "digest",
+   "type": "read",
+   "title": "China's crowded bike lanes reveal what e-bike crackdowns may be missing",
+   "url": "https://thecooldown.com/green-tech/china-crowded-bike-lanes-e-bike-crackdowns",
+   "level": "B1",
+   "note": "Matches Part 3 'cars vs bicycles' and Part 1.2 transport pictures. Write 3 ideas the writer suggests.",
+   "words": [
+    "e-bike | elektr velosiped | E-bikes are popular with commuters.",
+    "commuter | ishga qatnovchi | Commuters fill the roads at 8 a.m.",
+    "crackdown | qattiq choralar | Police started a crackdown on speeding.",
+    "crowded | gavjum | The bus was very crowded."
+   ],
+   "date": "18 Nov 2026",
+   "src": "The Cool Down",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-m03",
+   "exam": "multilevel",
+   "skill": "digest",
+   "type": "read",
+   "title": "Ultraprocessed foods alter brain responses in younger adults",
+   "url": "https://news-medical.net/news/20261119/Ultraprocessed-foods-alter-brain-responses-in-younger-adults.aspx",
+   "level": "B2",
+   "note": "Matches Part 1.2 'healthy vs unhealthy eating'. Find who took part and what changed.",
+   "words": [
+    "ultraprocessed | o'ta qayta ishlangan | Chips are ultraprocessed food.",
+    "diet | ovqatlanish tartibi | A healthy diet includes vegetables.",
+    "reward | mukofot, rag'bat | Sugar activates the brain's reward system.",
+    "trial | sinov | The trial lasted two weeks.",
+    "independence | mustaqillik | Students gain independence at university."
+   ],
+   "date": "19 Nov 2026",
+   "src": "News-Medical",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "ml20261123-m04",
+   "exam": "multilevel",
+   "skill": "digest",
+   "type": "read",
+   "title": "An 'Eruption of Baby Sea Turtles' Makes History on the California Coast",
+   "url": "https://www.nationalgeographic.com/environment/article/california-olive-ridley-sea-turtle-baby-hatchlings-el-nino",
+   "level": "C1",
+   "note": "Matches Part 3 'nature documentaries'. Retell the story in 1 minute as if presenting a documentary.",
+   "words": [
+    "hatchling | tuxumdan yangi chiqqan jo'ja | The hatchlings ran to the sea.",
+    "nesting | uya qurish | This beach is a nesting site.",
+    "relocation | ko'chirish | Relocation of the eggs saved them.",
+    "incubation | inkubatsiya | Incubation takes about 50 days.",
+    "instinct | instinkt | Turtles find the sea by instinct."
+   ],
+   "date": "20 Nov 2026",
+   "src": "National Geographic",
+   "added": "2026-11-23"
+  },
+  {
+   "id": "mld20261123",
+   "exam": "multilevel",
+   "skill": "digest",
+   "type": "issue",
+   "title": "Digest #5 · 23 Nov 2026",
+   "date": "23 Nov 2026",
+   "summary": [
+    "No format changes. December exam 12–14 Dec; registration closes 27 Nov and the 594,000 so'm fee must be paid by 28 Nov. November results not announced yet (watch my.gov.uz).",
+    "Reports this week: 6 Speaking posts from the November speaking stage (17 Nov: Samarqand, Nukus, Namangan).",
+    "New Speaking: Part 2 'a time you felt stronger'; Part 3 four-day working week, cars vs bicycles, 'a university degree is no longer...'; Part 1.2 TV vs video games; new Part 1.1 questions (weather, bedtime, favourite drink).",
+    "Repeated Speaking: first teacher and house (5 times this week), a day of failure (2), shared secret, happy moment, decision, smartphones in classrooms, nature documentaries, market vs supermarket, plane vs train, healthy vs fast food, eating at home vs restaurant.",
+    "Writing: no new reports after the 7–8 Nov tasks (already in Digest #4).",
+    "Reading and Listening: no new topic reports this week (only answer keys for 7–8 Nov were posted).",
+    "4 new reading materials on bike lanes, e-bikes, ultra-processed food and sea turtles."
+   ],
+   "note": "Before 12 Dec, record yourself answering the 5 most repeated Part 2 topics (failure, secret, happy moment, decision, success) in 2 minutes each and listen back for missing linkers.",
+   "added": "2026-11-23"
+  }
+ ]
+}
