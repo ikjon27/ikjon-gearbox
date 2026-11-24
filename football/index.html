@@ -330,6 +330,15 @@ nav.tabs button.active{ color:var(--teal); }
 /* athlete body */
 .fitcard{ background:linear-gradient(135deg,#FDF0EE,#fff); border-color:#F2CFC9; }
 .fittag{ background:#1A4264; }
+/* injury-prevention warm-up + what's new */
+.prevcard{ background:linear-gradient(135deg,#EAF6F0,#fff); border-color:#BFE3CF; }
+.prevtag{ background:#2E8B57; }
+.prevbox{ background:#F4FAF6; border:1px solid #CFE8DA; }
+.prevbox summary{ cursor:pointer; }
+.prevcheck h3{ font-size:.9rem; margin:0; }
+.newscard{ background:linear-gradient(135deg,#EAF6FA,#fff); border:1px solid #BFE0EA; }
+.newslist{ margin:8px 0 0; padding-left:18px; font-size:.86rem; line-height:1.45; }
+.newslist li{ margin-bottom:4px; }
 .scard.fit{ outline:2px solid #1A426433; }
 .muschips{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; width:100%; margin-top:8px; font-size:.8rem; }
 .muschips span{ background:#FFE7DD; color:#A93A12; border-radius:999px; padding:3px 9px; font-weight:bold; font-size:.72rem; }
@@ -396,9 +405,11 @@ nav.tabs button.active{ color:var(--teal); }
         </div>
       </div>
     </div>
+    <div class="card newscard" id="homeNews" style="display:none" role="status"></div>
     <div class="card chal" id="homeChallenge"></div>
     <div class="card hmcard" id="homeHome"></div>
     <div class="card hmcard fitcard" id="homeFit"></div>
+    <div class="card hmcard prevcard" id="homePrev"></div>
     <div class="tiles" id="homeTiles"></div>
     <div class="card" id="homeImprove" style="display:none;"><h3 data-t>Your improvements</h3><p class="hint mb12" data-t>Day 1 tests compared with your latest results.</p><div class="improve" id="homeImproveList"></div></div>
     <div class="card"><h3 data-t>Coach's tip</h3><p class="hint" id="homeTip"></p></div>
@@ -418,6 +429,8 @@ nav.tabs button.active{ color:var(--teal); }
 
   <!-- TRAIN -->
   <section id="view-train" class="view">
+    <div class="label" data-t>Stay injury-free</div>
+    <div class="card hmcard prevcard" id="trainPrev"></div>
     <div class="label" data-t>Ready-made sessions</div>
     <div class="presets" id="presets"></div>
     <div class="label" data-t>At home · small space</div>
@@ -458,6 +471,7 @@ nav.tabs button.active{ color:var(--teal); }
       <button class="btn accent block mt12" id="balBtn" data-t>⚖️ Start a balance session</button>
       <div id="catBars" class="mt12"></div></div>
     <div class="card"><div class="between"><h3 data-t>Workout history</h3><span class="hint" id="histCount"></span></div><div class="hist mt8" id="histList"></div></div>
+    <div class="card" id="remindBox"></div>
     <div class="card"><h3 data-t>Settings</h3>
       <div class="setrow"><span data-t>Language</span><div class="seg" id="langSeg"></div></div>
       <div class="setrow"><span data-t>Name</span><input class="txt" id="setName" style="max-width:170px" placeholder="Your name" data-tp></div>
@@ -2025,7 +2039,7 @@ const CATEGORY_CUES = {
 };
 
 function allExercises(){ return CATEGORIES.flatMap(c=>EXERCISES[c.id]); }
-function exByName(n){ return allExercises().concat(WARMUP, COOLDOWN, typeof HOME_NEW !== "undefined" ? HOME_NEW.concat(HOME_WARM_NEW) : [], typeof FIT !== "undefined" ? FIT.concat(FIT_WARM_NEW) : []).find(x=>x.n===n); }
+function exByName(n){ return allExercises().concat(WARMUP, COOLDOWN, typeof HOME_NEW !== "undefined" ? HOME_NEW.concat(HOME_WARM_NEW) : [], typeof FIT !== "undefined" ? FIT.concat(FIT_WARM_NEW) : [], typeof PREV_EX !== "undefined" && PREV_EX ? PREV_EX : []).find(x=>x.n===n); }
 function exTime(sets, work, rest){ return sets*work + Math.max(0, sets-1)*rest; }
 
 /* ============================================================
@@ -4784,6 +4798,8 @@ function renderHome(){
   renderChallengeCard();
   renderHomeCard();
   renderFitHomeCard();
+  renderPrevCard("homePrev");
+  renderNews();
 }
 function progDesc(P){
   if(P.group === "skill"){ const c = catById(P.primary), sp = SUPPORT[P.primary].map(id=> L(catById(id).name));
@@ -4868,7 +4884,7 @@ function exRow(it, idx, opts){
   thumbJobs.push(ex);
   return `<button class="ex" data-idx="${idx}"><canvas data-thumb="${esc(ex.n)}" width="208" height="117"></canvas><div class="eb">
     <div class="en">${c ? c.icon + " " : ""}${esc(L(it.kind === "test" ? benchOf(it.test).name : ex.n))}</div>
-    <div class="ed">${esc(L(it.kind === "test" ? benchOf(it.test).how : ex.target))}</div>
+    <div class="ed">${esc(L(it.kind === "test" ? benchOf(it.test).how : it.tgt || ex.target))}</div>
     <div class="em">${label}${opts && opts.eq ? ex.eq.filter(e=>e!=="none").map(e=>`<span class="tag p">${equipLabel(e)}</span>`).join("") : ""}</div></div>
     <span class="play" aria-hidden="true">▶</span></button>`;
 }
@@ -4882,6 +4898,10 @@ function drawThumbs(root){
   });
 }
 function blocksHTML(items, opts){
+  if(items.some(it=> it.part)){
+    return [1,2,3].map(k=>{ const g = items.map((it,i)=>[it,i]).filter(([it])=> it.part === k); if(!g.length) return "";
+      return `<div class="blockhead"><span>${L(PREV_PARTS[k])}</span><span>${L("{0} min", mins(sessionTime(g.map(x=>x[0]))))}</span></div><div class="exlist">` + g.map(([it,i])=>exRow(it, i, opts)).join("") + `</div>`; }).join("");
+  }
   const groups = [["warmup",L("Warm-up")],["test",L("Benchmark tests")],["main",L("Main session")],["cool",L("Cool-down")]];
   let html = "";
   groups.forEach(([k, name])=>{
@@ -4923,7 +4943,7 @@ function openDemo(ex, item){
   demoEx = ex; demoItem = item || null;
   const c = catById(ex.catId);
   $("dTitle").textContent = L(item && item.kind === "test" ? benchOf(item.test).name : ex.n);
-  $("dSub").textContent = (c ? c.icon + " " + L(c.name) : L(ex.catId === "warmup" ? "Warm-up" : "Cool-down")) + " · " + L(item && item.kind === "test" ? "Benchmark test" : ex.target);
+  $("dSub").textContent = (c ? c.icon + " " + L(c.name) : L(ex.catId === "warmup" ? "Warm-up" : "Cool-down")) + " · " + L(item && item.kind === "test" ? "Benchmark test" : (item && item.tgt) || ex.target);
   const sets = item ? item : { sets:ex.sets, work:ex.work, rest:ex.rest };
   $("dRx").innerHTML = (item && item.kind === "test") ? `<span class="tag o">${esc(L(benchOf(item.test).how))}</span>`
     : `<span class="tag">${L("{0} sets", sets.sets)} × ${fmtWork(sets.work)}</span>${sets.rest ? `<span class="tag o">${L("{0}s rest", sets.rest)}</span>` : ""}${ex.eq.filter(e=>e!=="none").map(e=>`<span class="tag p">${equipLabel(e)}</span>`).join("")}`
@@ -4962,6 +4982,7 @@ const DURS = [{ id:"quick", label:"Quick", sub:15, n:4, warm:2, cool:1 }, { id:"
 const EQUIP = [{ id:"ball", label:"Ball", locked:true }, { id:"wall", label:"Wall" }, { id:"cones", label:"Cones" }, { id:"ladder", label:"Ladder" }];
 let selDur = "standard", selEq = new Set(["ball","wall","cones","ladder"]), selFocus = new Set();
 function renderTrain(){
+  renderPrevCard("trainPrev");
   $("presets").innerHTML = PRESETS.map(p=>`<button class="tile" data-p="${p.id}"><div class="art">${pic(p.art)}</div><div class="tt"><b>${L(p.name)}</b><span>${L(p.sub)}</span></div></button>`).join("");
   $("presets").querySelectorAll(".tile").forEach(b=> b.onclick = ()=> runPreset(b.dataset.p));
   $("homePresets").innerHTML = HOME_PRESETS.map(p=>`<button class="tile" data-p="${p.id}"><div class="art">${pic(p.art)}</div><div class="tt"><b>🏠 ${L(p.name)}</b><span>${L(p.sub)}</span></div></button>`).join("")
@@ -5030,6 +5051,7 @@ function openSkill(cid){
 /* ---------------- progress ---------------- */
 let chartRange = 7, histOpen = null;
 function renderProgress(){
+  renderRemind();
   const lv = levelInfo(), st = streaks();
   $("lvNum").textContent = lv.lvl; $("lvTitle").textContent = lv.title;
   $("lvSub").textContent = lv.lvl >= 100 ? L("Max level") : L("{0} / {1} XP to Level {2}", lv.into, LEVEL_XP, lv.lvl+1); $("lvBar").style.width = lv.pct + "%";
@@ -5412,7 +5434,7 @@ function startPlayer(sess){
 function cur(){ return pl.sess.items[pl.idx]; }
 /* left/right: a one-sided move ("10 each leg") runs the first side for half of each set, then switches —
    equal time on both sides, with a voice cue, a side badge and a mirrored demo */
-function sideInfo(it){ if(!it || it.kind === "test") return null; const m = /each (leg|side|arm|foot)/i.exec(it.ex.target || ""); if(!m) return null;
+function sideInfo(it){ if(!it || it.kind === "test") return null; const m = /each (leg|side|arm|foot)/i.exec(it.tgt || it.ex.target || ""); if(!m) return null;
   const limb = m[1].toLowerCase() === "foot" ? "leg" : m[1].toLowerCase(); const first = state.settings.side1 === "R" ? "R" : "L";
   return { limb, order: first === "L" ? ["L","R"] : ["R","L"], s2:false }; }
 function sideName(k){ const sd = pl.sd; if(!sd) return ""; const sd1 = sd.order[k], nm = { leg:["Left leg","Right leg"], arm:["Left arm","Right arm"], side:["Left side","Right side"] }[sd.limb];
@@ -5471,11 +5493,11 @@ function startWork(){ beep(990, 0.25); if(pl.sd) pl.sd.s2 = false; say((pl.set =
 function buildItemUI(){
   const it = cur(), c = catById(it.catId), n = pl.sess.items.length;
   $("pTitle").textContent = sessLabel(pl.sess);
-  $("pCount").textContent = L("Exercise {0} of {1}", pl.idx+1, n) + " · " + L(it.kind === "warmup" ? "Warm-up" : it.kind === "cool" ? "Cool-down" : it.kind === "test" ? "Benchmark test" : "Main");
+  $("pCount").textContent = L("Exercise {0} of {1}", pl.idx+1, n) + " · " + L(it.part ? PREV_PARTS[it.part] : it.kind === "warmup" ? "Warm-up" : it.kind === "cool" ? "Cool-down" : it.kind === "test" ? "Benchmark test" : "Main");
   renderSeg();
   $("pBody").innerHTML = `<div class="pstage" id="pStage"><span class="pbadge" id="pBadge"></span></div>
     <div class="pname"><div><div class="cat">${c ? c.icon + " " + L(c.name) : it.kind === "warmup" ? "🔥 " + L("Warm-up") : "🧘 " + L("Cool-down")}</div><h2>${esc(itemTitle(it))}</h2>
-      <div class="ptarget">${esc(L(it.kind === "test" ? benchOf(it.test).how : it.ex.target))}</div></div>
+      <div class="ptarget">${esc(L(it.kind === "test" ? benchOf(it.test).how : it.tgt || it.ex.target))}</div></div>
       <span class="tag" style="background:rgba(255,255,255,0.12);color:#fff;white-space:nowrap">${it.kind === "test" ? L("TEST") : rxText(it)}</span></div>
     <div class="pcue" id="pCue"><b>1/3</b> ${esc(L(it.ex.steps[0]))}</div>
     <div id="pDyn"></div>`;
@@ -5637,6 +5659,7 @@ function finishPlayer(){
     <p style="color:rgba(255,255,255,0.75);font-size:.84rem">${esc(sessLabel(pl.sess))}${r.dayComplete ? " · " + L("day ticked off ✓") : ""}</p>
     <div class="sumstats"><div><b>${Math.round(r.minutes)}</b><span>${L("Minutes")}</span></div><div><b>${r.done}/${r.total || r.done}</b><span>${L("Exercises")}</span></div><div><b>+${r.xp}</b><span>XP</span></div></div>
     ${tests.length ? `<div class="testbox" style="text-align:left"><h3>${L("Test results")}</h3>${tests.map(([it,s])=>`<p style="margin:4px 0">${benchIcon(it.test)} ${esc(L(benchOf(it.test).name))}: <b style="color:#fff">${fmtBench(benchOf(it.test), s.value)}</b></p>`).join("")}</div>` : ""}
+    ${prevCheckHTML()}
     <p style="margin-top:16px;font-size:.84rem">${L("How hard was it?")}</p>
     <div class="rpe" id="pRpe">${["Easy","Okay","Hard","Very hard","Max"].map((l,i)=>`<button data-r="${i+1}">${RPE_ICONS[i]}<span>${L(l)}</span></button>`).join("")}</div>
     <textarea id="pNote" class="txt" rows="2" placeholder="${L("Notes (optional) — e.g. weak foot felt better")}" style="background:#fff"></textarea>
@@ -5646,6 +5669,7 @@ function finishPlayer(){
   if($("pShare")) $("pShare").onclick = ()=> shareWorkout(r, pl.sess);
   document.querySelectorAll("#pRpe button").forEach(b=> b.onclick = ()=>{ pl.rpe = +b.dataset.r; document.querySelectorAll("#pRpe button").forEach(x=>x.classList.toggle("on", x===b)); });
   $("pSave").onclick = saveAndClose;
+  bindPrevCheck();
   if($("pDiscard")) $("pDiscard").onclick = closePlayer;
 }
 function saveAndClose(){
@@ -5684,6 +5708,296 @@ $("pClose").onclick = ()=>{
 };
 $("pVoice").onclick = ()=>{ state.settings.voice = !state.settings.voice; saveState(); $("pVoice").textContent = state.settings.voice ? "🔊" : "🔇"; if(!state.settings.voice) try{ speechSynthesis.cancel(); }catch(e){} };
 window.addEventListener("resize", ()=>{ if(plAnim) plAnim.render(); if(demoAnim) demoAnim.render(); });
+
+/* ============================================================
+   INJURY-PREVENTION WARM-UP (Nov 2026) — based on FIFA 11+, adapted for solo training.
+   3 parts (~20 min): slow running → strength, balance & jumps (Level 1–3) → faster running.
+   Level is the same for every Part 2 move (FIFA's "whole group" option); after a session the
+   player says if Part 2 felt easy; 2 "easy" answers in a row → we suggest the next level.
+   Everything stays on this device (state.prev). Honest wording: the studies tested the team
+   version with a coach; this solo version keeps the structure but is not separately tested.
+   ============================================================ */
+var PREV_EX = [
+  E("Side Shuffle","Low, quick sideways steps — feet never cross.",["none"],"1x60/0","Stay low, 30 s each direction",
+    ["Knees bent, chest up","Push off sideways — don't cross your feet","Change direction every 5 m"],{s:"top",t:"tdrill"}),
+  E("Jump & Land","Jog, then jump as if heading a ball and land softly on both feet.",["none"],"1x60/0","6–8 jumps, soft landings",
+    ["Jog 3–4 steps","Jump up with both arms, as if heading the ball","Land on both feet — knees bent and over your toes"],null),
+  E("Forward & Back Runs","Quick run forward 5 m, then run backwards to the start.",["none"],"1x60/0","Short steps, stay on your toes",
+    ["Run forward 5 m","Stop under control — knees bent","Run backwards with small, quick steps"],{s:"side",t:"sprint",o:{type:"stopgo"}}),
+  E("Run at 75–80%","Run fast but relaxed for about 40 m, then jog back.",["none"],"2x20/20","Fast, not flat-out",
+    ["Build up over the first steps","Run tall and relaxed at 75–80% effort","Jog back slowly to recover"],{s:"side",t:"sprint",o:{type:"sprint"}}),
+  E("Plant & Cut","Run, plant your outside foot and cut sharply the other way.",["none"],"2x20/20","Knee over toes on every plant",
+    ["Run 4–5 steps at medium speed","Plant the outside foot, knee over toes","Push off and change direction sharply"],{s:"top",t:"shuttle"}),
+];
+PREV_EX[1].anim = exByName("Jump Squats").anim;
+PREV_EX.forEach(x=>{ x.catId = "warmup"; });
+
+const PREV_LABEL = "Injury-prevention warm-up";
+const PREV_PARTS = { 1:"Part 1 · Running (slow)", 2:"Part 2 · Strength, balance & jumps", 3:"Part 3 · Running (faster)" };
+/* Part 2: [exercise, sets, work, rest, target] for Level 1 / 2 / 3 */
+const PREV_P2 = [
+  [["Elbow Plank",3,25,15,"Level 1 · hold 20–30 s, body in a straight line"],
+   ["Plank Leg Raises",3,30,15,"Level 2 · lift one leg at a time, 2 s each"],
+   ["Plank Leg Raises",3,30,15,"Level 3 · lift one leg and hold 10–15 s each leg"]],
+  [["Side Plank",3,40,15,"Level 1 · bottom knee down if needed, 20 s each side"],
+   ["Side Plank",3,40,15,"Level 2 · lower and raise the hip slowly, 20 s each side"],
+   ["Star Side Plank",3,40,15,"Level 3 · lift the top leg, 20 s each side"]],
+  [["Nordic Hamstring Curls",1,30,0,"Level 1 · 3–5 very slow lowers"],
+   ["Nordic Hamstring Curls",1,45,0,"Level 2 · 7–10 very slow lowers"],
+   ["Nordic Hamstring Curls",1,60,0,"Level 3 · 12–15 very slow lowers"]],
+  [["Single-Leg Balance",2,60,10,"Level 1 · hold a ball in both hands, 30 s each leg"],
+   ["Single-Leg Balance",2,60,10,"Level 2 · pass the ball around your waist and under your knee, 30 s each leg"],
+   ["Balance Stand",2,60,10,"Level 3 · tip forward to a T and hold, 30 s each leg"]],
+  [["Air Squats",2,30,15,"Level 1 · slow squats, rise onto your toes at the top"],
+   ["Forward Lunges",2,40,15,"Level 2 · walking lunges, knee over toes, 10 each leg"],
+   ["Single-Leg Squat to Chair",2,40,15,"Level 3 · one-leg squats to a chair, 8–10 each leg"]],
+  [["Jump Squats",2,30,20,"Level 1 · jump straight up, land softly, knees over toes"],
+   ["Side-to-Side Jumps",2,30,20,"Level 2 · jump side to side, land on one leg and hold"],
+   ["Hurdle Hops",2,30,20,"Level 3 · jump over a line in all directions, soft landings"]],
+];
+function prevState(){ if(!state.prev || typeof state.prev !== "object") state.prev = { level:1, easy:0 }; return state.prev; }
+function prevLevel(){ const l = +prevState().level; return l >= 1 && l <= 3 ? l : 1; }
+function prevSession(level){
+  level = level || prevLevel();
+  const w = (n, work, part, tgt)=>{ const ex = exByName(n); return { kind:"warmup", ex, catId:"warmup", sets:1, work: work || ex.work, rest:0, part, tgt }; };
+  const p1 = [w("Jog & Skips", 90, 1), w("Open & Close the Gate", 60, 1), w("Side Shuffle", 60, 1), w("Jump & Land", 60, 1), w("Forward & Back Runs", 60, 1)];
+  const p2 = PREV_P2.map(row=>{ const [n, sets, work, rest, tgt] = row[level-1]; const ex = exByName(n);
+    return { kind:"main", ex, catId: ex.catId, sets, work, rest, part:2, tgt }; });
+  const run = (n, tgt)=>{ const ex = exByName(n); return { kind:"warmup", ex, catId:"warmup", sets:ex.sets, work:ex.work, rest:ex.rest, part:3, tgt }; };
+  const p3 = [run("Run at 75–80%"), Object.assign(run("High Skips", "Bounding · high knee drive, land softly"), { sets:1, work:30, rest:0 }), run("Plant & Cut")];
+  return { label: PREV_LABEL, prevent:true, level, items: p1.concat(p2, p3) };
+}
+function prevThisWeek(){ const wk = weekKey(); return state.log.filter(s=> s.label === PREV_LABEL && weekKey(new Date(s.ts)) === wk).length; }
+function prevSummaryLine(){ return L("~20 min · 3 parts · Level {0}", prevLevel()) + " · " + L("This week: {0}/2", prevThisWeek()); }
+
+/* intro sheet: what it is, level choice, honest evidence note, start */
+function openPrevent(){
+  const lv = prevLevel(), s = prevSession(lv);
+  openSheet(`<div class="sheethead"><div><h2>🛡️ ${L(PREV_LABEL)}</h2><div class="hint">${L("Based on FIFA 11+ · adapted for solo training")}</div></div><button class="x" aria-label="Close">✕</button></div>
+    <div class="card prevbox mt8"><h3>${L("How it works")}</h3>
+      <p class="hint">${L("Do it at least 2× a week, before training.")} <b>${L("This week: {0}/2", prevThisWeek())}</b></p>
+      <p class="hint mt8">⚠️ ${L("Key rule: keep your knee in line with your toes — don't let it fall inward. Land softly.")}</p>
+      <h3 class="mt12">${L("Your level for Part 2")}</h3>
+      <div class="chips mt8" id="prevLv">${[1,2,3].map(n=>`<button class="chip ${n===lv?"on":""}" data-lv="${n}">${L("Level {0}", n)}</button>`).join("")}</div>
+      <p class="hint mt8">${L("Start at Level 1. Move up only when every Part 2 exercise feels easy with good form.")}</p></div>
+    ${blocksHTML(s.items, {eq:true})}
+    <button class="btn accent block mt12" id="sheetGo">${L("▶ Start warm-up")}</button>
+    <details class="card prevbox mt12"><summary><b>${L("Why it helps")}</b></summary>
+      <p class="hint mt8">${L("In studies, teams that did FIFA 11+ regularly had about a third fewer injuries (around 35% fewer overall and 39% fewer leg injuries in one review of 9 studies).")}</p>
+      <p class="hint mt8">${L("Those studies tested the team version with a coach. This solo version uses the same structure but has not been tested on its own. It cannot promise you won't get injured.")}</p>
+      <p class="hint mt8">👶 ${L("Under 14? This warm-up is designed for players aged 14 and over. FIFA has a separate version for children (FIFA 11+ Kids) — ask your coach.")}</p>
+      <p class="hint mt8">🩺 ${L("Stop if anything hurts sharply, and see a doctor or physio if pain keeps coming back.")}</p>
+      <p class="hint mt8">${L("FIFA 11+ was developed by FIFA's medical research centre (F-MARC). IKJON is not connected with FIFA.")}</p>
+      <p class="hint mt8">${L("Sources")}: <a href="https://www.pubmed.gov/26403470/" target="_blank" rel="noopener">PubMed 26403470</a> · <a href="https://www.physio-pedia.com/The_F%C3%A9d%C3%A9ration_Internationale_de_Football_Association_FIFA_11%2B" target="_blank" rel="noopener">Physio-pedia: FIFA 11+</a></p>
+    </details>`, s);
+  document.querySelectorAll("#prevLv [data-lv]").forEach(b=> b.onclick = ()=>{ const p = prevState(); p.level = +b.dataset.lv; p.easy = 0; saveState(); openPrevent(); refreshPrevCards(); });
+  $("sheetGo").onclick = ()=>{ closeSheet(); startPlayer(s); };
+}
+
+/* after the session: "Did Part 2 feel easy?" → suggest the next level after 2 easy answers in a row */
+function prevCheckHTML(){
+  if(!pl || !pl.sess.prevent || !pl.result || !pl.result.done) return "";
+  return `<div class="testbox prevcheck" id="prevCheck" style="text-align:left"><h3>🛡️ ${L("Part 2 at Level {0} — how did it feel?", pl.sess.level)}</h3>
+    <div class="grid2 mt8"><button class="btn light" data-pe="1">✅ ${L("Easy, good form")}</button><button class="btn light" data-pe="0">${L("Not yet")}</button></div></div>`;
+}
+function bindPrevCheck(){
+  const box = $("prevCheck"); if(!box) return;
+  box.querySelectorAll("[data-pe]").forEach(b=> b.onclick = ()=>{
+    const p = prevState(), lv = pl.sess.level;
+    if(b.dataset.pe === "0"){ p.easy = 0; saveState(); box.innerHTML = `<p style="margin:0">${L("No problem — stay at this level until it feels easy.")}</p>`; return; }
+    if(lv !== prevLevel()){ saveState(); box.innerHTML = `<p style="margin:0">👍</p>`; return; }
+    p.easy = (p.easy || 0) + 1; saveState();
+    if(lv >= 3){ box.innerHTML = `<p style="margin:0">🏅 ${L("You're at the top level. Keep doing it twice a week.")}</p>`; return; }
+    if(p.easy < 2){ box.innerHTML = `<p style="margin:0">👍 ${L("Good — once more at this level and we'll suggest the next one.")}</p>`; return; }
+    box.innerHTML = `<p style="margin:0">⬆️ ${L("Ready for Level {0}? Every Part 2 move felt easy twice in a row.", lv + 1)}</p>
+      <div class="grid2 mt8"><button class="btn accent" id="prevUp">${L("Move up")}</button><button class="btn light" id="prevStay">${L("Stay")}</button></div>`;
+    $("prevUp").onclick = ()=>{ p.level = lv + 1; p.easy = 0; saveState(); box.innerHTML = `<p style="margin:0">✅ ${L("Level {0} saved", p.level)}</p>`; };
+    $("prevStay").onclick = ()=>{ p.easy = 0; saveState(); box.innerHTML = `<p style="margin:0">${L("No problem — stay at this level until it feels easy.")}</p>`; };
+  });
+}
+
+/* cards on Home and Train */
+function prevCardHTML(id){
+  return `<div class="hmrow"><div class="art hmart">${pic("f-jnt")}</div>
+    <div class="hmtxt"><span class="chaltag hmtag prevtag">🛡️ ${L("Stay injury-free")}</span><h3>${L(PREV_LABEL)}</h3><p class="hint">${L("Based on FIFA 11+ · adapted for solo training")}</p><p class="hint"><b>${prevSummaryLine()}</b></p></div></div>
+    <div class="grid2 mt12"><button class="btn accent" id="${id}Go">${L("▶ Start warm-up")}</button><button class="btn ghost" id="${id}Info">${L("How it works")}</button></div>`;
+}
+function renderPrevCard(id){
+  const el = $(id); if(!el) return;
+  el.innerHTML = prevCardHTML(id);
+  $(id + "Go").onclick = ()=> previewSession(prevSession());
+  $(id + "Info").onclick = openPrevent;
+}
+function refreshPrevCards(){ renderPrevCard("homePrev"); renderPrevCard("trainPrev"); }
+
+/* ---------- What's new (shown once per version to existing users) ---------- */
+const FB_NEWS_V = 1;
+function renderNews(){
+  const el = $("homeNews"); if(!el) return;
+  if(!state.onboarded && !state.log.length){ state.newsSeen = FB_NEWS_V; }
+  if((state.newsSeen || 0) >= FB_NEWS_V){ el.style.display = "none"; el.innerHTML = ""; return; }
+  el.style.display = "";
+  el.innerHTML = `<h3>✨ ${L("What's new")}</h3><ul class="newslist">
+    <li>${L("🛡️ Injury-prevention warm-up — 20 minutes, 3 levels, based on FIFA 11+ (Train tab).")}</li>
+    <li>${L("⏰ Training reminders — add your training days to your phone's calendar (Progress → Settings).")}</li></ul>
+    <div class="grid2 mt8"><button class="btn accent" id="newsTry">${L("Try the warm-up")}</button><button class="btn ghost" id="newsOk">${L("Got it")}</button></div>`;
+  $("newsOk").onclick = ()=>{ state.newsSeen = FB_NEWS_V; saveState(); renderNews(); };
+  $("newsTry").onclick = ()=>{ state.newsSeen = FB_NEWS_V; saveState(); renderNews(); openPrevent(); };
+}
+
+/* ---------- training-day reminder: a weekly repeating calendar event (.ics) — no account, no push ---------- */
+const ICS_DAYS = ["SU","MO","TU","WE","TH","FR","SA"];
+function remindState(){ const r = state.settings.remind; return (r && Array.isArray(r.days)) ? r : { days:[1,3,5], time:"17:00", set:false }; }
+function renderRemind(){
+  const el = $("remindBox"); if(!el) return;
+  const r = remindState(), order = [1,2,3,4,5,6,0];
+  el.innerHTML = `<div class="between"><h3>⏰ ${L("Training reminder")}</h3></div>
+    <p class="hint mt8">${L("Pick your training days and time. We add a repeating event to your phone's calendar — nothing is sent to us.")}</p>
+    <div class="chips mt8" id="remDays">${order.map(d=>`<button class="chip ${r.days.includes(d)?"on":""}" data-d="${d}">${wd(d)}</button>`).join("")}</div>
+    <div class="row mt8" style="gap:8px;align-items:center"><input type="time" id="remTime" class="txt" value="${esc(r.time || "17:00")}" style="max-width:130px"><button class="btn accent sm" id="remGo">${L("📅 Add to calendar")}</button></div>
+    ${r.set ? `<p class="hint mt8" style="color:var(--green,#2E8B57);font-weight:bold">${L("Reminder set: {0} at {1}", order.filter(d=>r.days.includes(d)).map(wd).join(", "), esc(r.time))}</p>` : ""}`;
+  el.querySelectorAll("#remDays [data-d]").forEach(b=> b.onclick = ()=>{
+    const d = +b.dataset.d, cur = remindState(), days = cur.days.includes(d) ? cur.days.filter(x=>x!==d) : cur.days.concat(d);
+    state.settings.remind = { days, time: $("remTime").value || cur.time, set:false }; saveState(); renderRemind(); });
+  $("remGo").onclick = ()=>{
+    const cur = remindState(), time = $("remTime").value || "17:00";
+    if(!cur.days.length){ toast(L("Pick at least one day")); return; }
+    downloadReminder(cur.days, time);
+    state.settings.remind = { days: cur.days, time, set:true }; saveState(); renderRemind();
+    toast(L("Calendar file ready — open it to add the reminder."));
+  };
+}
+function downloadReminder(days, time){
+  const [h, m] = time.split(":").map(Number), p2 = x=> String(x).padStart(2, "0");
+  let d = new Date(); for(let i=0; i<7 && !days.includes(d.getDay()); i++) d = addDays(d, 1);   // first matching day
+  const st = `${d.getFullYear()}${p2(d.getMonth()+1)}${p2(d.getDate())}T${p2(h||0)}${p2(m||0)}00`;
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z", title = L("IKJON Football — training time ⚽");
+  const ics = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//IKJON//Football//EN","CALSCALE:GREGORIAN","BEGIN:VEVENT",
+    "UID:ikjon-fb-" + Date.now() + "@ikjon-gearbox.com","DTSTAMP:" + stamp,"DTSTART:" + st,"DURATION:PT45M",
+    "RRULE:FREQ=WEEKLY;BYDAY=" + days.slice().sort().map(x=> ICS_DAYS[x]).join(","),
+    "SUMMARY:" + title,"DESCRIPTION:https://www.ikjon-gearbox.com/football/","URL:https://www.ikjon-gearbox.com/football/",
+    "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:" + title,"TRIGGER:-PT15M","END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([ics], { type:"text/calendar" }));
+  a.download = "ikjon-football-reminder.ics"; document.body.appendChild(a); a.click(); a.remove();
+}
+
+/* ---------- translations ---------- */
+Object.assign(I18N.uz, {
+"Injury-prevention warm-up":"Jarohatdan saqlovchi qizish","Based on FIFA 11+ · adapted for solo training":"FIFA 11+ asosida · yakka mashg'ulot uchun moslashtirilgan",
+"Stay injury-free":"Jarohatsiz o'ynang","~20 min · 3 parts · Level {0}":"~20 daq · 3 qism · {0}-daraja","This week: {0}/2":"Bu hafta: {0}/2",
+"Do it at least 2× a week, before training.":"Haftasiga kamida 2 marta, mashg'ulotdan oldin bajaring.","▶ Start warm-up":"▶ Qizishni boshlash","How it works":"Qanday ishlaydi",
+"Part 1 · Running (slow)":"1-qism · Yugurish (sekin)","Part 2 · Strength, balance & jumps":"2-qism · Kuch, muvozanat va sakrashlar","Part 3 · Running (faster)":"3-qism · Yugurish (tezroq)",
+"Level {0}":"{0}-daraja","Your level for Part 2":"2-qism uchun darajangiz",
+"Start at Level 1. Move up only when every Part 2 exercise feels easy with good form.":"1-darajadan boshlang. 2-qismdagi har bir mashq to'g'ri texnika bilan oson bo'lgandagina keyingisiga o'ting.",
+"Key rule: keep your knee in line with your toes — don't let it fall inward. Land softly.":"Asosiy qoida: tizzangiz oyoq barmoqlari yo'nalishida bo'lsin — ichkariga tushib ketmasin. Yumshoq qo'ning.",
+"Why it helps":"Nima uchun foydali",
+"In studies, teams that did FIFA 11+ regularly had about a third fewer injuries (around 35% fewer overall and 39% fewer leg injuries in one review of 9 studies).":"Tadqiqotlarda FIFA 11+ ni muntazam bajargan jamoalarda jarohatlar taxminan uchdan bir qismga kam bo'lgan (9 ta tadqiqot sharhida umumiy jarohatlar ~35%, oyoq jarohatlari ~39% kam).",
+"Those studies tested the team version with a coach. This solo version uses the same structure but has not been tested on its own. It cannot promise you won't get injured.":"Bu tadqiqotlar murabbiy bilan jamoaviy variantni sinagan. Ushbu yakka variant xuddi shu tuzilishga ega, lekin alohida sinalmagan. U jarohat olmasligingizga kafolat bermaydi.",
+"Under 14? This warm-up is designed for players aged 14 and over. FIFA has a separate version for children (FIFA 11+ Kids) — ask your coach.":"14 yoshdan kichikmisiz? Bu qizish 14 yosh va undan katta o'yinchilar uchun. FIFA bolalar uchun alohida variantga ega (FIFA 11+ Kids) — murabbiyingizdan so'rang.",
+"Stop if anything hurts sharply, and see a doctor or physio if pain keeps coming back.":"Biror joy keskin og'risa, to'xtang; og'riq qaytaversa, shifokor yoki fizioterapevtga murojaat qiling.",
+"FIFA 11+ was developed by FIFA's medical research centre (F-MARC). IKJON is not connected with FIFA.":"FIFA 11+ FIFA tibbiy tadqiqot markazi (F-MARC) tomonidan ishlab chiqilgan. IKJON FIFA bilan bog'liq emas.",
+"Sources":"Manbalar",
+"Part 2 at Level {0} — how did it feel?":"2-qism {0}-darajada — qanday bo'ldi?","Easy, good form":"Oson, texnika to'g'ri","Not yet":"Hali emas",
+"Ready for Level {0}? Every Part 2 move felt easy twice in a row.":"{0}-darajaga tayyormisiz? 2-qism mashqlari ketma-ket 2 marta oson bo'ldi.",
+"Move up":"Ko'tarilish","Stay":"Qolish","Level {0} saved":"{0}-daraja saqlandi",
+"Good — once more at this level and we'll suggest the next one.":"Yaxshi — shu darajada yana bir marta, keyin keyingisini taklif qilamiz.",
+"No problem — stay at this level until it feels easy.":"Hechqisi yo'q — oson bo'lguncha shu darajada qoling.",
+"You're at the top level. Keep doing it twice a week.":"Siz eng yuqori darajadasiz. Haftasiga 2 marta davom eting.",
+"What's new":"Yangiliklar","Try the warm-up":"Qizishni sinab ko'rish","Got it":"Tushunarli",
+"🛡️ Injury-prevention warm-up — 20 minutes, 3 levels, based on FIFA 11+ (Train tab).":"🛡️ Jarohatdan saqlovchi qizish — 20 daqiqa, 3 daraja, FIFA 11+ asosida («Mashq» bo'limi).",
+"⏰ Training reminders — add your training days to your phone's calendar (Progress → Settings).":"⏰ Mashg'ulot eslatmalari — mashg'ulot kunlaringizni telefon kalendariga qo'shing («Natijalar» → Sozlamalar).",
+"Training reminder":"Mashg'ulot eslatmasi",
+"Pick your training days and time. We add a repeating event to your phone's calendar — nothing is sent to us.":"Mashg'ulot kunlari va vaqtini tanlang. Telefoningiz kalendariga takrorlanuvchi tadbir qo'shamiz — bizga hech narsa yuborilmaydi.",
+"📅 Add to calendar":"📅 Kalendarga qo'shish","Pick at least one day":"Kamida bitta kunni tanlang",
+"Calendar file ready — open it to add the reminder.":"Kalendar fayli tayyor — eslatmani qo'shish uchun uni oching.",
+"IKJON Football — training time ⚽":"IKJON Football — mashg'ulot vaqti ⚽","Reminder set: {0} at {1}":"Eslatma: {0}, soat {1}",
+/* new moves */
+"Side Shuffle":"Yonlama qadamlar","Low, quick sideways steps — feet never cross.":"Past va tez yonlama qadamlar — oyoqlar kesishmaydi.","Stay low, 30 s each direction":"Past turing, har yo'nalishda 30 s",
+"Knees bent, chest up":"Tizzalar bukilgan, ko'krak tik","Push off sideways — don't cross your feet":"Yon tomonga itariling — oyoqlarni kesishtirmang","Change direction every 5 m":"Har 5 m da yo'nalishni o'zgartiring",
+"Jump & Land":"Sakrash va qo'nish","Jog, then jump as if heading a ball and land softly on both feet.":"Yengil yugurib, to'pni bosh bilan urayotgandek sakrang va ikki oyoqqa yumshoq qo'ning.","6–8 jumps, soft landings":"6–8 sakrash, yumshoq qo'nish",
+"Jog 3–4 steps":"3–4 qadam yengil yuguring","Jump up with both arms, as if heading the ball":"Ikkala qo'l bilan, to'pni bosh bilan urayotgandek sakrang","Land on both feet — knees bent and over your toes":"Ikki oyoqqa qo'ning — tizzalar bukilgan va barmoqlar ustida",
+"Forward & Back Runs":"Oldinga va orqaga yugurish","Quick run forward 5 m, then run backwards to the start.":"5 m oldinga tez yuguring, so'ng orqaga yugurib boshlang'ich joyga qayting.","Short steps, stay on your toes":"Qisqa qadamlar, oyoq uchida",
+"Run forward 5 m":"5 m oldinga yuguring","Stop under control — knees bent":"Nazorat bilan to'xtang — tizzalar bukilgan","Run backwards with small, quick steps":"Kichik, tez qadamlar bilan orqaga yuguring",
+"Run at 75–80%":"75–80% tezlikda yugurish","Run fast but relaxed for about 40 m, then jog back.":"Taxminan 40 m tez, lekin bo'shashgan holda yuguring, so'ng sekin qayting.","Fast, not flat-out":"Tez, lekin to'liq kuch bilan emas",
+"Build up over the first steps":"Birinchi qadamlarda tezlikni oshiring","Run tall and relaxed at 75–80% effort":"Tik va bo'shashib, 75–80% kuch bilan yuguring","Jog back slowly to recover":"Tiklanish uchun sekin yugurib qayting",
+"Plant & Cut":"Tayanib burilish","Run, plant your outside foot and cut sharply the other way.":"Yuguring, tashqi oyoqqa tayaning va keskin boshqa tomonga buriling.","Knee over toes on every plant":"Har tayanishda tizza barmoqlar ustida",
+"Run 4–5 steps at medium speed":"4–5 qadam o'rtacha tezlikda yuguring","Plant the outside foot, knee over toes":"Tashqi oyoqqa tayaning, tizza barmoqlar ustida","Push off and change direction sharply":"Itarilib, yo'nalishni keskin o'zgartiring",
+/* level targets */
+"Level 1 · hold 20–30 s, body in a straight line":"1-daraja · 20–30 s ushlab turing, tana to'g'ri chiziqda",
+"Level 2 · lift one leg at a time, 2 s each":"2-daraja · oyoqlarni navbat bilan, har birini 2 s ko'taring",
+"Level 3 · lift one leg and hold 10–15 s each leg":"3-daraja · bir oyoqni ko'tarib, har oyoqda 10–15 s ushlang",
+"Level 1 · bottom knee down if needed, 20 s each side":"1-daraja · kerak bo'lsa pastki tizza yerda, har tomonga 20 s",
+"Level 2 · lower and raise the hip slowly, 20 s each side":"2-daraja · sonni sekin tushirib-ko'taring, har tomonga 20 s",
+"Level 3 · lift the top leg, 20 s each side":"3-daraja · ustki oyoqni ko'taring, har tomonga 20 s",
+"Level 1 · 3–5 very slow lowers":"1-daraja · 3–5 ta juda sekin tushish","Level 2 · 7–10 very slow lowers":"2-daraja · 7–10 ta juda sekin tushish","Level 3 · 12–15 very slow lowers":"3-daraja · 12–15 ta juda sekin tushish",
+"Level 1 · hold a ball in both hands, 30 s each leg":"1-daraja · to'pni ikki qo'lda ushlang, har oyoqda 30 s",
+"Level 2 · pass the ball around your waist and under your knee, 30 s each leg":"2-daraja · to'pni bel atrofida va tizza ostidan aylantiring, har oyoqda 30 s",
+"Level 3 · tip forward to a T and hold, 30 s each leg":"3-daraja · oldinga «T» holatiga egilib ushlang, har oyoqda 30 s",
+"Level 1 · slow squats, rise onto your toes at the top":"1-daraja · sekin o'tirib-turish, tepada oyoq uchiga ko'tariling",
+"Level 2 · walking lunges, knee over toes, 10 each leg":"2-daraja · yurib hamla, tizza barmoqlar ustida, har oyoqqa 10 ta",
+"Level 3 · one-leg squats to a chair, 8–10 each leg":"3-daraja · stulga bir oyoqda o'tirish, har oyoqqa 8–10 ta",
+"Level 1 · jump straight up, land softly, knees over toes":"1-daraja · tikka sakrang, yumshoq qo'ning, tizzalar barmoqlar ustida",
+"Level 2 · jump side to side, land on one leg and hold":"2-daraja · yonma-yon sakrang, bir oyoqqa qo'nib turing",
+"Level 3 · jump over a line in all directions, soft landings":"3-daraja · chiziq ustidan har tomonga sakrang, yumshoq qo'nish",
+"Bounding · high knee drive, land softly":"Uzun sakrab yugurish · tizzani baland ko'taring, yumshoq qo'ning",
+});
+Object.assign(I18N.ru, {
+"Injury-prevention warm-up":"Разминка против травм","Based on FIFA 11+ · adapted for solo training":"На основе FIFA 11+ · адаптировано для самостоятельных тренировок",
+"Stay injury-free":"Играйте без травм","~20 min · 3 parts · Level {0}":"~20 мин · 3 части · уровень {0}","This week: {0}/2":"На этой неделе: {0}/2",
+"Do it at least 2× a week, before training.":"Делайте минимум 2 раза в неделю, перед тренировкой.","▶ Start warm-up":"▶ Начать разминку","How it works":"Как это работает",
+"Part 1 · Running (slow)":"Часть 1 · Бег (медленно)","Part 2 · Strength, balance & jumps":"Часть 2 · Сила, баланс и прыжки","Part 3 · Running (faster)":"Часть 3 · Бег (быстрее)",
+"Level {0}":"Уровень {0}","Your level for Part 2":"Ваш уровень для части 2",
+"Start at Level 1. Move up only when every Part 2 exercise feels easy with good form.":"Начните с уровня 1. Переходите выше, только когда все упражнения части 2 даются легко и с правильной техникой.",
+"Key rule: keep your knee in line with your toes — don't let it fall inward. Land softly.":"Главное правило: колено смотрит туда же, куда носок, — не заваливайте его внутрь. Приземляйтесь мягко.",
+"Why it helps":"Почему это помогает",
+"In studies, teams that did FIFA 11+ regularly had about a third fewer injuries (around 35% fewer overall and 39% fewer leg injuries in one review of 9 studies).":"В исследованиях у команд, регулярно выполнявших FIFA 11+, травм было примерно на треть меньше (в обзоре 9 исследований — около 35% меньше травм в целом и 39% меньше травм ног).",
+"Those studies tested the team version with a coach. This solo version uses the same structure but has not been tested on its own. It cannot promise you won't get injured.":"В исследованиях проверяли командную версию с тренером. Эта версия для самостоятельных занятий повторяет структуру, но отдельно не проверялась. Она не гарантирует, что вы не получите травму.",
+"Under 14? This warm-up is designed for players aged 14 and over. FIFA has a separate version for children (FIFA 11+ Kids) — ask your coach.":"Младше 14? Эта разминка для игроков от 14 лет. У FIFA есть отдельная версия для детей (FIFA 11+ Kids) — спросите тренера.",
+"Stop if anything hurts sharply, and see a doctor or physio if pain keeps coming back.":"Остановитесь при резкой боли; если боль возвращается, обратитесь к врачу или физиотерапевту.",
+"FIFA 11+ was developed by FIFA's medical research centre (F-MARC). IKJON is not connected with FIFA.":"FIFA 11+ разработана медицинским исследовательским центром FIFA (F-MARC). IKJON не связан с FIFA.",
+"Sources":"Источники",
+"Part 2 at Level {0} — how did it feel?":"Часть 2 на уровне {0} — как ощущения?","Easy, good form":"Легко, техника в порядке","Not yet":"Пока нет",
+"Ready for Level {0}? Every Part 2 move felt easy twice in a row.":"Готовы к уровню {0}? Все упражнения части 2 дважды подряд дались легко.",
+"Move up":"Перейти","Stay":"Остаться","Level {0} saved":"Уровень {0} сохранён",
+"Good — once more at this level and we'll suggest the next one.":"Хорошо — ещё раз на этом уровне, и мы предложим следующий.",
+"No problem — stay at this level until it feels easy.":"Ничего страшного — оставайтесь на этом уровне, пока не станет легко.",
+"You're at the top level. Keep doing it twice a week.":"Вы на высшем уровне. Продолжайте 2 раза в неделю.",
+"What's new":"Что нового","Try the warm-up":"Попробовать разминку","Got it":"Понятно",
+"🛡️ Injury-prevention warm-up — 20 minutes, 3 levels, based on FIFA 11+ (Train tab).":"🛡️ Разминка против травм — 20 минут, 3 уровня, на основе FIFA 11+ (вкладка «Тренировка»).",
+"⏰ Training reminders — add your training days to your phone's calendar (Progress → Settings).":"⏰ Напоминания о тренировках — добавьте дни тренировок в календарь телефона («Прогресс» → Настройки).",
+"Training reminder":"Напоминание о тренировке",
+"Pick your training days and time. We add a repeating event to your phone's calendar — nothing is sent to us.":"Выберите дни и время тренировок. Мы добавим повторяющееся событие в календарь телефона — нам ничего не отправляется.",
+"📅 Add to calendar":"📅 Добавить в календарь","Pick at least one day":"Выберите хотя бы один день",
+"Calendar file ready — open it to add the reminder.":"Файл календаря готов — откройте его, чтобы добавить напоминание.",
+"IKJON Football — training time ⚽":"IKJON Football — время тренировки ⚽","Reminder set: {0} at {1}":"Напоминание: {0} в {1}",
+"Side Shuffle":"Приставные шаги в сторону","Low, quick sideways steps — feet never cross.":"Низкие быстрые шаги в сторону — ноги не скрещиваются.","Stay low, 30 s each direction":"Низкая стойка, по 30 с в каждом направлении",
+"Knees bent, chest up":"Колени согнуты, грудь вперёд","Push off sideways — don't cross your feet":"Толчок в сторону — не скрещивайте ноги","Change direction every 5 m":"Меняйте направление каждые 5 м",
+"Jump & Land":"Прыжок и приземление","Jog, then jump as if heading a ball and land softly on both feet.":"Бег трусцой, затем прыжок как на удар головой и мягкое приземление на обе ноги.","6–8 jumps, soft landings":"6–8 прыжков, мягкое приземление",
+"Jog 3–4 steps":"3–4 шага трусцой","Jump up with both arms, as if heading the ball":"Выпрыгните вверх с махом рук, как на удар головой","Land on both feet — knees bent and over your toes":"Приземлитесь на обе ноги — колени согнуты и над носками",
+"Forward & Back Runs":"Бег вперёд и назад","Quick run forward 5 m, then run backwards to the start.":"Быстро пробегите 5 м вперёд, затем спиной вернитесь к старту.","Short steps, stay on your toes":"Короткие шаги, на носках",
+"Run forward 5 m":"Бег вперёд 5 м","Stop under control — knees bent":"Контролируемая остановка — колени согнуты","Run backwards with small, quick steps":"Бег спиной мелкими быстрыми шагами",
+"Run at 75–80%":"Бег на 75–80%","Run fast but relaxed for about 40 m, then jog back.":"Пробегите около 40 м быстро, но расслабленно, затем трусцой назад.","Fast, not flat-out":"Быстро, но не в полную силу",
+"Build up over the first steps":"Разгоняйтесь первыми шагами","Run tall and relaxed at 75–80% effort":"Бегите прямо и расслабленно на 75–80% усилия","Jog back slowly to recover":"Трусцой вернитесь назад для отдыха",
+"Plant & Cut":"Упор и смена направления","Run, plant your outside foot and cut sharply the other way.":"Бег, упор внешней ногой и резкая смена направления.","Knee over toes on every plant":"Колено над носком при каждом упоре",
+"Run 4–5 steps at medium speed":"4–5 шагов на средней скорости","Plant the outside foot, knee over toes":"Упор внешней ногой, колено над носком","Push off and change direction sharply":"Оттолкнитесь и резко смените направление",
+"Level 1 · hold 20–30 s, body in a straight line":"Уровень 1 · держите 20–30 с, тело в одну линию",
+"Level 2 · lift one leg at a time, 2 s each":"Уровень 2 · поднимайте ноги по очереди, по 2 с",
+"Level 3 · lift one leg and hold 10–15 s each leg":"Уровень 3 · поднимите ногу и держите по 10–15 с на каждую",
+"Level 1 · bottom knee down if needed, 20 s each side":"Уровень 1 · при необходимости нижнее колено на полу, по 20 с на сторону",
+"Level 2 · lower and raise the hip slowly, 20 s each side":"Уровень 2 · медленно опускайте и поднимайте таз, по 20 с на сторону",
+"Level 3 · lift the top leg, 20 s each side":"Уровень 3 · поднимите верхнюю ногу, по 20 с на сторону",
+"Level 1 · 3–5 very slow lowers":"Уровень 1 · 3–5 очень медленных опусканий","Level 2 · 7–10 very slow lowers":"Уровень 2 · 7–10 очень медленных опусканий","Level 3 · 12–15 very slow lowers":"Уровень 3 · 12–15 очень медленных опусканий",
+"Level 1 · hold a ball in both hands, 30 s each leg":"Уровень 1 · мяч в обеих руках, по 30 с на каждую ногу",
+"Level 2 · pass the ball around your waist and under your knee, 30 s each leg":"Уровень 2 · передавайте мяч вокруг пояса и под коленом, по 30 с на каждую ногу",
+"Level 3 · tip forward to a T and hold, 30 s each leg":"Уровень 3 · наклонитесь вперёд в «Т» и держите, по 30 с на каждую ногу",
+"Level 1 · slow squats, rise onto your toes at the top":"Уровень 1 · медленные приседания, вверху поднимайтесь на носки",
+"Level 2 · walking lunges, knee over toes, 10 each leg":"Уровень 2 · выпады с шагом, колено над носком, по 10 на каждую ногу",
+"Level 3 · one-leg squats to a chair, 8–10 each leg":"Уровень 3 · приседания на одной ноге до стула, по 8–10 на каждую ногу",
+"Level 1 · jump straight up, land softly, knees over toes":"Уровень 1 · прыжки вверх, мягкое приземление, колени над носками",
+"Level 2 · jump side to side, land on one leg and hold":"Уровень 2 · прыжки в стороны, приземление на одну ногу с фиксацией",
+"Level 3 · jump over a line in all directions, soft landings":"Уровень 3 · прыжки через линию во все стороны, мягкое приземление",
+"Bounding · high knee drive, land softly":"Прыжковый бег · высокий подъём колена, мягкое приземление",
+});
 
 /* ---------- boot ---------- */
 $("photoBtn").onclick = openPhotoManager;
