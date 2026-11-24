@@ -20,7 +20,7 @@ TR = {"en": {}}
 for _L in ("uz", "ru"):
     TR[_L] = json.load(open(os.path.join(ROOT, "tools", "i18n", f"{_L}.json"), encoding="utf-8"))
 TODAY = datetime.date.today()
-LAST_CHECKED = datetime.date(2026, 11, 9)   # change only when the content is actually re-checked
+LAST_CHECKED = datetime.date(2026, 11, 24)   # change only when the content is actually re-checked
 FAQX = {}
 for _f in ("faq1.json", "faq2.json"):
     FAQX.update(json.load(open(os.path.join(ROOT, "tools", "i18n", _f), encoding="utf-8")))
@@ -272,6 +272,9 @@ footer{color:var(--mut);font-size:.85rem;text-align:center;padding:0 16px 32px;m
 CSP = "default-src 'self'; style-src 'unsafe-inline'; img-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'"
 OG_LOCALE = {"en": "en_GB", "uz": "uz_UZ", "ru": "ru_RU"}
 
+GMIS = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n", "guide_mistakes.json"), encoding="utf-8"))
+GMH = {"en": "Mistakes that slow recovery", "uz": "Tiklanishni sekinlashtiradigan xatolar", "ru": "Ошибки, которые замедляют восстановление"}
+
 def page(L, title, desc, slug, body, ld, img=None):
     u = UI[L]
     canon = url(L, slug)
@@ -381,6 +384,9 @@ def injury_page(i, L):
                  f'<p style="margin:4px 0 0"><b>{u["goal"]}</b> {e(t(p.get("goal", ""), L))}</p><ol class="exs">{"".join(items)}</ol>{exit_}</section>')
     if i.get("note"):
         b.append(f'<p class="note"><b>{u["important"]}</b> {e(t(i["note"], L))}</p>')
+    gm = GMIS.get(i["id"], {}).get(L)
+    if gm:
+        b.append(f"<h2>{GMH[L]}</h2><ul>" + "".join(f"<li>{e(m)}</li>" for m in gm) + "</ul>")
     ev = EVID.get(i["id"])
     if ev:
         b.append(f"<h2 id='research'>{u['research']}</h2><p class='muted small'>{u['evid']} <b>{e(t(ev.get('lvl', ''), L))}</b></p><ul>" +
