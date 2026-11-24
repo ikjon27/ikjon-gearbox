@@ -11,6 +11,7 @@ import json, os, re, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_guides as G
 from musclemap import muscle_svg, muscle_list, NAMES as MUSN
+from exercise_extras import X as EXTRA, UI as XUI, UPDATED as X_UPDATED
 from sitekit import trust_box, share_bar, EXTRA_CSS, ex_slug, ex_base, CARDS, e, nice_date, ABOUT
 
 ROOT, SITE, LANGS = G.ROOT, G.SITE, G.LANGS
@@ -253,15 +254,19 @@ def ex_page(x, L):
     target = tx(x["target"], L)
     canon = f"{ex_base(L)}{x['slug']}/"
     alts = {k: f"{ex_base(k)}{x['slug']}/" for k in LANGS}
-    title = u["title"].format(name=name)
-    desc = u["desc"].format(name=name if L != "en" else name.lower(), target=target.lower() if L == "en" else target)
+    xe = EXTRA.get(x["id"])
+    xu = XUI[L]
+    checked = X_UPDATED if xe else CHECKED
+    title = (xu if xe else u)["title"].format(name=name)
+    desc = (xu["desc"].format(name=name if L != "en" else name.lower()) if xe else
+            u["desc"].format(name=name if L != "en" else name.lower(), target=target.lower() if L == "en" else target))
     if len(desc) > 160:
         desc = desc[:157].rsplit(" ", 1)[0] + "…"
     card = f"/cards/exercises/{L}/{x['slug']}.jpg"
     b = [crumbs(L, [(u["lib"], ex_base(L)), (reg, f"{ex_base(L)}#{x['region']}")]),
          f"<h1>{e(u['h1'].format(name=name))}</h1>",
          f'<p class="lede">{u["lede"].format(target=e(target), type=e(typ), tdesc=e(td[:1].lower() + td[1:] if L != "en" else td.lower()))}</p>' if td else f'<p class="lede"><b>{e(target)}</b></p>',
-         trust_box(L, CHECKED, show_src=False)]
+         trust_box(L, checked, show_src=False)]
     ph = G.photo(x["id"], name)
     b.append(figs(x, L))
     if ph:
@@ -277,6 +282,15 @@ def ex_page(x, L):
         tips.append('<div class="kv">' + "".join(f"<div><b>{u[k]}</b>{e(tx(gd[k], L))}</div>" for k in ("speed", "effort", "breath", "feel") if gd.get(k)) + "</div>")
     if tips:
         b.append(f"<h2>{u['tips']}</h2>" + "".join(tips))
+    if xe:
+        xl = xe[L]
+        b.append(f"<h2>{xu['mist']}</h2><ol>" + "".join(
+            f"<li><b>{e(m)}</b><br>{xu['fix']}: {e(fx)}</li>" for m, fx in xl["m"]) + "</ol>")
+        def ver(lbl, txt, ref):
+            lk = f' <a href="{ex_base(L)}{EXS[ref]["slug"]}/">{e(xu["see"].format(name=tx(EXS[ref]["name"], L)))} →</a>' if ref else ""
+            return f"<div><b>{lbl}</b>{e(txt)}{lk}</div>"
+        b.append(f"<h2>{xu['vers']}</h2><div class='kv'>" + ver(xu["easier"], xl["easier"], xe["easy"]) + ver(xu["harder"], xl["harder"], xe["hard"]) + "</div>")
+        b.append(f"<h2>{xu['stop']}</h2><p class='note'><b>{xu['stopp']}</b> {e(xl['stop'])}</p>")
     b.append(f"<h2>{u['equip']}</h2><p>{e(tx(x['equip'], L)) if x.get('equip') else u['none']}</p>")
     b.append(f'<p class="note">{u["safety"]}</p>')
     used = []
@@ -295,7 +309,7 @@ def ex_page(x, L):
     if rel:
         b.append(f"<h2>{e(u['similar'].format(region=reg))}</h2><div class='chips'>" + "".join(f'<a href="{ex_base(L)}{y["slug"]}/">{e(tx(y["name"], L))}</a>' for y in rel) + "</div>")
     ld = [{"@context": "https://schema.org", "@type": "WebPage", "name": title, "description": desc, "url": SITE + canon, "inLanguage": L,
-           "dateModified": CHECKED.isoformat(), "image": SITE + card,
+           "dateModified": checked.isoformat(), "image": SITE + card,
            "publisher": {"@type": "Organization", "name": "IKJON Consulting & Education Centre", "url": SITE + "/"}},
           bc_ld(L, [(u["lib"], ex_base(L)), (name, canon)])]
     f = LD["figs"].get(x["id"])
