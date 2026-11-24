@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /portal/
 Disallow: /learn/
+Disallow: /crm/
 Allow: /
 Sitemap: https://www.ikjon-gearbox.com/sitemap.xml
