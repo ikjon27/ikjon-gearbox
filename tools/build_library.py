@@ -196,7 +196,12 @@ ABOUT_BODY = {
 def lbase(kind, L):
     return {"ex": ex_base(L), "plans": "/plans/" if L == "en" else f"/plans/{L}/", "about": ABOUT[L]}[kind]
 
-def layout(L, title, desc, canon, alts, body, ld, img=None):
+EXTRA = {L: json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "i18n", f"ex_extra_{L}.json"), encoding="utf-8")) for L in ("en", "uz", "ru")}
+XH = {"en": dict(mis="Common mistakes", eh="Make it easier or harder", easier="Easier", harder="Harder", care="Take care if…"),
+      "uz": dict(mis="Ko‘p uchraydigan xatolar", eh="Osonroq yoki qiyinroq qilish", easier="Osonroq", harder="Qiyinroq", care="Ehtiyot bo‘ling, agar…"),
+      "ru": dict(mis="Частые ошибки", eh="Как сделать легче или тяжелее", easier="Легче", harder="Тяжелее", care="Будьте осторожны, если…")}
+
+def layout(L, title, desc, canon, alts, body, ld, img=None, index=True):
     u = U[L]
     alt = "".join(f'<link rel="alternate" hreflang="{x}" href="{SITE}{alts[x]}">' for x in LANGS) + f'<link rel="alternate" hreflang="x-default" href="{SITE}{alts["en"]}">'
     sw = "".join(f'<a href="{alts[x]}" hreflang="{x}" lang="{x}"' + (' aria-current="true"' if x == L else "") + f'>{x.upper()}</a>' for x in LANGS)
@@ -205,7 +210,7 @@ def layout(L, title, desc, canon, alts, body, ld, img=None):
 <html lang="{L}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="{G.CSP}; script-src 'self'"><meta name="referrer" content="strict-origin-when-cross-origin">
 <title>{e(title)}</title><meta name="description" content="{e(desc)}">
-<link rel="canonical" href="{SITE}{canon}">{alt}<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="{SITE}{canon}">{alt}<meta name="robots" content="{'index, follow, max-image-preview:large' if index else 'noindex, follow'}">
 <meta property="og:type" content="article"><meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{SITE}{canon}"><meta property="og:site_name" content="IKJON"><meta property="og:locale" content="{G.OG_LOCALE[L]}">{og}
 <link rel="icon" href="/rehab/icons/favicon-48.png"><link rel="apple-touch-icon" href="/rehab/icons/apple-touch-icon.png">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False).replace("</", "<\\/")}</script>
@@ -277,6 +282,12 @@ def ex_page(x, L):
         tips.append('<div class="kv">' + "".join(f"<div><b>{u[k]}</b>{e(tx(gd[k], L))}</div>" for k in ("speed", "effort", "breath", "feel") if gd.get(k)) + "</div>")
     if tips:
         b.append(f"<h2>{u['tips']}</h2>" + "".join(tips))
+    xe = EXTRA[L].get(x["id"])
+    if xe:
+        h = XH[L]
+        b.append(f"<h2>{h['mis']}</h2><ul>" + "".join(f"<li>{e(m)}</li>" for m in xe["mistakes"]) + "</ul>")
+        b.append(f"<h2>{h['eh']}</h2><div class='kv'><div><b>{h['easier']}</b>{e(xe['easier'])}</div><div><b>{h['harder']}</b>{e(xe['harder'])}</div></div>")
+        b.append(f"<h2>{h['care']}</h2><p>{e(xe['care'])}</p>")
     b.append(f"<h2>{u['equip']}</h2><p>{e(tx(x['equip'], L)) if x.get('equip') else u['none']}</p>")
     b.append(f'<p class="note">{u["safety"]}</p>')
     used = []
@@ -302,7 +313,7 @@ def ex_page(x, L):
     CARDS.append({"out": card, "kind": "exercise", "lang": L, "title": name, "sub": target,
                   "svg": f'<svg viewBox="0 0 240 190" class="rig">{f[1]}</svg>' if f else "", "lines": [tx(s, L) for s in x["steps"][:3]],
                   "url": (SITE + canon).replace("https://www.", "")})
-    return canon, layout(L, title, desc, canon, alts, "".join(b), ld, card)
+    return canon, layout(L, title, desc, canon, alts, "".join(b), ld, card, index=bool(xe))
 
 def ex_hub(L):
     u = U[L]
@@ -405,7 +416,8 @@ def main():
         for fn in (lambda: ex_hub(L), lambda: plan_hub(L), lambda: about(L)):
             c, h = fn(); write(c, h); urls.append(c)
         for x in EXS.values():
-            c, h = ex_page(x, L); write(c, h); urls.append(c)
+            c, h = ex_page(x, L); write(c, h)
+            if x["id"] in EXTRA[L]: urls.append(c)
         for pl in LD["PLANS"]:
             c, h = plan_page(pl, L); write(c, h); urls.append(c)
     sm = os.path.join(ROOT, "sitemap.xml")
